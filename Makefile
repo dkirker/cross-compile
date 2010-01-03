@@ -22,6 +22,30 @@ toolchain: toolchain/${TOOLCHAIN}/.unpacked
 # rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked
 rootfs: rootfs/armv7/.unpacked
 
+.PHONY: stage
+# staging: staging-armv7 staging-armv7
+stage: staging-armv7
+
+.PHONY: staging-%
+staging-%:
+	mkdir -p staging/$*
+	for f in `find packages -mindepth 1 -maxdepth 1 -type d -print` ; do \
+	  if [ -e $$f/Makefile ]; then \
+	    ${MAKE} -C $$f ARCH=$* stage || exit ; \
+	  fi; \
+	done
+
+.PHONY: unstage
+unstage: clobber-armv7
+
+.PHONY: clobber-%
+clobber-%:
+	for f in `find packages -mindepth 1 -maxdepth 1 -type d -print` ; do \
+	  if [ -e $$f/Makefile ]; then \
+	    ${MAKE} -C $$f ARCH=$* clobber || exit ; \
+	  fi; \
+	done
+
 rootfs/armv7/.unpacked: doctors/webosdoctorp100ewwsprint-1.3.5.jar
 	rm -rf rootfs/armv7
 	mkdir -p rootfs/armv7
@@ -52,7 +76,7 @@ doctors/webosdoctorp200ewwsprint-1.3.5.jar:
 	wget -O $@ http://palm.cdnetworks.net/rom/pixi/px135r0d12302009/sr1ntp135rod/webosdoctorp200ewwsprint.jar
 
 clean:
-	rm -f .*~ *~ scripts/*~
+	rm -f .*~ *~ scripts/*~ support/*~ packages/*/*~
 
 clobber:
 	rm -rf toolchain rootfs
