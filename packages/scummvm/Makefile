@@ -25,9 +25,10 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; sb2 -t $* ./configure \
 		--backend=sdl --with-sdl-prefix=`cd ../../${STAGING_DIR}; pwd`/usr/bin \
-		--prefix=/media/cryptofs/apps/org.webosinternals.scummvm \
-		--enable-plugins --default-dynamic --disable-all-engines )
-	sed -i.orig -e 's|-L`cd ${STAGING_DIR}; pwd`/usr/lib|-L`cd ${STAGING_DIR}; pwd`/usr/lib -Wl,-rpath-link,${STAGING_DIR}/usr/lib|' build/src/config.mk
+		--prefix=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.scummvm \
+		--enable-plugins --default-dynamic --disable-all-engines \
+		--enable-scumm --enable-scumm_7_8 --enable-sky --enable-queen )
+	sed -i.orig -e "s|-L`cd ${STAGING_DIR}; pwd`/usr/lib|-L`cd ${STAGING_DIR}; pwd`/usr/lib -Wl,-rpath-link,`cd ${STAGING_DIR}; pwd`/usr/lib|" build/src/config.mk
 	( cd build/src ; sb2 -t $* make)
 	touch $@
 
