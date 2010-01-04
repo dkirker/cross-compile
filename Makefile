@@ -58,12 +58,12 @@ rootfs/armv6/.unpacked: doctors/webosdoctorp200ewwsprint-1.3.5.jar
 	${FAKEROOT} scripts/unpack-doctor-rootfs $< rootfs/armv6
 	touch $@
 
-toolchain/arm-2007q3/.unpacked: downloads/arm-2007q3-53-arm-none-eabi-i686-pc-linux-gnu.tar.bz2
+toolchain/arm-2007q3/.unpacked: downloads/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 	mkdir -p toolchain
 	tar -C toolchain -x -f $<
 	touch $@
 
-downloads/arm-2007q3-53-arm-none-eabi-i686-pc-linux-gnu.tar.bz2:
+downloads/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
 	mkdir -p downloads
 	wget -O $@ http://www.codesourcery.com/sgpp/lite/arm/portal/package1787/public/arm-none-linux-gnueabi/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 
