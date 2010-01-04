@@ -13,7 +13,7 @@ FAKEROOT = fakeroot
 endif
 
 .PHONY: all
-all: toolchain rootfs
+all: toolchain rootfs stage
 
 .PHONY: toolchain
 toolchain: toolchain/${TOOLCHAIN}/.unpacked
@@ -65,7 +65,7 @@ toolchain/arm-2007q3/.unpacked: downloads/arm-2007q3-53-arm-none-eabi-i686-pc-li
 
 downloads/arm-2007q3-53-arm-none-eabi-i686-pc-linux-gnu.tar.bz2:
 	mkdir -p downloads
-	wget -O $@ http://www.codesourcery.com/sgpp/lite/arm/portal/package1793/public/arm-none-eabi/arm-2007q3-53-arm-none-eabi-i686-pc-linux-gnu.tar.bz2
+	wget -O $@ http://www.codesourcery.com/sgpp/lite/arm/portal/package1787/public/arm-none-linux-gnueabi/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 
 doctors/webosdoctorp100ewwsprint-1.3.5.jar:
 	mkdir -p doctors
