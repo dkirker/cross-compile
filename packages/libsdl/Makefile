@@ -28,7 +28,8 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; sb2 -t $* ./configure )
 	( cd build/src ; \
-	  sb2 -t $* make prefix=/usr DESTDIR=/srv/preware/cross-compile/staging/$* install-hdrs )
+	  sb2 -t $* make prefix=/usr DESTDIR=/srv/preware/cross-compile/staging/$* \
+		install-bin install-hdrs )
 	touch $@
 
 clobber::
