@@ -25,7 +25,7 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure --backend=sdl \
+	( cd build/src ; ${SB2} ./configure --backend=sdl --with-sdl-prefix=/usr/local/bin \
 		--prefix=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.scummvm \
 		--enable-plugins --default-dynamic --disable-all-engines \
 		--enable-scumm --enable-scumm_7_8 --enable-sky --enable-queen )
