@@ -37,6 +37,7 @@ staging-%: staging/mapping-%
 
 .PRECIOUS: staging/mapping-%
 staging/mapping-%:
+	mkdir -p staging
 	sed -e "/99. Other rules./a\
 		{prefix = \"/usr/local\", replace_by = \"`pwd`/staging/armv7/usr\"}," \
 		/usr/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
