@@ -17,12 +17,18 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 
 include ../../support/staging.mk
 
-stage:: build/armv7.built
+stage::
+
+build: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; sb2 -t $* ./configure \
-		--backend=sdl --with-sdl-prefix=`cd ../../${STAGING_DIR}; pwd`/usr/bin )
+		--backend=sdl --with-sdl-prefix=`cd ../../${STAGING_DIR}; pwd`/usr/bin \
+		--prefix=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.scummvm \
+		--enable-plugins --default-dynamic --disable-all-engines \
+		--enable-scumm --enable-scumm_7_8 --enable-sky --enable-queen )
+	sed -i.orig -e "s|-L`cd ${STAGING_DIR}; pwd`/usr/lib|-L`cd ${STAGING_DIR}; pwd`/usr/lib -Wl,-rpath-link,`cd ${STAGING_DIR}; pwd`/usr/lib|" build/src/config.mk
 	( cd build/src ; sb2 -t $* make)
 	touch $@
 
