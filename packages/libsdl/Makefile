@@ -24,14 +24,14 @@ include ../../support/staging.mk
 
 include ../../support/stage-rootfs.mk
 
+include ../../support/cross-compile.mk
+
 stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; sb2 -t $* ./configure )
-	( cd build/src ; \
-	  sb2 -t $* make prefix=/usr DESTDIR=/srv/preware/cross-compile/staging/$* \
-		install-bin install-hdrs )
+	( cd build/src ; ${SB2} ./configure )
+	( cd build/src ; ${SB2} make install-bin install-hdrs )
 	touch $@
 
 clobber::

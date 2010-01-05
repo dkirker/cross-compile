@@ -2,9 +2,11 @@ ifeq ("${ARCH}", "")
 ARCH = armv7
 endif
 
-STAGING_DIR = ../../staging/${ARCH}
+STAGING_DIR := $(shell cd ../../staging/${ARCH}; pwd)
 
-ROOTFS_DIR = ../../rootfs/${ARCH}
+MAPPING_FILE := $(shell cd ../../staging; pwd)/mapping-${ARCH}
+
+ROOTFS_DIR := $(shell cd ../../rootfs/${ARCH}; pwd)
 
 IPKG_FILES_LIST = ${ROOTFS_DIR}/usr/lib/ipkg/info/${NAME}.list
 

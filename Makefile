@@ -24,7 +24,7 @@ rootfs: rootfs/armv7/.unpacked
 
 .PHONY: stage
 # staging: staging-armv7 staging-armv6
-stage: staging-armv7
+stage: toolchain rootfs staging-armv7
 
 .PHONY: staging-%
 staging-%: staging/mapping-%
@@ -35,6 +35,7 @@ staging-%: staging/mapping-%
 	  fi; \
 	done
 
+.PRECIOUS: staging/mapping-%
 staging/mapping-%:
 	sed -e "/99. Other rules./a\
 		{prefix = \"/usr/local\", replace_by = \"`pwd`/staging/armv7/usr\"}," \
@@ -84,4 +85,4 @@ clean:
 	rm -f .*~ *~ scripts/*~ support/*~ packages/*/*~
 
 clobber:
-	rm -rf toolchain rootfs
+	rm -rf toolchain rootfs staging
