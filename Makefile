@@ -23,17 +23,22 @@ toolchain: toolchain/${TOOLCHAIN}/.unpacked
 rootfs: rootfs/armv7/.unpacked
 
 .PHONY: stage
-# staging: staging-armv7 staging-armv7
+# staging: staging-armv7 staging-armv6
 stage: staging-armv7
 
 .PHONY: staging-%
-staging-%:
+staging-%: staging/mapping-%
 	mkdir -p staging/$*
 	for f in `find packages -mindepth 1 -maxdepth 1 -type d -print` ; do \
 	  if [ -e $$f/Makefile ]; then \
 	    ${MAKE} -C $$f ARCH=$* stage || exit ; \
 	  fi; \
 	done
+
+staging/mapping-%:
+	sed -e "/99. Other rules./a\
+		{prefix = \"/usr/local\", replace_by = \"`pwd`/staging/armv7/usr\"}," \
+		/usr/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
 
 .PHONY: unstage
 unstage: clobber-armv7
