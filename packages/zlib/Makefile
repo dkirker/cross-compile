@@ -27,6 +27,7 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
+	install -d ${STAGING_DIR}/usr/include
 	install -m 644 build/src/zlib.h ${STAGING_DIR}/usr/include/
 	install -m 644 build/src/zconf.h ${STAGING_DIR}/usr/include/
 	touch $@
