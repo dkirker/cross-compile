@@ -42,17 +42,6 @@ staging/mapping-%:
 		{prefix = \"/usr/local\", replace_by = \"`pwd`/staging/armv7/usr\"}," \
 		/usr/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
 
-.PHONY: unstage
-unstage: clobber-armv7
-
-.PHONY: clobber-%
-clobber-%:
-	for f in `find packages -mindepth 1 -maxdepth 1 -type d -print` ; do \
-	  if [ -e $$f/Makefile ]; then \
-	    ${MAKE} -C $$f ARCH=$* clobber || exit ; \
-	  fi; \
-	done
-
 rootfs/armv7/.unpacked: doctors/webosdoctorp100ewwsprint-1.3.5.jar
 	rm -rf rootfs/armv7
 	mkdir -p rootfs/armv7
@@ -82,8 +71,19 @@ doctors/webosdoctorp200ewwsprint-1.3.5.jar:
 	mkdir -p doctors
 	wget -O $@ http://palm.cdnetworks.net/rom/pixi/px135r0d12302009/sr1ntp135rod/webosdoctorp200ewwsprint.jar
 
+.PHONY: clean
 clean:
 	rm -f .*~ *~ scripts/*~ support/*~ packages/*/*~
 
-clobber:
+.PHONY: clobber
+clobber: clobber-armv7
 	rm -rf toolchain rootfs staging
+
+.PHONY: clobber-%
+clobber-%:
+	for f in `find packages -mindepth 1 -maxdepth 1 -type d -print` ; do \
+	  if [ -e $$f/Makefile ]; then \
+	    ${MAKE} -C $$f ARCH=$* clobber || exit ; \
+	  fi; \
+	done
+
