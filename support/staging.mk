@@ -10,3 +10,9 @@ ROOTFS_DIR := $(shell cd ../../rootfs/${ARCH}; pwd)
 
 IPKG_FILES_LIST = ${ROOTFS_DIR}/usr/lib/ipkg/info/${NAME}.list
 
+ifneq ("${DEPENDS}","")
+stage::
+	for dep in ${DEPENDS} ; do \
+	  ( cd ../../packages/$$dep ; ${MAKE} stage ) ; \
+	done
+endif
