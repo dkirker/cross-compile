@@ -30,7 +30,19 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure )
 	( cd build/src ; ${SB2} make )
-	# %%% STAGE HEADERS HERE %%%
+	( ${SB2} install -m 777 -d /usr/local/include/freetype )
+	( ${SB2} install -m 777 -d /usr/local/include/freetype/config )
+	( ${SB2} install -m 777 -d /usr/local/include/freetype/internal )
+	( ${SB2} install -m 777 -d /usr/local/include/freetype/internal/services )
+	( ${SB2} install -m 644 build/src/include/freetype/*.h \
+		/usr/local/include/freetype/ )
+	( ${SB2} install -m 644 build/src/include/freetype/config/*.h \
+		/usr/local/include/freetype/config/ )
+	( ${SB2} install -m 644 build/src/include/freetype/internal/*.h \
+		/usr/local/include/freetype/internal/ )
+	( ${SB2} install -m 644 build/src/include/freetype/internal/services/*.h \
+		/usr/local/include/freetype/internal/services/ )
+	( ${SB2} install -m 644 build/src/include/ft2build.h /usr/local/include/ )
 	touch $@
 
 include ../../support/stage-rootfs.mk
