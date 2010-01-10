@@ -1,4 +1,5 @@
 NAME = piranha
+DEPENDS = freetype
 
 include ../../support/staging.mk
 

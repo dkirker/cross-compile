@@ -1,5 +1,6 @@
 NAME = libsdl
 VERSION = 1.2
+DEPENDS = libnapp piranha palmvibelib
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tgz
 

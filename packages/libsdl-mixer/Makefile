@@ -1,5 +1,6 @@
 NAME = libsdl-mixer
 VERSION = 1.2
+DEPENDS = libsdl libavformat libavutil libavcodec amrnb amrwb
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tgz
 

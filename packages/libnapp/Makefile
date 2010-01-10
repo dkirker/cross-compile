@@ -1,4 +1,5 @@
 NAME = libnapp
+DEPENDS = luna-sysmgr-ipc luna-service
 
 include ../../support/staging.mk
 

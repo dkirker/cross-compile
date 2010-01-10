@@ -1,4 +1,5 @@
 NAME = luna-service
+DEPENDS = dbus-lib
 
 include ../../support/staging.mk
 
