@@ -19,7 +19,6 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 		LOCAL_FILE=${NAME}-${VERSION}-patches.tgz download
 	tar -x -f ${DL_DIR}/${NAME}-${VERSION}-patches.tgz -O \
 		patches/debian.patch patches/ldflags.patch patches/paths.patch | patch -d build/src -p1
-	zcat ${DL_DIR}/${NAME}-${VERSION}-patch.gz | patch -d build/src -p1
 	touch $@
 
 include ../../support/staging.mk
