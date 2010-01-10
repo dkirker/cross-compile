@@ -32,6 +32,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure )
+	mkdir -p ${STAGING_DIR}/usr/include
 	( cd build/src ; ${SB2} make DESTDIR= install-headers )
 	touch $@
 
