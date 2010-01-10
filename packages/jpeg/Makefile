@@ -33,7 +33,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure )
-	( cd build/src ; ${SB2} make install-bin install-hdrs )
+	( cd build/src ; ${SB2} make DESTDIR= install-headers )
 	touch $@
 
 clobber::
