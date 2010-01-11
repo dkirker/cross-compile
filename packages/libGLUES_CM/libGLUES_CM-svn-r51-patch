@@ -1,0 +1,84 @@
+diff -urN src/source/glues_error.h src_patched/source/glues_error.h
+--- src/source/glues_error.h	2010-01-11 01:40:57.000000000 -0600
++++ src_patched/source/glues_error.h	2010-01-11 01:59:19.304123489 -0600
+@@ -34,6 +34,7 @@
+ #define __GLUES_REGISTRY_H__
+ 
+ #if defined(__USE_SDL_GLES__)
++   #define APIENTRY
+    #include <SDL/SDL_opengles.h>
+    #ifndef GLAPI
+       #define GLAPI GL_API
+diff -urN src/source/glues.h src_patched/source/glues.h
+--- src/source/glues.h	2010-01-11 01:40:57.000000000 -0600
++++ src_patched/source/glues.h	2010-01-11 01:59:19.308115146 -0600
+@@ -34,6 +34,7 @@
+ #define __glues_h__
+ 
+ #if defined(__USE_SDL_GLES__)
++   #define APIENTRY
+    #include <SDL/SDL_opengles.h>
+    #ifndef GLAPI
+       #define GLAPI GL_API
+diff -urN src/source/glues_mipmap.h src_patched/source/glues_mipmap.h
+--- src/source/glues_mipmap.h	2010-01-11 01:40:57.000000000 -0600
++++ src_patched/source/glues_mipmap.h	2010-01-11 01:59:19.308115146 -0600
+@@ -34,6 +34,7 @@
+ #define __GLUES_MIPMAP_H__
+ 
+ #if defined(__USE_SDL_GLES__)
++   #define APIENTRY
+    #include <SDL/SDL_opengles.h>
+    #ifndef GLAPI
+       #define GLAPI GL_API
+diff -urN src/source/glues_project.h src_patched/source/glues_project.h
+--- src/source/glues_project.h	2010-01-11 01:40:57.000000000 -0600
++++ src_patched/source/glues_project.h	2010-01-11 01:59:19.308115146 -0600
+@@ -34,6 +34,7 @@
+ #define __GLUES_PROJECT_H__
+ 
+ #if defined(__USE_SDL_GLES__)
++   #define APIENTRY
+    #include <SDL/SDL_opengles.h>
+    #ifndef GLAPI
+       #define GLAPI GL_API
+diff -urN src/source/glues_quad.h src_patched/source/glues_quad.h
+--- src/source/glues_quad.h	2010-01-11 01:40:57.000000000 -0600
++++ src_patched/source/glues_quad.h	2010-01-11 01:59:19.312126225 -0600
+@@ -34,6 +34,7 @@
+ #define __GLUES_QUAD_H__
+ 
+ #if defined(__USE_SDL_GLES__)
++   #define APIENTRY
+    #include <SDL/SDL_opengles.h>
+    #ifndef GLAPI
+       #define GLAPI GL_API
+diff -urN src/source/glues_registry.h src_patched/source/glues_registry.h
+--- src/source/glues_registry.h	2010-01-11 01:40:57.000000000 -0600
++++ src_patched/source/glues_registry.h	2010-01-11 01:59:19.312126225 -0600
+@@ -34,6 +34,7 @@
+ #define __GLUES_REGISTRY_H__
+ 
+ #if defined(__USE_SDL_GLES__)
++   #define APIENTRY
+    #include <SDL/SDL_opengles.h>
+    #ifndef GLAPI
+       #define GLAPI GL_API
+diff -urN src/source/Makefile src_patched/source/Makefile
+--- src/source/Makefile	1969-12-31 18:00:00.000000000 -0600
++++ src_patched/source/Makefile	2010-01-11 01:58:52.508082768 -0600
+@@ -0,0 +1,14 @@
++
++CC      = gcc
++CFLAGS  = -D__USE_SDL_GLES__ -fPIC -DPIC
++LDFLAGS = -shared -Wl,-soname,
++
++GLUES_OBJ = glues_error.o glues_mipmap.o glues_project.o glues_quad.o glues_registry.o
++
++GLUES_LIB = libGLUES_CM.so
++
++all: $(GLUES_LIB)
++
++$(GLUES_LIB): $(GLUES_OBJ)
++	$(CC) $(LDFLAGS)$(GLUES_LIB) -o $(GLUES_LIB) $(GLUES_OBJ)
++
