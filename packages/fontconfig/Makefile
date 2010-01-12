@@ -14,9 +14,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mkdir -p build
 	tar -C build -z -x -f $<
 	mv build/${NAME}-${VERSION} build/src
-	${MAKE} SRC_FILE=http://xcomputerman.com/files/efl_webos/${NAME}-${VERSION}.patch \
-		LOCAL_FILE=${NAME}-${VERSION}.patch download
-	patch -d build/src -p1 < ${DL_DIR}/${NAME}-${VERSION}.patch
+	patch -d build/src -p1 < ./${NAME}-${VERSION}.patch
 	touch $@
 
 include ../../support/staging.mk
