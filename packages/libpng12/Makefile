@@ -21,6 +21,10 @@ include ../../support/staging.mk
 
 include ../../support/stage-rootfs.mk
 
+stage::
+	( cd ${STAGING_DIR}/usr/lib ; \
+	  [ -e ${NAME}.so ] || ln -s ${NAME}.so.3.12.0 ${NAME}.so )
+
 include ../../support/cross-compile.mk
 
 stage:: build/armv7.built
