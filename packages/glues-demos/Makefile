@@ -1,6 +1,8 @@
 NAME = libGLUES_CM
 VERSION = 51
 
+DEPENDS = libGLUES_CM
+
 SRC_SVN_REV = http://glues.googlecode.com/svn/trunk/glues
 
 include ../../support/download.mk
