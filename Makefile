@@ -1,6 +1,7 @@
 TOOLCHAIN  = arm-2007q3
 DOCTORPRE  = webosdoctorp100ewwsprint-1.3.5.jar
 DOCTORPIXI = webosdoctorp200ewwsprint-1.3.5.jar
+SB2ROOT = $(shell dirname `which sb2`)/..
 
 ifeq ($(shell uname -s),Darwin)
 TAR	 = gnutar
@@ -40,7 +41,7 @@ staging/mapping-%:
 	mkdir -p staging
 	sed -e "/99. Other rules./a\
 		{prefix = \"/usr/local\", replace_by = \"`pwd`/staging/armv7/usr\"}," \
-		/usr/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
+		$(SB2ROOT)/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
 
 rootfs/armv7/.unpacked: doctors/webosdoctorp100ewwsprint-1.3.5.jar
 	rm -rf rootfs/armv7
