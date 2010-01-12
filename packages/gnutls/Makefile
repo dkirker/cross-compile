@@ -14,6 +14,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mkdir -p build
 	tar -C build -j -x -f $<
 	mv build/${NAME}-${VERSION} build/src
+	patch -d build/src -p1 < ./${NAME}-${VERSION}.patch
 	touch $@
 
 include ../../support/staging.mk
