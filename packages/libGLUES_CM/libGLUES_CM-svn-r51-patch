@@ -70,7 +70,7 @@ diff -urN src/source/Makefile src_patched/source/Makefile
 @@ -0,0 +1,14 @@
 +
 +CC      = gcc
-+CFLAGS  = -D__USE_SDL_GLES__ -fPIC -DPIC
++CFLAGS  = -D__USE_SDL_GLES__ -O3 -mcpu=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp -ffast-math -fsingle-precision-constant -fPIC -DPIC
 +LDFLAGS = -shared -Wl,-soname,
 +
 +GLUES_OBJ = glues_error.o glues_mipmap.o glues_project.o glues_quad.o glues_registry.o
