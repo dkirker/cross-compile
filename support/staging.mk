@@ -10,6 +10,8 @@ ROOTFS_DIR := $(shell cd ../../rootfs/${ARCH}; pwd)
 
 IPKG_FILES_LIST = ${ROOTFS_DIR}/usr/lib/ipkg/info/${NAME}.list
 
+INSTALL_PREFIX = /usr/local
+
 ifneq ("${DEPENDS}","")
 stage::
 	for dep in ${DEPENDS} ; do \

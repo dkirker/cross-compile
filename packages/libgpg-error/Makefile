@@ -18,6 +18,8 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 include ../../support/staging.mk
 
+include ../../support/stage-rootfs.mk
+
 include ../../support/cross-compile.mk
 
 stage:: build/armv7.built
@@ -26,7 +28,6 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
 	( cd build/src/src ; ${SB2} make install-includeHEADERS install-binSCRIPTS )
-	( ${SB2} cp -pP ${ROOTFS_DIR}/usr/lib/libgpg-error.so* ${INSTALL_PREFIX}/lib )
 	touch $@
 
 clobber::
