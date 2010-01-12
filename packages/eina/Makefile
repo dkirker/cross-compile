@@ -1,8 +1,8 @@
-NAME = libgcrypt
-VERSION = 1.4.4
-DEPENDS = libgpg-error
+NAME = eina
+VERSION = 0.9.9.063
+DEPENDS = 
 
-SRC_TGZ = ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.4.4.tar.gz
+SRC_TGZ = http://xcomputerman.com/files/efl_webos/eina-0.9.9.063-20100112.tar.gz
 
 include ../../support/download.mk
 
@@ -18,17 +18,15 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 include ../../support/staging.mk
 
-include ../../support/stage-rootfs.mk
-
 include ../../support/cross-compile.mk
 
 stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/src/src ; ${SB2} make install-includeHEADERS install-binSCRIPTS )
-	( cd ${INSTALL_PREFIX}/lib; ln -s libgcrypt.so.11.5.2 libgcrypt.so )
+	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} \
+		--disable-doc )
+	( cd build/src ; ${SB2} make install )
 	touch $@
 
 clobber::

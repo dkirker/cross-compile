@@ -1,8 +1,8 @@
-NAME = libgcrypt
-VERSION = 1.4.4
-DEPENDS = libgpg-error
+NAME = eet
+VERSION = 1.2.3
+DEPENDS = zlib jpeg libgcrypt openssl eina
 
-SRC_TGZ = ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.4.4.tar.gz
+SRC_TGZ = http://xcomputerman.com/files/efl_webos/eet-1.2.3-20100112.tar.gz
 
 include ../../support/download.mk
 
@@ -18,17 +18,16 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 include ../../support/staging.mk
 
-include ../../support/stage-rootfs.mk
-
 include ../../support/cross-compile.mk
 
 stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/src/src ; ${SB2} make install-includeHEADERS install-binSCRIPTS )
-	( cd ${INSTALL_PREFIX}/lib; ln -s libgcrypt.so.11.5.2 libgcrypt.so )
+	export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+	( cd build/src ; ${SB2} ./configure --disable-static --disable-gnutls \
+		--prefix=${INSTALL_PREFIX} --disable-doc )
+	( cd build/src ; ${SB2} make install )
 	touch $@
 
 clobber::
