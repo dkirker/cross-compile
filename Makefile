@@ -16,6 +16,9 @@ endif
 .PHONY: all
 all: toolchain rootfs stage
 
+.PHONY: setup
+setup: toolchain rootfs staging/mapping-armv7
+
 .PHONY: toolchain
 toolchain: toolchain/${TOOLCHAIN}/.unpacked
 
@@ -29,7 +32,6 @@ stage: toolchain rootfs staging-armv7
 
 .PHONY: staging-%
 staging-%: staging/mapping-%
-	mkdir -p staging/$*
 	for f in `find packages -mindepth 1 -maxdepth 1 -type d -print` ; do \
 	  if [ -e $$f/Makefile ]; then \
 	    ${MAKE} -C $$f ARCH=$* stage || exit ; \
@@ -38,7 +40,7 @@ staging-%: staging/mapping-%
 
 .PRECIOUS: staging/mapping-%
 staging/mapping-%:
-	mkdir -p staging
+	mkdir -p staging/$*/usr
 	sed -e "/99. Other rules./a\
 		{prefix = \"/usr/local\", replace_by = \"`pwd`/staging/armv7/usr\"}," \
 		$(SB2ROOT)/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
