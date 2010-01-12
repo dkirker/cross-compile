@@ -1,7 +1,6 @@
 NAME = libGLUES_CM
 VERSION = 51
-
-DEPENDS = libGLUES_CM
+DEPENDS = libGLUES_CM tisgxgfx
 
 SRC_SVN_REV = http://glues.googlecode.com/svn/trunk/glues
 
@@ -25,7 +24,7 @@ stage:: build/armv7.built
 
 include ../../support/cross-compile.mk
 
-build: build/armv7.built
+build: stage
 
 build/%.built: build/.unpacked
 	rm -f $@
