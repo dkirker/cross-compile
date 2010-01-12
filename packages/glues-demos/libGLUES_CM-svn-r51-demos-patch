@@ -1,0 +1,421 @@
+diff -urN src/sdltests/Makefile src_patched/sdltests/Makefile
+--- src/sdltests/Makefile	1969-12-31 18:00:00.000000000 -0600
++++ src_patched/sdltests/Makefile	2010-01-11 23:30:17.922507188 -0600
+@@ -0,0 +1,13 @@
++
++CC      = gcc
++CFLAGS  = -O3 -mcpu=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp -ffast-math -fsingle-precision-constant 
++LDFLAGS = -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib -I/usr/local/include/SDL -L/usr/local/lib
++LIBS    = -lSDL -lGLES_CM -lGLUES_CM
++
++all: sdl_cylinder sdl_mipmap
++
++sdl_cylinder: sdl_cylinder.c
++	$(CC) $(CFLAGS) $(LDFLAGS) -o sdl_cylinder sdl_cylinder.c $(LIBS)
++
++sdl_mipmap: sdl_mipmap.c
++	$(CC) $(CFLAGS) $(LDFLAGS) -o sdl_mipmap sdl_mipmap.c $(LIBS)
+diff -urN src/sdltests/sdl_cylinder.c src_patched/sdltests/sdl_cylinder.c
+--- src/sdltests/sdl_cylinder.c	2010-01-11 02:20:59.000000000 -0600
++++ src_patched/sdltests/sdl_cylinder.c	2010-01-11 23:30:34.734507500 -0600
+@@ -14,13 +14,6 @@
+ #define __USE_SDL_GLES__
+ #include "glues.h"
+ 
+-/* screen width, height, and bit depth */
+-#define WINDOW_WIDTH  640
+-#define WINDOW_HEIGHT 480
+-
+-int window_width=WINDOW_WIDTH;
+-int window_height=WINDOW_HEIGHT;
+-
+ GLUquadricObj* cone_fill_smooth;
+ GLUquadricObj* cone_fill_flat;
+ GLUquadricObj* cone_fill_texture;
+@@ -357,52 +350,104 @@
+ 
+ int main(int argc, char** argv)
+ {
+-   int status;
+-   SDL_WindowID window;
+-   SDL_GLContext glcontext=NULL;
+    SDL_Event event;
+    SDL_bool done=SDL_FALSE;
+ 
+-   status=SDL_Init(SDL_INIT_VIDEO);
+-   if (status<0)
++   Uint32 video_flags;
++   Uint32 w = 320;
++   Uint32 h = 480;
++   Uint32 bpp = 24; /* 16: why not 32 (or 24) ? */
++   Uint32 rgb_size[3];
++   Uint32 start_time, end_time;
++   Uint32 frames;
++
++   Uint32 fsaa  = 0;
++   Uint32 accel = 0;
++   Uint32 sync  = 0;
++
++   float gamma = 0.;
++
++   if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+       fprintf(stderr, "Can't init default SDL video driver: %s\n", SDL_GetError());
+       exit(-1);
+    }
+ 
+-   /* Select first display */
+-   status=SDL_SelectVideoDisplay(0);
+-   if (status<0)
+-   {
+-      fprintf(stderr, "Can't attach to first display: %s\n", SDL_GetError());
+-      exit(-1);
+-   }
++   SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 1);
++   SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1);
+ 
+-   window=SDL_CreateWindow("SDL GLU ES Cylinder test",
+-      SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+-      WINDOW_WIDTH, WINDOW_HEIGHT,
+-      SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+-   if (window==0)
+-   {
+-      fprintf(stderr, "Can't create window: %s\n", SDL_GetError());
+-      exit(-1);
++   /* video_flags = SDL_OPENGL; */
++   video_flags = SDL_OPENGLES;
++
++#if 0
++   video_flags |= SDL_FULLSCREEN; /* is SDL_FULLSCREEN needed? */
++#endif
++
++   /* Initialize the display */
++   switch (bpp) {
++   case 8:
++     rgb_size[0] = 3;
++     rgb_size[1] = 3;
++     rgb_size[2] = 2;
++     break;
++   case 15:
++   case 16:
++     rgb_size[0] = 5;
++     rgb_size[1] = 5;
++     rgb_size[2] = 5;
++     break;
++   default:
++     rgb_size[0] = 8;
++     rgb_size[1] = 8;
++     rgb_size[2] = 8;
++     break;
++   }
++   SDL_GL_SetAttribute( SDL_GL_RED_SIZE,   rgb_size[0] );
++   SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, rgb_size[1] );
++   SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE,  rgb_size[2] );
++   SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, bpp );
++   SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
++
++   if ( fsaa ) {
++     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
++     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, fsaa );
++   }
++   if ( accel ) {
++     SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
++   }
++   if ( sync ) {
++     SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 1 );
++   } else {
++     SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
+    }
+ 
+-   glcontext=SDL_GL_CreateContext(window);
+-   if (glcontext==NULL)
+-   {
+-      fprintf(stderr, "Can't create OpenGL ES context: %s\n", SDL_GetError());
+-      exit(-1);
++   if ( SDL_SetVideoMode( w, h, bpp, video_flags ) == NULL ) {
++     fprintf(stderr, "Couldn't set GL mode: %s\n", SDL_GetError());
++     SDL_Quit();
++     exit(1);
+    }
+ 
+-   status=SDL_GL_MakeCurrent(window, glcontext);
+-   if (status<0)
+-   {
+-      fprintf(stderr, "Can't set current OpenGL ES context: %s\n", SDL_GetError());
+-      exit(-1);
++   printf("Screen BPP: %d\n", SDL_GetVideoSurface()->format->BitsPerPixel);
++   printf("\n");
++   printf( "Vendor     : %s\n", glGetString( GL_VENDOR ) );
++   printf( "Renderer   : %s\n", glGetString( GL_RENDERER ) );
++   printf( "Version    : %s\n", glGetString( GL_VERSION ) );
++   printf( "Extensions : %s\n", glGetString( GL_EXTENSIONS ) );
++   printf("\n");
++
++
++   /* Set the window manager title bar */
++   SDL_WM_SetCaption( "SDL GLU ES Cylinder test", "sdl_cylinder" );
++
++   /* Set the gamma for the window */
++   if ( gamma != 0.0 ) {
++     SDL_SetGamma(gamma, gamma, gamma);
+    }
+ 
+-   init_scene(window_width, window_height);
++   init_scene(w, h);
++
++   start_time = SDL_GetTicks();
++   frames = 0;
+ 
+    do {
+       /* handle the events in the queue */
+@@ -410,17 +455,6 @@
+       {
+          switch(event.type)
+          {
+-            case SDL_WINDOWEVENT:
+-                 switch (event.window.event)
+-                 {
+-                    case SDL_WINDOWEVENT_CLOSE:
+-                         done=SDL_TRUE;
+-                         break;
+-                    case SDL_WINDOWEVENT_RESIZED:
+-                         resize(event.window.data1, event.window.data2);
+-                         break;
+-                 }
+-                 break;
+             case SDL_KEYDOWN:
+                  switch (event.key.keysym.sym)
+                  {
+@@ -441,9 +475,18 @@
+       }
+ 
+       render_scene();
+-      SDL_GL_SwapWindow(window);
++
++      SDL_GL_SwapBuffers( );
++      frames++;
+    } while(1);
+ 
++   /* Print out the frames per second */
++   end_time = SDL_GetTicks();
++   if ( end_time != start_time ) {
++     printf("%u frames in %2.2f seconds == %2.2f FPS\n", frames, (end_time-start_time)/1000.,
++	    ((float)frames/(end_time-start_time))*1000.0);
++   }
++
+    /* Destroy texture */
+    glDeleteTextures(1, &textureid);
+ 
+@@ -458,8 +501,6 @@
+    gluDeleteQuadric(cone_line_flat);
+    gluDeleteQuadric(cone_line_texture);
+ 
+-   SDL_GL_DeleteContext(glcontext);
+-   SDL_DestroyWindow(window);
+    SDL_Quit();
+ 
+    return 0;
+diff -urN src/sdltests/sdl_mipmap.c src_patched/sdltests/sdl_mipmap.c
+--- src/sdltests/sdl_mipmap.c	2010-01-11 02:20:59.000000000 -0600
++++ src_patched/sdltests/sdl_mipmap.c	2010-01-11 23:30:41.502503318 -0600
+@@ -14,13 +14,6 @@
+ #define __USE_SDL_GLES__
+ #include "glues.h"
+ 
+-/* screen width, height, and bit depth */
+-#define WINDOW_WIDTH  640
+-#define WINDOW_HEIGHT 480
+-
+-int window_width=WINDOW_WIDTH;
+-int window_height=WINDOW_HEIGHT;
+-
+ GLfloat rotate=0;
+ GLUquadricObj* sphere;
+ GLUquadricObj* cone;
+@@ -209,52 +202,104 @@
+ 
+ int main(int argc, char** argv)
+ {
+-   int status;
+-   SDL_WindowID window;
+-   SDL_GLContext glcontext=NULL;
+    SDL_Event event;
+    SDL_bool done=SDL_FALSE;
+ 
+-   status=SDL_Init(SDL_INIT_VIDEO);
+-   if (status<0)
+-   {
+-      fprintf(stderr, "Can't init default SDL video driver: %s\n", SDL_GetError());
+-      exit(-1);
++   Uint32 video_flags;
++   Uint32 w = 320;
++   Uint32 h = 480;
++   Uint32 bpp = 24; /* 16: why not 32 (or 24) ? */
++   Uint32 rgb_size[3];
++   Uint32 start_time, end_time;
++   Uint32 frames;
++
++   Uint32 fsaa  = 0;
++   Uint32 accel = 0;
++   Uint32 sync  = 0;
++
++   float gamma = 0.;
++
++   if (SDL_Init(SDL_INIT_VIDEO) < 0)
++     {
++       fprintf(stderr, "Can't init default SDL video driver: %s\n", SDL_GetError());
++       exit(-1);
++     }
++
++   SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 1);
++   SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1);
++
++   /* video_flags = SDL_OPENGL; */
++   video_flags = SDL_OPENGLES;
++
++#if 0
++   video_flags |= SDL_FULLSCREEN; /* is SDL_FULLSCREEN needed? */
++#endif
++
++   /* Initialize the display */
++   switch (bpp) {
++   case 8:
++     rgb_size[0] = 3;
++     rgb_size[1] = 3;
++     rgb_size[2] = 2;
++     break;
++   case 15:
++   case 16:
++     rgb_size[0] = 5;
++     rgb_size[1] = 5;
++     rgb_size[2] = 5;
++     break;
++   default:
++     rgb_size[0] = 8;
++     rgb_size[1] = 8;
++     rgb_size[2] = 8;
++     break;
+    }
+-
+-   /* Select first display */
+-   status=SDL_SelectVideoDisplay(0);
+-   if (status<0)
+-   {
+-      fprintf(stderr, "Can't attach to first display: %s\n", SDL_GetError());
+-      exit(-1);
++   SDL_GL_SetAttribute( SDL_GL_RED_SIZE,   rgb_size[0] );
++   SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, rgb_size[1] );
++   SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE,  rgb_size[2] );
++   SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, bpp );
++   SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
++
++   if ( fsaa ) {
++     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
++     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, fsaa );
+    }
+-
+-   window=SDL_CreateWindow("SDL GLU ES MipMap test",
+-      SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+-      WINDOW_WIDTH, WINDOW_HEIGHT,
+-      SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+-   if (window==0)
+-   {
+-      fprintf(stderr, "Can't create window: %s\n", SDL_GetError());
+-      exit(-1);
++   if ( accel ) {
++     SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
++   }
++   if ( sync ) {
++     SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 1 );
++   } else {
++     SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
+    }
+ 
+-   glcontext=SDL_GL_CreateContext(window);
+-   if (glcontext==NULL)
+-   {
+-      fprintf(stderr, "Can't create OpenGL ES context: %s\n", SDL_GetError());
+-      exit(-1);
++   if ( SDL_SetVideoMode( w, h, bpp, video_flags ) == NULL ) {
++     fprintf(stderr, "Couldn't set GL mode: %s\n", SDL_GetError());
++     SDL_Quit();
++     exit(1);
+    }
+ 
+-   status=SDL_GL_MakeCurrent(window, glcontext);
+-   if (status<0)
+-   {
+-      fprintf(stderr, "Can't set current OpenGL ES context: %s\n", SDL_GetError());
+-      exit(-1);
++   printf("Screen BPP: %d\n", SDL_GetVideoSurface()->format->BitsPerPixel);
++   printf("\n");
++   printf( "Vendor     : %s\n", glGetString( GL_VENDOR ) );
++   printf( "Renderer   : %s\n", glGetString( GL_RENDERER ) );
++   printf( "Version    : %s\n", glGetString( GL_VERSION ) );
++   printf( "Extensions : %s\n", glGetString( GL_EXTENSIONS ) );
++   printf("\n");
++
++
++   /* Set the window manager title bar */
++   SDL_WM_SetCaption( "SDL GLU ES MipMap test", "sdl_mipmap" );
++
++   /* Set the gamma for the window */
++   if ( gamma != 0.0 ) {
++     SDL_SetGamma(gamma, gamma, gamma);
+    }
+ 
+-   init_scene(window_width, window_height);
++   init_scene(w, h);
++
++   start_time = SDL_GetTicks();
++   frames = 0;
+ 
+    do {
+       /* handle the events in the queue */
+@@ -262,17 +307,6 @@
+       {
+          switch(event.type)
+          {
+-            case SDL_WINDOWEVENT:
+-                 switch (event.window.event)
+-                 {
+-                    case SDL_WINDOWEVENT_CLOSE:
+-                         done=SDL_TRUE;
+-                         break;
+-                    case SDL_WINDOWEVENT_RESIZED:
+-                         resize(event.window.data1, event.window.data2);
+-                         break;
+-                 }
+-                 break;
+             case SDL_KEYDOWN:
+                  switch (event.key.keysym.sym)
+                  {
+@@ -293,9 +327,18 @@
+       }
+ 
+       render_scene();
+-      SDL_GL_SwapWindow(window);
++
++      SDL_GL_SwapBuffers( );
++      frames++;
+    } while(1);
+ 
++   /* Print out the frames per second */
++   end_time = SDL_GetTicks();
++   if ( end_time != start_time ) {
++     printf("%u frames in %2.2f seconds == %2.2f FPS\n", frames, (end_time-start_time)/1000.,
++            ((float)frames/(end_time-start_time))*1000.0);
++   }
++
+    /* Destroy texture */
+    glDeleteTextures(1, &textureid);
+ 
+@@ -303,8 +346,6 @@
+    gluDeleteQuadric(sphere);
+    gluDeleteQuadric(cone);
+ 
+-   SDL_GL_DeleteContext(glcontext);
+-   SDL_DestroyWindow(window);
+    SDL_Quit();
+ 
+    return 0;
