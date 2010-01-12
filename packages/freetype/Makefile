@@ -43,6 +43,8 @@ build/%.built: build/.unpacked
 	( ${SB2} install -m 644 build/src/include/freetype/internal/services/*.h \
 		/usr/local/include/freetype/internal/services/ )
 	( ${SB2} install -m 644 build/src/include/ft2build.h /usr/local/include/ )
+	( ${SB2} mkdir -p /usr/local/lib/pkgconfig )
+	( ${SB2} install -m 644 build/src/builds/unix/freetype2.pc /usr/local/lib/pkgconfig/ )
 	touch $@
 
 include ../../support/stage-rootfs.mk
