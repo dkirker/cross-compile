@@ -1,6 +1,6 @@
 NAME = fontconfig
 VERSION = 2.3.2
-DEPENDS = expat
+DEPENDS = expat freetype
 
 SRC_TGZ = http://fontconfig.org/release/fontconfig-2.3.2.tar.gz
 
