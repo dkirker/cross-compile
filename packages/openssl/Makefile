@@ -30,6 +30,7 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./Configure --prefix=${INSTALL_PREFIX} linux-elf )
 	( cd build/src ; ${SB2} make libcrypto.pc libssl.pc openssl.pc )
+	( cd build/src ; ${SB2} /usr/bin/install -d ${INSTALL_PREFIX}/lib/pkgconfig )
 	( cd build/src ; ${SB2} /usr/bin/install -m 644 libcrypto.pc libssl.pc \
 		openssl.pc ${INSTALL_PREFIX}/lib/pkgconfig )
 	( cd build/src/include ; ${SB2} cp -Lr openssl ${INSTALL_PREFIX}/include )
