@@ -15,6 +15,6 @@ INSTALL_PREFIX = /usr/local
 ifneq ("${DEPENDS}","")
 stage::
 	for dep in ${DEPENDS} ; do \
-	  ( cd ../../packages/$$dep ; ${MAKE} stage ) ; \
+	  ${MAKE} -C ../../packages/$$dep stage || exit 1 ; \
 	done
 endif
