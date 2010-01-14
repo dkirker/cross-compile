@@ -28,7 +28,7 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
 	( cd build/src/src ; ${SB2} make install-includeHEADERS install-binSCRIPTS )
-	( ${SB2} ln -s libgcrypt.so.11.5.2 ${INSTALL_PREFIX}/lib/libgcrypt.so )
+	( ${SB2} ln -f -s libgcrypt.so.11.5.2 ${INSTALL_PREFIX}/lib/libgcrypt.so )
 	touch $@
 
 clobber::
