@@ -27,6 +27,7 @@ build/%.built: build/.unpacked
 	( cd build/src ; PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		${SB2} ./configure --prefix=${INSTALL_PREFIX} \
 		--disable-static --disable-doc )
+	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 

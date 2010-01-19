@@ -30,6 +30,7 @@ build/%.built: build/.unpacked
 		--enable-ecore-evas-software-sdl \
 		--enable-ecore-fb --enable-ecore-evas-fb \
 		--disable-doc )
+	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 

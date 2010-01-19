@@ -29,6 +29,7 @@ build/%.built: build/.unpacked
 		--disable-static --enable-buffer \
 		--enable-software-sdl --enable-sdl-primitive --enable-fb \
 		--disable-doc )
+	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 

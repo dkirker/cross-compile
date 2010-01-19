@@ -28,6 +28,7 @@ build/%.built: build/.unpacked
 		${SB2} ./configure --prefix=${INSTALL_PREFIX} \
 		--disable-static --enable-fixed-point \
 		--disable-doc )
+	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 

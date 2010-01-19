@@ -26,6 +26,7 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} \
 		--disable-doc )
+	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make install )
 	touch $@
 
