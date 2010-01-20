@@ -1,6 +1,6 @@
 NAME = edje
 VERSION = 0.9.9.063
-DEPENDS = ecore embryo
+DEPENDS = lua ecore embryo
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
