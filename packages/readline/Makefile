@@ -27,7 +27,7 @@ include ../../support/cross-compile.mk
 
 stage:: build/armv7.built
 	( cd ${STAGING_DIR}/usr/lib ; \
-     [ -e libreadline.so ] || ln -s libreadline.so.4.3 libreadline.so )
+	  [ -e libreadline.so ] || ln -f -s libreadline.so.4.3 libreadline.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
@@ -37,3 +37,4 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
+	rm -f ${STAGING_DIR}/usr/lib/libreadline.so

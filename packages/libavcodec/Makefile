@@ -6,7 +6,7 @@ include ../../support/stage-rootfs.mk
 
 stage::
 	( cd ${STAGING_DIR}/usr/lib ; \
-	  [ -e ${NAME}.so ] || ln -s ${NAME}.so.52.11.0 ${NAME}.so )
+	  [ -e ${NAME}.so ] || ln -f -s ${NAME}.so.52.11.0 ${NAME}.so )
 
 clobber::
 	rm -rf ${STAGING_DIR}/usr/lib/${NAME}.so

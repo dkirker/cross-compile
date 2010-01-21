@@ -27,7 +27,7 @@ include ../../support/cross-compile.mk
 
 stage:: build/armv7.built
 	( cd ${STAGING_DIR}/usr/lib ; \
-     [ -e libncurses.so ] || ln -s libncurses.so.5.4 libncurses.so )
+	  [ -e libncurses.so ] || ln -f -s libncurses.so.5.4 libncurses.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
@@ -37,3 +37,4 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
+	rm -f ${STAGING_DIR}/usr/lib/libncurses.so

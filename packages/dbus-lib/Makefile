@@ -27,7 +27,7 @@ include ../../support/cross-compile.mk
 
 stage:: build/armv7.built
 	( cd ${STAGING_DIR}/usr/lib ; \
-     [ -e libdbus-1.so ] || ln -s libdbus-1.so.3.4.0 libdbus-1.so )
+	  [ -e libdbus-1.so ] || ln -f -s libdbus-1.so.3.4.0 libdbus-1.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
@@ -42,3 +42,4 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
+	rm -f ${STAGING_DIR}/usr/lib/libdbus-1.so

@@ -24,9 +24,9 @@ include ../../support/stage-rootfs.mk
 stage::
 	cp -pP ${ROOTFS_DIR}/usr/lib/libpng12.so* ${STAGING_DIR}/usr/lib
 	( cd ${STAGING_DIR}/usr/lib ; \
-	  [ -e ${NAME}.so ] || ln -s ${NAME}.so.3.12.0 ${NAME}.so )
+	  [ -e ${NAME}.so ] || ln -f -s ${NAME}.so.3.12.0 ${NAME}.so )
 	( cd ${STAGING_DIR}/usr/lib ; \
-     [ -e libpng12.so ] || ln -s libpng12.so.0.12.0 libpng12.so )
+	  [ -e libpng12.so ] || ln -f -s libpng12.so.0.12.0 libpng12.so )
 
 include ../../support/cross-compile.mk
 
@@ -40,3 +40,5 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
+	rm -f ${STAGING_DIR}/usr/lib/libpng12.so
+	rm -f ${STAGING_DIR}/usr/lib/${NAME}.so
