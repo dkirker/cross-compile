@@ -1,4 +1,4 @@
-NAME = dbus
+NAME = dbus-lib
 VERSION = 1.1.20
 DEPENDS = expat
 
@@ -14,7 +14,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mkdir -p build
 	tar -C build -z -x -f $<
 	mv build/${NAME}-${VERSION} build/src
-	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}-patches.tgz \
+	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.3.5/dbus-${VERSION}-patches.tgz \
 		LOCAL_FILE=${NAME}-${VERSION}-patches.tgz download
 	tar -zxOf ${DL_DIR}/${NAME}-${VERSION}-patches.tgz | patch -d build/src -p1
 	touch $@
