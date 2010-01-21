@@ -13,7 +13,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
 	tar -C build -z -x -f $<
-	mv build/${NAME}-${VERSION} build/src
+	mv build/dbus-${VERSION} build/src
 	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.3.5/dbus-${VERSION}-patches.tgz \
 		LOCAL_FILE=${NAME}-${VERSION}-patches.tgz download
 	tar -zxOf ${DL_DIR}/${NAME}-${VERSION}-patches.tgz | patch -d build/src -p1
