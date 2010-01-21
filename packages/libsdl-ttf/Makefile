@@ -29,7 +29,8 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure --with-sdl-prefix=/usr/local)
+	( cd build/src ; ${SB2} ./autogen.sh )
+	( cd build/src ; ${SB2} ./configure --with-sdl-prefix=/usr/local )
 	( cd build/src ; ${SB2} make install-data )
 	touch $@
 
