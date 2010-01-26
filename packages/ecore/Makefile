@@ -1,6 +1,6 @@
 NAME = ecore
 VERSION = 0.9.9.063
-DEPENDS = libsdl openssl gnutls fontconfig curl evas
+DEPENDS = libsdl openssl gnutls fontconfig curl glib-2.0 evas
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
