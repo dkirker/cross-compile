@@ -24,7 +24,10 @@ include ../../support/cross-compile.mk
 
 stage:: build/armv7.built
 	( cd ${STAGING_DIR}/usr/lib ; \
-     [ -e libglib-2.0.so ] || ln -s libglib-2.0.so.0.1400.4 libglib-2.0.so )
+     [ -e libglib-2.0.so ] || ln -s libglib-2.0.so.0.1400.4 libglib-2.0.so; \
+     [ -e libgmodule-2.0.so ] || ln -s libgmodule-2.0.so.0.1400.4 libgmodule-2.0.so; \
+     [ -e libgobject-2.0.so ] || ln -s libgobject-2.0.so.0.1400.4 libgobject-2.0.so; \
+     [ -e libgthread-2.0.so ] || ln -s libgthread-2.0.so.0.1400.4 libgthread-2.0.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
