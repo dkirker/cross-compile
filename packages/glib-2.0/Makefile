@@ -30,9 +30,11 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2}	./configure --prefix=${INSTALL_PREFIX} )
 	( cd build/src; ${SB2} make install-pkgconfigDATA install-exec-local )
+	( cd build/src/glib ; ${SB2} make )
 	( cd build/src/glib ; ${SB2} make install-glibincludeHEADERS \
 		install-glibsubincludeHEADERS )
 	( cd build/src/gmodule ; ${SB2} make install-glibincludeHEADERS )
+	( cd build/src/gobject ; ${SB2} make install-libgobjectincludeHEADERS )
 	touch $@
 
 clobber::
