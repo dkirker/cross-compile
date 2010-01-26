@@ -14,7 +14,7 @@ build/.unpacked:
 
 update: build/.unpacked
 	( cd build/src ; \
-		if [ -n "`svn status | egrep -v '^\?'`" ]; then \
+		if [ -n "`svn status -u | egrep -v '^Status' | egrep -v '^\?'`" ]; then \
 			svn update --non-interactive; \
 			rm -f ../*.built; \
 		fi )
