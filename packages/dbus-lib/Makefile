@@ -1,4 +1,4 @@
-NAME = dbus
+NAME = dbus-lib
 VERSION = 1.1.20
 DEPENDS = expat
 
@@ -13,8 +13,8 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
 	tar -C build -z -x -f $<
-	mv build/${NAME}-${VERSION} build/src
-	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}-patches.tgz \
+	mv build/dbus-${VERSION} build/src
+	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.3.5/dbus-${VERSION}-patches.tgz \
 		LOCAL_FILE=${NAME}-${VERSION}-patches.tgz download
 	tar -zxOf ${DL_DIR}/${NAME}-${VERSION}-patches.tgz | patch -d build/src -p1
 	touch $@
@@ -27,7 +27,7 @@ include ../../support/cross-compile.mk
 
 stage:: build/armv7.built
 	( cd ${STAGING_DIR}/usr/lib ; \
-     [ -e libdbus-1.so ] || ln -s libdbus-1.so.3.4.0 libdbus-1.so )
+	  [ -e libdbus-1.so ] || ln -f -s libdbus-1.so.3.4.0 libdbus-1.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
@@ -42,3 +42,4 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
+	rm -f ${STAGING_DIR}/usr/lib/libdbus-1.so

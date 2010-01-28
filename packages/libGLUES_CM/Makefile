@@ -26,7 +26,7 @@ stage:: build/armv7.built
 	rm -f ${STAGING_DIR}/usr/include/glues.h
 	install -m 644 build/src/source/glues.h ${STAGING_DIR}/usr/include/
 	rm -f ${STAGING_DIR}/usr/include/glu.h
-	ln -s glues.h ${STAGING_DIR}/usr/include/glu.h
+	ln -f -s glues.h ${STAGING_DIR}/usr/include/glu.h
 	rm -f ${STAGING_DIR}/usr/lib/libGLUES_CM.so
 	install -m 755 build/src/source/libGLUES_CM.so ${STAGING_DIR}/usr/lib/
 

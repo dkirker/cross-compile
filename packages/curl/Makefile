@@ -23,7 +23,7 @@ include ../../support/cross-compile.mk
 stage:: build/armv7.built
 	cp -pP ${ROOTFS_DIR}/usr/lib/libcurl.so* ${STAGING_DIR}/usr/lib
 	( cd ${STAGING_DIR}/usr/lib ; \
-     [ -e libcurl.so ] || ln -s libcurl.so.4.1.1 libcurl.so )
+	  [ -e libcurl.so ] || ln -f -s libcurl.so.4.1.1 libcurl.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
@@ -36,3 +36,4 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
+	rm -f ${STAGING_DIR}/usr/lib/libcurl.so
