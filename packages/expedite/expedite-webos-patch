@@ -54,3 +54,26 @@ Index: src/bin/engine_software_sdl.c
  	       default:
  		  break;
                 }
+Index: src/bin/engine_gl_sdl.c
+===================================================================
+--- src/bin/engine_gl_sdl.c	(revision 45005)
++++ src/bin/engine_gl_sdl.c	(working copy)
+@@ -126,6 +126,18 @@
+                   else
+                     evas_event_feed_key_down(evas, "q", "q", NULL, NULL, 0, NULL);
+                   break;
++               case SDLK_z:
++                  if (evas_key_lock_is_set(evas_key_lock_get(evas), "Caps_Lock"))
++                    evas_event_feed_key_down(evas, "Z", "Z", NULL, NULL, 0, NULL);
++                  else
++                    evas_event_feed_key_down(evas, "z", "z", NULL, NULL, 0, NULL);
++                  break;
++               case SDLK_x:
++                  if (evas_key_lock_is_set(evas_key_lock_get(evas), "Caps_Lock"))
++                    evas_event_feed_key_down(evas, "X", "X", NULL, NULL, 0, NULL);
++                  else
++                    evas_event_feed_key_down(evas, "x", "x", NULL, NULL, 0, NULL);
++                  break;
+ 	       default:
+ 		  break;
+                }
