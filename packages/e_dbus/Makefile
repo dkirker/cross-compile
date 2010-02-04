@@ -1,6 +1,6 @@
 NAME = e_dbus
 VERSION = 0.5.0.063
-DEPENDS = dbus-lib eina evas ecore
+DEPENDS = dbus-lib ecore
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 

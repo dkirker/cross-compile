@@ -1,6 +1,6 @@
 NAME = elementary
 VERSION = 0.6.0.063
-DEPENDS = eina evas ecore edje
+DEPENDS = edje e_dbus efreet
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/TMP/st/${NAME}
 
