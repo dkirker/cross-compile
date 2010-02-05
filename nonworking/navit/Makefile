@@ -1,3 +1,11 @@
+#
+# mark.xpm and mark.svg fetched manually from navit trac site.
+# someone committed a change involving those two files but forgot
+# to add them to the svn repository. So I add them here manually.
+# Can be removed when fixed in navit svn tree.
+#
+
+
 NAME    = navit
 VERSION = 0.1.1
 DEPENDS = jpeg libpng12 freetype fontconfig libsdl
