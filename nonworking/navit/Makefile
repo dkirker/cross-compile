@@ -2,7 +2,7 @@ NAME    = navit
 VERSION = 0.1.1
 DEPENDS = jpeg libpng12 freetype fontconfig libsdl
 SVN_URL = https://navit.svn.sourceforge.net/svnroot/navit/trunk
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/de.daemon.navit
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webos-internals.navit
 
 
 .PHONY: unpack
