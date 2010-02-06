@@ -3,26 +3,26 @@
 #
 
 NAME    = stella
-VERSION = 3.0-DEV
+VERSION = 2.5
 DEPENDS = jpeg libpng12 freetype fontconfig libsdl
-SVN_URL = https://stella.svn.sourceforge.net/svnroot/stella/trunk
+#SRC_TGZ = http://downloads.sourceforge.net/project/stella/stella/2.2/stella-2.2-src.tar.gz
+SRC_TGZ = http://sourceforge.net/projects/stella/files/stella/2.5/stella-2.5-src.tar.gz/download
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/de.daemon.stella
 
+include ../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked:
-	mkdir -p build/src
-	svn checkout -q --non-interactive ${SVN_URL} build/src
-	touch $@
+${DL_DIR}/${NAME}-${VERSION}-src.tar.gz:
+	curl -f -R -L -o ${DL_DIR}/${NAME}-${VERSION}-src.tar.gz ${SRC_TGZ}
 
-update: build/.unpacked
-	( cd build/src ; \
-		if [ -n "`svn status -u | egrep -v '^Status' | egrep -v '^\?'`" ]; then \
-			svn update --non-interactive; \
-			rm -f ../*.built ../.configure ../.aclocal; \
-		fi )
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}-src.tar.gz
+	rm -rf build
+	mkdir -p build
+	tar -C build -z -x -f $<
+	mv build/${NAME}-${VERSION} build/src
+	touch $@
 
 include ../../support/staging.mk
 
@@ -35,16 +35,10 @@ stage:: build/armv7.built
 	@echo "*** debian package 'ctags' is required to build!   ***"
 	@echo "*** install it as root with: apt-get install ctags ***"
 
-build/.patch:
-	cp build/src/src/gui/VideoDialog.cxx .
-	sed -e 's/myFullscreenCheckbox/\/\/myFullscreenCheckbox/' VideoDialog.cxx > build/src/src/gui/VideoDialog.cxx
-	rm -f VideoDialog.cxx
-	touch $@
-
-build/.configured: /usr/bin/ctags build/.patch
+build/.configured: /usr/bin/ctags
 	rm -f $@
 	( cd build/src ; ${SB2} LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" ./configure --prefix=${APP_DIR} \
-		--disable-windowed --enable-sound --enable-debugger --enable-joystick --enable-static )
+		--enable-sound --enable-joystick )
 	touch $@
 
 build/%.built: build/.unpacked build/.configured
