@@ -1504,16 +1504,9 @@ void EventHandler::setDefaultKeymap(EventMode mode)
       myKeyTable[ SDLK_COMMA ][mode]     = Event::KeyboardOneStar;
       myKeyTable[ SDLK_PERIOD ][mode]    = Event::KeyboardOne0;
       myKeyTable[ SDLK_SLASH ][mode]     = Event::KeyboardOnePound;
-/*
-      myKeyTable[ SDLK_UP ][mode]        = Event::JoystickZeroUp;
-      myKeyTable[ SDLK_DOWN ][mode]      = Event::JoystickZeroDown;
-      myKeyTable[ SDLK_LEFT ][mode]      = Event::JoystickZeroLeft;
-      myKeyTable[ SDLK_RIGHT ][mode]     = Event::JoystickZeroRight;
-      myKeyTable[ SDLK_SPACE ][mode]     = Event::JoystickZeroFire1;
-      myKeyTable[ SDLK_LCTRL ][mode]     = Event::JoystickZeroFire1;
-      myKeyTable[ SDLK_4 ][mode]         = Event::JoystickZeroFire2;
-      myKeyTable[ SDLK_5 ][mode]         = Event::JoystickZeroFire3;
-*/
+
+
+// org.webos-internals.stella default mappings start here:
       myKeyTable[ SDLK_w ][mode]        = Event::JoystickZeroUp;
       myKeyTable[ SDLK_s ][mode]      = Event::JoystickZeroDown;
       myKeyTable[ SDLK_a ][mode]      = Event::JoystickZeroLeft;
@@ -1523,11 +1516,11 @@ void EventHandler::setDefaultKeymap(EventMode mode)
       myKeyTable[ SDLK_f ][mode]         = Event::JoystickZeroFire2;
       myKeyTable[ SDLK_g ][mode]         = Event::JoystickZeroFire3;
 
-      myKeyTable[ SDLK_y ][mode]         = Event::JoystickOneUp;
-      myKeyTable[ SDLK_h ][mode]         = Event::JoystickOneDown;
-      myKeyTable[ SDLK_g ][mode]         = Event::JoystickOneLeft;
-      myKeyTable[ SDLK_j ][mode]         = Event::JoystickOneRight;
-      myKeyTable[ SDLK_f ][mode]         = Event::JoystickOneFire1;
+      myKeyTable[ SDLK_1 ][mode]         = Event::JoystickOneUp;
+      myKeyTable[ SDLK_2 ][mode]         = Event::JoystickOneDown;
+      myKeyTable[ SDLK_3 ][mode]         = Event::JoystickOneLeft;
+      myKeyTable[ SDLK_4 ][mode]         = Event::JoystickOneRight;
+      myKeyTable[ SDLK_5 ][mode]         = Event::JoystickOneFire1;
       myKeyTable[ SDLK_6 ][mode]         = Event::JoystickOneFire2;
       myKeyTable[ SDLK_7 ][mode]         = Event::JoystickOneFire3;
 
@@ -1557,7 +1550,7 @@ void EventHandler::setDefaultKeymap(EventMode mode)
       myKeyTable[ SDLK_a ][mode]      = Event::UILeft;
       myKeyTable[ SDLK_d ][mode]     = Event::UIRight;
 
-      myKeyTable[ SDLK_SHIFT ][mode]      = Event::UIHome;
+      myKeyTable[ SDLK_LSHIFT ][mode]      = Event::UIHome;
       myKeyTable[ SDLK_q ][mode]       = Event::UIEnd;
       myKeyTable[ SDLK_PAGEUP ][mode]    = Event::UIPgUp;
       myKeyTable[ SDLK_PAGEDOWN ][mode]  = Event::UIPgDown;
@@ -2265,6 +2258,7 @@ EventHandler::ActionList EventHandler::ourEmulActionList[kEmulActionListSize] = 
   { Event::PaddleThreeIncrease,         "Paddle 3 Increase",           0 },
   { Event::PaddleThreeFire,             "Paddle 3 Fire",               0 },
 
+// org.webos-internals.stella key events remapped to joystick 0
   { Event::KeyboardZero1,               "P0 Keyboard 1",               0 },
   { Event::KeyboardZero2,               "P0 Keyboard 2",               0 },
   { Event::KeyboardZero3,               "P0 Keyboard 3",               0 },
