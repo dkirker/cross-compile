@@ -3,10 +3,9 @@
 #
 
 NAME    = stella
-VERSION = 2.5
+VERSION = 3.0
 DEPENDS = jpeg libpng12 freetype fontconfig libsdl
-#SRC_TGZ = http://downloads.sourceforge.net/project/stella/stella/2.2/stella-2.2-src.tar.gz
-SRC_TGZ = http://sourceforge.net/projects/stella/files/stella/2.5/stella-2.5-src.tar.gz/download
+SRC_TGZ = http://sourceforge.net/projects/stella/files/stella/${VESION}/stella-${VERSION}-src.tar.gz/download
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/de.daemon.stella
 
 include ../../support/download.mk
