@@ -6,7 +6,7 @@ NAME    = stella
 VERSION = 3.0
 DEPENDS = jpeg libpng12 freetype fontconfig libsdl
 SRC_TGZ = http://sourceforge.net/projects/stella/files/stella/${VESION}/stella-${VERSION}-src.tar.gz/download
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/de.daemon.stella
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webos-internals.stella
 
 include ../../support/download.mk
 
@@ -41,8 +41,9 @@ build/.configured: /usr/bin/ctags
 	touch $@
 
 patchsource:
-	cp OSystemUNIX.cxx build/src/src/unix/OSystemUNIX.cxx
-	cp EventHandler.cxx build/src/src/emucore/EventHandler.cxx
+	cp OSystemUNIX.cxx     build/src/src/unix/OSystemUNIX.cxx
+	cp EventHandler.cxx    build/src/src/emucore/EventHandler.cxx
+	cp EditTextWidget.cxx  build/src/src/gui/EditTextWidget.cxx
 
 build/%.built: build/.unpacked build/.configured patchsource
 	( cd build/src ; ${SB2} cp `which libtool` . )
