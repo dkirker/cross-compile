@@ -1,6 +1,6 @@
 NAME = evas
 VERSION = 0.9.9.063
-DEPENDS = jpeg libpng12 freetype fontconfig libsdl eina eet
+DEPENDS = jpeg libpng12 freetype fontconfig libsdl eina eet gles-headers
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
@@ -33,6 +33,8 @@ build/%.built: build/.unpacked
 		./autogen.sh --prefix=${INSTALL_PREFIX} \
 		--disable-static --enable-buffer \
 		--enable-software-sdl --enable-fb \
+		--enable-gl-sdl --enable-gl-flavor-gles \
+		--enable-gles-variety-sgx \
 		--disable-doc )
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
