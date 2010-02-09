@@ -13,7 +13,7 @@ build/.unpacked:
 	mkdir -p build
 	curl ${SRC_BZ2} | tar -C build -jxf -
 	mv build/glib-${VERSION} build/src
-	curl ${PATCH} | tar xvOf - | patch -d build/src -p1
+	curl ${PATCH} | tar xvOzf - | patch -d build/src -p1
 	touch $@
 
 include ../../support/staging.mk
