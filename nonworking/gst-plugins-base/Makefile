@@ -1,6 +1,6 @@
 NAME = gst-plugins-base
 VERSION = 0.10.21
-DEPENDS = ../nonworking/gstreamer
+DEPENDS = ../nonworking/gstreamer ../nonworking/liboil
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tgz
 
