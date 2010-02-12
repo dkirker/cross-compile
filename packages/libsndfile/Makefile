@@ -1,0 +1,44 @@
+NAME = libsndfile1
+VERSION = 1.0.17
+DEPENDS = alsa-lib
+
+SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/libsndfile-${VERSION}.tar.gz
+
+include ../../support/download.mk
+
+.PHONY: unpack
+unpack: build/.unpacked
+
+build/.unpacked: ${DL_DIR}/libsndfile-${VERSION}.tar.gz
+	rm -rf build
+	mkdir -p build
+	tar -C build -z -x -f $<
+	mv build/libsndfile-${VERSION} build/src
+	# Patch throws m4 into an infinite loop, don't need it anyway
+#	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.3.5/libsndfile-${VERSION}-patches.tgz \
+#		LOCAL_FILE=libsndfile-${VERSION}-patches.tgz download
+#	tar -zxOf ${DL_DIR}/libsndfile-${VERSION}-patches.tgz | patch -d build/src -p1
+	touch $@
+
+include ../../support/staging.mk
+
+include ../../support/stage-rootfs.mk
+
+include ../../support/cross-compile.mk
+
+stage:: build/armv7.built
+	( cd ${STAGING_DIR}/usr/lib ; \
+     [ -e libsndfile.so ] || ln -s libsndfile.so.1.0.17 libsndfile.so )
+
+build/%.built: build/.unpacked
+	rm -f $@
+	( cd build/src ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
+		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
+		./configure --disable-static --prefix=${INSTALL_PREFIX} \
+		--with-xml-expat )
+	( cd build/src ; ${SB2} make install-pkgconfigDATA )
+	( cd build/src/src ; ${SB2} make install-includeHEADERS )
+	touch $@
+
+clobber::
+	rm -rf build
