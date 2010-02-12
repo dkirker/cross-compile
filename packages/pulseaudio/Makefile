@@ -2,21 +2,19 @@ NAME = pulseaudio
 VERSION = 0.9.14
 DEPENDS = libsndfile libspeex liboil dbus-lib
 
-SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tgz
+SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tar.gz
 
 include ../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tgz
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
 	tar -C build -z -x -f $<
 	mv build/${NAME}-${VERSION} build/src
-	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}-patch.gz \
-		LOCAL_FILE=${NAME}-${VERSION}-patch.gz download
-	zcat ${DL_DIR}/${NAME}-${VERSION}-patch.gz | patch -d build/src -p0
+	zcat ${NAME}-${VERSION}-patch.gz | patch -d build/src -p0
 	touch $@
 
 include ../../support/staging.mk
