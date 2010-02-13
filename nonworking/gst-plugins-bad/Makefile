@@ -1,6 +1,6 @@
 NAME = gst-plugins-bad
 VERSION = 0.10.9
-DEPENDS = ../nonworking/gstreamer ../nonworking/gst-plugins-base ../nonworking/flac ../nonworking/gsm
+DEPENDS = ../nonworking/gstreamer ../nonworking/gst-plugins-base flac gsm
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tgz
 

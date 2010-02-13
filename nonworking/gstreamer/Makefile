@@ -1,6 +1,6 @@
 NAME = gstreamer
 VERSION = 0.10.21
-DEPENDS = glib-2.0 ../nonworking/bison ../nonworking/flex
+DEPENDS = glib-2.0 bison flex
 
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tgz
@@ -29,7 +29,7 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} ./configure --prefix=/usr/local --disable-static --disable-dependency-tracking --disable-valgrind --disable-examples )
+	( cd build/src ; LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} ./configure --prefix=/usr/local --disable-static --disable-dependency-tracking --disable-valgrind --disable-examples --disable-parse )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 

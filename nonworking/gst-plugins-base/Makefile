@@ -19,6 +19,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	zcat ${DL_DIR}/${NAME}-${VERSION}-patch.gz | patch -d build/src -p0
 	cat patches/gsttypefindfunctions-flacoggsupport.patch | patch -d build/src -p1
 	cat patches/typefinddefines.patch | patch -d build/src -p1
+	cat patches/gsttypefindoggfix.patch | patch -d build/src -p1
 	touch $@
 
 include ../../support/staging.mk
