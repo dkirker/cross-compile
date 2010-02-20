@@ -1,0 +1,24 @@
+save			c
+load			p
+switch			space
+restart level		backspace
+show number of steps	n
+undo			u
+redo			r
+
+small fish
+	up		l
+	down		k
+	left		i
+	right		m
+
+big fish
+	up		f
+	down		d
+	left		e
+	right		x
+
+quit/escape		q
+help menu		h
+key menu		o
+subtitles toggle	t
