@@ -42,7 +42,7 @@ build/.patched:
 build/.configured:
 	rm -f $@
 	( cd build/src ; ${SB2} LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" \
-	./configure --prefix=${APP_DIR} --disable-sdltest --disable-dependency-tracking --with-sdl-prefix=/usr/local )
+	./configure --prefix=${APP_DIR} --datadir=${APP_DIR}/data --disable-sdltest --disable-dependency-tracking --with-sdl-prefix=/usr/local )
 	touch $@
 
 build/.built: build/.unpacked build/.configured build/.patched
@@ -51,8 +51,9 @@ build/.built: build/.unpacked build/.configured build/.patched
 	touch $@
 
 build/%.built: build/.unpacked build/.configured build/.built
-	mkdir -p ${APP_DIR}/share/games/fillets-ng
-	cp -r build/data/* ${APP_DIR}/share/games/fillets-ng/
+	mkdir -p ${APP_DIR}/data
+	cp -r build/data/* ${APP_DIR}/data/
+	cp labels.lua ${APP_DIR}/data/script/
 	touch $@
 
 clean:
