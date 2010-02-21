@@ -1,0 +1,36 @@
+This is a work in progress, don't touch it for
+now. In fact compiling takes about 1 complete
+day (at least here).
+
+In case of questions as me:
+
+	<debilater AT sinkbox DOT org>
+
+Boost build fails for the moment. However in
+the boost build dir just do "make copy" after
+the failed build, it installs the boost headers
+which is sufficient for gnash to build because
+boost almost consists of header files (containing
+cxx classes)
+
+Using ffmpeg as media decoding backend for now,
+see ../ffmpeg/. It builds but doesn't execute
+on the palm actually, but we can ignore this as
+gnash only uses it's headers/libs which are indeed
+working on the palm, so...
+
+Agg2 is the drawing backend, this seemed to be
+the only option as others required either x11
+or opengl- which are both not available.
+
+I use Framebuffer as scren output backend. There
+is sdl support too, which itself depends on opengl,
+so I'll try to go with fb.
+For framebuffer keyboardmapping, see it's README file -
+not touched yet. But will be difficult because
+there is no virtual mapping support in fb.cpp, see
+the comment in the mentioned function by the authors.
+
+Should execute swf7 well, most 8, some 9, no 10.
+Supports touchscreens (see framebuffer README too)
+
