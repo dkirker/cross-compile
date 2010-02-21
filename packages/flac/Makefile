@@ -1,6 +1,6 @@
 NAME = flac
 VERSION = 1.2.1
-DEPENDS = 
+DEPENDS = glib-2.0 libogg
 
 SRC_TGZ = http://downloads.sourceforge.net/project/${NAME}/${NAME}-src/${NAME}-${VERSION}-src/${NAME}-${VERSION}.tar.gz
 
@@ -24,7 +24,10 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure )
+	( cd build/src ; ${SB2} LDFLAGS=\"-L${INSTALL_PREFIX}/lib -Wl,-rpath=${INSTALL_PREFIX}/lib\" ./configure \
+		--prefix=${INSTALL_PREFIX} \
+		--disable-xmms-plugin \
+    )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 
