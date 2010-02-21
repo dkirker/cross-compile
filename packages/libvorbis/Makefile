@@ -1,6 +1,6 @@
 NAME = libvorbis
 VERSION = 1.2.3
-DEPENDS = 
+DEPENDS = libogg
 
 SRC_TGZ = http://downloads.xiph.org/releases/vorbis/${NAME}-${VERSION}.tar.gz
 
