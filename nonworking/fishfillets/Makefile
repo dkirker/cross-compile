@@ -14,10 +14,7 @@ include ../../support/download.mk
 .PHONY: unpack
 unpack: build/.unpacked
 
-${DL_DIR}/${NAME}-${VERSION}.tar.gz:
-	curl -f -R -L -o ${DL_DIR}/${NAME}-${VERSION}.tar.gz ${SRC_TGZ}
-
-build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz ${DL_DIR}/${NAME}-data-${VERSION}.tar.gz
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
 	tar -C build -z -x -f $<
