@@ -16,8 +16,6 @@ build/.unpacked:
 
 include ../../support/staging.mk
 
-include ../../support/stage-rootfs.mk
-
 include ../../support/cross-compile.mk
 
 stage:: build/armv7.built

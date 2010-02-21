@@ -1,6 +1,6 @@
 NAME = evas
 VERSION = 0.9.9.063
-DEPENDS = jpeg libpng12 freetype fontconfig libsdl eina eet
+DEPENDS = jpeg libpng12 freetype fontconfig libsdl eina eet gles-headers
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 

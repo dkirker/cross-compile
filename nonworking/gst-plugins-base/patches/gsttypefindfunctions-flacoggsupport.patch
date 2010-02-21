@@ -1,0 +1,24 @@
+diff --git a/gst/typefind/gsttypefindfunctions.c b/gst/typefind/gsttypefindfunctions.c
+index 7a54c16..29d24b2 100644
+--- a/gst/typefind/gsttypefindfunctions.c
++++ b/gst/typefind/gsttypefindfunctions.c
+@@ -2970,6 +2970,8 @@ plugin_init (GstPlugin * plugin)
+   static gchar *aac_exts[] = { "aac", NULL };
+   static gchar *m4v_exts[] = { "m4v", NULL };
+   static gchar *amr_exts[] = { "amr", NULL };
++  static gchar *flac_exts[] = { "flac", NULL };
++  static gchar *ogg_exts[] = { "anx", "ogg", "ogm", NULL };
+ #else
+   static gchar *asf_exts[] = { "asf", "wm", "wma", "wmv", NULL };
+   static gchar *au_exts[] = { "au", "snd", NULL };
+@@ -3089,6 +3091,10 @@ plugin_init (GstPlugin * plugin)
+       amr_exts, "#!AMR", 5, GST_TYPE_FIND_LIKELY);
+   TYPE_FIND_REGISTER_START_WITH (plugin, "audio/x-amr-wb-sh", GST_RANK_PRIMARY,
+       amr_exts, "#!AMR-WB", 7, GST_TYPE_FIND_MAXIMUM);
++  TYPE_FIND_REGISTER (plugin, "audio/x-flac", GST_RANK_PRIMARY,
++      flac_type_find, flac_exts, FLAC_CAPS, NULL, NULL);
++  TYPE_FIND_REGISTER (plugin, "application/ogg", GST_RANK_PRIMARY,
++      ogganx_type_find, ogg_exts, OGGANX_CAPS, NULL, NULL);
+ #else
+ 
+   TYPE_FIND_REGISTER_START_WITH (plugin, "video/x-ms-asf", GST_RANK_SECONDARY,
