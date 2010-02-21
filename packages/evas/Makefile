@@ -34,7 +34,8 @@ build/%.built: build/.unpacked
 		--disable-static --enable-buffer \
 		--enable-software-sdl --enable-fb \
 		--enable-gl-sdl --enable-gl-flavor-gles \
-		--enable-gles-variety-sgx --disable-doc )
+		--enable-gles-variety-sgx --disable-doc \
+		--disable-fribidi )
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@

@@ -1,6 +1,6 @@
 NAME = libsdl-ttf
 VERSION = 1.2
-DEPENDS = libsdl zlib
+DEPENDS = libsdl zlib freetype
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tgz
 
