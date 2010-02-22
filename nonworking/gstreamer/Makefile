@@ -1,6 +1,6 @@
 NAME = gstreamer
 VERSION = 0.10.21
-DEPENDS = glib-2.0 bison flex
+DEPENDS = glib-2.0 bison flex libxml2
 
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tgz
