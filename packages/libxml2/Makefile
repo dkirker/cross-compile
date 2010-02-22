@@ -24,7 +24,7 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
+	( cd build/src ; LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
 	( cd build/src ; ${SB2} make install-pkgconfigDATA )
 	( cd build/src/include ; ${SB2} make install )
 	touch $@
