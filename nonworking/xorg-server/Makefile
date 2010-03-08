@@ -1,5 +1,5 @@
 NAME = xorg-server
-VERSION = 1.7.1
+VERSION = 0.0.1alpha
 DEPENDS = libsdl openssl \
 	../nonworking/bigreqsproto         \
 	../nonworking/compositeproto       \
@@ -24,18 +24,18 @@ DEPENDS = libsdl openssl \
 	../nonworking/libxcb               \
 	../nonworking/pixman
 
-SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
+SRC_GIT = git://git.webos-internals.org/x11/xserver.git
 
 include ../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
-	mkdir -p build
-	tar -C build -j -x -f $<
-	mv build/${NAME}-${VERSION} build/src
+	mkdir -p build src
+	tar -C src -z -x -f $<
+	mv src build/src
 	touch $@
 
 include ../../support/staging.mk
@@ -52,20 +52,18 @@ build/%.built: build/.unpacked
 	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
-		--disable-dri \
 		--enable-xsdl \
 		--enable-kdrive \
+		\
 		--disable-xorg \
 		--disable-glx \
 		--disable-xquartz \
 		--disable-xnest \
 		--disable-xwin \
 		--disable-xfake \
-		--disable-aiglx \
-		--disable-config-hal \
-		--enable-xfbdev \
-		--disable-dpms \
-		--disable-xaa \
+		--disable-xfbdev \
+		--disable-xvfb \
+		--disable-dri \
 	)
 	( cd build/src ; ${SB2} make)
 	touch $@
