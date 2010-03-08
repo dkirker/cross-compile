@@ -39,7 +39,10 @@ staging-%: staging/mapping-%
 staging/mapping-%:
 	mkdir -p staging/$*/usr
 	sed -e "/99. Other rules./a\
-		{prefix = \"/usr/local\", replace_by = \"`pwd`/staging/$*/usr\"}," \
+		{prefix = \"/usr/local\", replace_by = \"`pwd`/staging/$*/usr\"}, \
+		\n{prefix = \"/usr/lib64/python\", map_to = tools}, \
+		\n{prefix = \"/usr/lib64/perl\", map_to = tools}, \
+	" \
 		$(SB2ROOT)/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
 
 rootfs/armv7/.unpacked: doctors/webosdoctorp100ewwsprint-1.3.5.jar
