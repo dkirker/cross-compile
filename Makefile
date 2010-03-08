@@ -40,7 +40,6 @@ staging/mapping-%:
 	mkdir -p staging/$*/usr
 	sed -e "/99. Other rules./a\
 		{prefix = \"/usr/local\", replace_by = \"`pwd`/staging/$*/usr\"}, \
-		\n{prefix = \"/usr/lib64/python\", map_to = tools}, \
 		\n{prefix = \"/usr/lib64/perl\", map_to = tools}, \
 	" \
 		$(SB2ROOT)/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
