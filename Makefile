@@ -99,7 +99,7 @@ clobber: clobber-armv7 clobber-armv6 clobber-i686
 
 .PHONY: clobber-%
 clobber-%:
-	for f in `find packages -mindepth 1 -maxdepth 1 -type d -print` ; do \
+	for f in `find packages nonworking -mindepth 1 -maxdepth 1 -type d -print` ; do \
 	  if [ -e $$f/Makefile ]; then \
 	    ${MAKE} -C $$f ARCH=$* clobber || exit ; \
 	  fi; \
