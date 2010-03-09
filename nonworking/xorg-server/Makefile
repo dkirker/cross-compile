@@ -22,7 +22,8 @@ DEPENDS = libsdl openssl \
 	../nonworking/xkbfile              \
 	../nonworking/xfont                \
 	../nonworking/libxcb               \
-	../nonworking/pixman
+	../nonworking/pixman               \
+	gles-headers
 
 SRC_GIT = git://git.webos-internals.org/x11/xserver.git
 
