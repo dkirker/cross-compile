@@ -5,8 +5,8 @@
 NAME    = fishfillets
 VERSION = 0.9.2
 DEPENDS = libsdl libsdl-mixer libsdl-ttf libsdl-image lua
-SRC_TGZ = http://prdownloads.sourceforge.net/fillets/fillets-ng-0.9.2.tar.gz?download
-#DATATGZ = http://prdownloads.sourceforge.net/fillets/fillets-ng-data-0.9.2.tar.gz?download
+SRC_TGZ = http://prdownloads.sourceforge.net/fillets/fillets-ng-${VERSION}.tar.gz?download
+DATATGZ = http://prdownloads.sourceforge.net/fillets/fillets-ng-data-${VERSION}.tar.gz?download
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.fishfillets
 
 include ../../support/download.mk
@@ -39,7 +39,6 @@ build/.configured:
 
 build/%.built: build/.unpacked build/.configured build/.patched
 	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 
 clean:
@@ -48,3 +47,29 @@ clean:
 
 clobber::
 	rm -rf build
+
+
+
+
+
+
+
+# developer specific, for ipk build only, runs outside staging builds
+fishinstall: build/.fishinstall build/.fishdatainstall
+
+build/.fishinstall: build/armv7.built 
+	( cd build/src ; ${SB2} make && ${SB2} make install )
+	touch $@
+
+build/.fishdatadownload:
+	curl -f -R -L -o data.tar.gz ${DATATGZ}
+	touch $@
+
+build/.fishdata: build/.fishdatadownload
+	tar -C build -z -x -f data.tar.gz
+	mv build/fillets-ng-data-${VERSION} build/data
+	touch $@
+
+build/.fishdatainstall: build/.fishdata
+	cp -r build/data ${APP_DIR}/
+	touch $@
