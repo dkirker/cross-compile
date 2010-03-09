@@ -1,6 +1,6 @@
 NAME = gstreamer
 VERSION = 0.10.21
-DEPENDS = glib-2.0 bison flex
+DEPENDS = glib-2.0 bison flex libxml2
 
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tgz
@@ -18,7 +18,6 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}-patch.gz \
 		LOCAL_FILE=${NAME}-${VERSION}-patch.gz download
 	zcat ${DL_DIR}/${NAME}-${VERSION}-patch.gz | patch -d build/src -p0
-	#cp build/src/configure build/src/configure.orig && sed -e 's/2.12/2.0/g' build/src/configure.orig > build/src/configure
 	touch $@
 
 include ../../support/staging.mk

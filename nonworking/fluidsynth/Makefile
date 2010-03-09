@@ -1,9 +1,7 @@
-NAME = flac
-VERSION = 1.2.1
-DEPENDS = glib-2.0 libogg
-
-SRC_TGZ = http://downloads.sourceforge.net/project/${NAME}/${NAME}-src/${NAME}-${VERSION}-src/${NAME}-${VERSION}.tar.gz
-
+NAME = fluidsynth
+VERSION = 1.1.1
+DEPENDS =
+SRC_TGZ = http://mirrors.zerg.biz/nongnu/fluid/${NAME}-${VERSION}.tar.gz
 include ../../support/download.mk
 
 .PHONY: unpack
@@ -24,10 +22,7 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} LDFLAGS=\"-L${INSTALL_PREFIX}/lib -Wl,-rpath=${INSTALL_PREFIX}/lib\" ./configure \
-		--prefix=${INSTALL_PREFIX} \
-		--disable-xmms-plugin \
-    )
+	( cd build/src ; LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} ./configure)
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 

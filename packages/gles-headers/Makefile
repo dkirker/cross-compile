@@ -15,6 +15,6 @@ stage::
 clobber::
 	$(foreach dir,${DIRS}, \
 		rm -f ${STAGING_DIR}/usr/include/${dir}/*.h; \
-		rmdir ${STAGING_DIR}/usr/include/${dir}; \
+		rm -rf ${STAGING_DIR}/usr/include/${dir}; \
 	)
 

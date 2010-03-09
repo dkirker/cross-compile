@@ -1,0 +1,171 @@
+diff --git a/gst/typefind/gsttypefindfunctions.c b/gst/typefind/gsttypefindfunctions.c
+index 7a54c16..0eb477c 100644
+--- a/gst/typefind/gsttypefindfunctions.c
++++ b/gst/typefind/gsttypefindfunctions.c
+@@ -101,7 +101,6 @@ data_scan_ctx_ensure_data (GstTypeFind * tf, DataScanCtx * c, gint min_len)
+ #define MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+ 
+ #ifdef MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+-#else
+ 
+ /*** text/plain ***/
+ static gboolean xml_check_first_element (GstTypeFind * tf,
+@@ -448,6 +447,8 @@ flx_type_find (GstTypeFind * tf, gpointer unused)
+     return;
+   }
+ }
++
++#else
+ #endif // MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+ 
+ /*** application/x-id3 ***/
+@@ -479,7 +480,6 @@ id3v1_type_find (GstTypeFind * tf, gpointer unused)
+ }
+ 
+ #ifdef MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+-#else
+ 
+ /*** application/x-ape ***/
+ 
+@@ -546,6 +546,8 @@ flac_type_find (GstTypeFind * tf, gpointer unused)
+     }
+   }
+ }
++
++#else
+ #endif // MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+ 
+ /*** audio/mpeg version 2, 4 ***/
+@@ -963,7 +965,6 @@ suggest:
+ }
+ 
+ #ifdef MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+-#else
+ 
+ /*** audio/x-musepack ***/
+ 
+@@ -1208,6 +1209,7 @@ multipart_type_find (GstTypeFind * tf, gpointer unused)
+   }
+ }
+ 
++#else
+ #endif // MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+ 
+ /*** video/mpeg systemstream ***/
+@@ -1342,7 +1344,6 @@ mpeg_sys_is_valid_sys (GstTypeFind * tf, guint8 * data, guint len,
+ }
+ 
+ #ifdef MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+-#else
+ 
+ /* calculation of possibility to identify random data as mpeg systemstream:
+  * bits that must match in header detection:            32 (or more)
+@@ -1565,6 +1566,8 @@ mpeg_ts_type_find (GstTypeFind * tf, gpointer unused)
+     size--;
+   }
+ }
++
++#else
+ #endif // MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+ 
+ /*** video/mpeg MPEG-4 elementary video stream ***/
+@@ -1789,7 +1792,6 @@ mpeg_video_stream_type_find (GstTypeFind * tf, gpointer unused)
+ }
+ 
+ #ifdef MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+-#else
+ 
+ /*** audio/x-aiff ***/
+ 
+@@ -1858,6 +1860,8 @@ ape_type_find (GstTypeFind * tf, gpointer unused)
+     gst_type_find_suggest (tf, GST_TYPE_FIND_LIKELY + 10, APE_CAPS);
+   }
+ }
++
++#else
+ #endif // MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+ 
+ /*** ISO FORMATS ***/
+@@ -1994,7 +1998,6 @@ qt_type_find (GstTypeFind * tf, gpointer unused)
+ };
+ 
+ #ifdef MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+-#else
+ 
+ /*** image/x-quicktime ***/
+ 
+@@ -2859,6 +2862,8 @@ vivo_type_find (GstTypeFind * tf, gpointer unused)
+     gst_type_find_suggest (tf, GST_TYPE_FIND_MAXIMUM, VIVO_CAPS);
+   }
+ }
++
++#else
+ #endif // MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+ 
+ /*** generic typefind for streams that have some data at a specific position***/
+@@ -2960,17 +2965,6 @@ plugin_init (GstPlugin * plugin)
+      to have define the parameter as const
+    */
+ #ifdef MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+-  static gchar *id3_exts[] =
+-      { "mp3", "mp2", "mp1", "mpga", "ogg", "flac", "tta", NULL };
+-  static gchar *mp3_exts[] = { "mp3", "mp2", "mp1", "mpga", NULL };
+-  static gchar *wav_exts[] = { "wav", NULL };
+-  static gchar *m4a_exts[] = { "m4a", NULL };
+-  static gchar *q3gp_exts[] = { "3gp", NULL };
+-  static gchar *qt_exts[] = { "mov", NULL };
+-  static gchar *aac_exts[] = { "aac", NULL };
+-  static gchar *m4v_exts[] = { "m4v", NULL };
+-  static gchar *amr_exts[] = { "amr", NULL };
+-#else
+   static gchar *asf_exts[] = { "asf", "wm", "wma", "wmv", NULL };
+   static gchar *au_exts[] = { "au", "snd", NULL };
+   static gchar *avi_exts[] = { "avi", NULL };
+@@ -3058,6 +3052,7 @@ plugin_init (GstPlugin * plugin)
+   static gchar *imelody_exts[] = { "imy", "ime", "imelody", NULL };
+   static gchar *pdf_exts[] = { "pdf", NULL };
+ 
++#else
+ #endif
+ 
+   GST_DEBUG_CATEGORY_INIT (type_find_debug, "typefindfunctions",
+@@ -3066,31 +3061,6 @@ plugin_init (GstPlugin * plugin)
+   /* must use strings, macros don't accept initializers */
+ 
+ #ifdef MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+-
+-  TYPE_FIND_REGISTER (plugin, "application/x-id3v2", GST_RANK_PRIMARY + 3,
+-      id3v2_type_find, id3_exts, ID3_CAPS, NULL, NULL);
+-  TYPE_FIND_REGISTER (plugin, "application/x-id3v1", GST_RANK_PRIMARY + 1,
+-      id3v1_type_find, id3_exts, ID3_CAPS, NULL, NULL);
+-  TYPE_FIND_REGISTER (plugin, "audio/mpeg", GST_RANK_PRIMARY, mp3_type_find,
+-      mp3_exts, MP3_CAPS, NULL, NULL);
+-  TYPE_FIND_REGISTER (plugin, "video/mpeg4", GST_RANK_PRIMARY,
+-      mpeg4_video_type_find, m4v_exts, MPEG_VIDEO_CAPS, NULL, NULL);
+-  TYPE_FIND_REGISTER (plugin, "audio/x-m4a", GST_RANK_PRIMARY, m4a_type_find,
+-      m4a_exts, M4A_CAPS, NULL, NULL);
+-  TYPE_FIND_REGISTER (plugin, "application/x-3gp", GST_RANK_PRIMARY,
+-      q3gp_type_find, q3gp_exts, Q3GP_CAPS, NULL, NULL);
+-  TYPE_FIND_REGISTER (plugin, "video/quicktime", GST_RANK_SECONDARY,
+-      qt_type_find, qt_exts, QT_CAPS, NULL, NULL);
+-  TYPE_FIND_REGISTER_RIFF (plugin, "audio/x-wav", GST_RANK_PRIMARY, wav_exts,
+-      "WAVE");
+-  TYPE_FIND_REGISTER (plugin, "adts_mpeg_stream", GST_RANK_SECONDARY,
+-      aac_type_find, aac_exts, AAC_CAPS, NULL, NULL);
+-  TYPE_FIND_REGISTER_START_WITH (plugin, "audio/x-amr-nb-sh", GST_RANK_PRIMARY,
+-      amr_exts, "#!AMR", 5, GST_TYPE_FIND_LIKELY);
+-  TYPE_FIND_REGISTER_START_WITH (plugin, "audio/x-amr-wb-sh", GST_RANK_PRIMARY,
+-      amr_exts, "#!AMR-WB", 7, GST_TYPE_FIND_MAXIMUM);
+-#else
+-
+   TYPE_FIND_REGISTER_START_WITH (plugin, "video/x-ms-asf", GST_RANK_SECONDARY,
+       asf_exts,
+       "\060\046\262\165\216\146\317\021\246\331\000\252\000\142\316\154", 16,
+@@ -3304,6 +3274,7 @@ plugin_init (GstPlugin * plugin)
+   TYPE_FIND_REGISTER_START_WITH (plugin, "application/pdf",
+       GST_RANK_SECONDARY, pdf_exts, "%PDF-", 5, GST_TYPE_FIND_LIKELY);
+ 
++#else
+ #endif // MIME_TYPE_SUPPORTED_FOR_PALM_DOT_FIVE
+ 
+   return TRUE;
