@@ -29,6 +29,7 @@ build: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} \
+	PATH=/usr/local/bin/:$$PATH \
 	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
