@@ -1,7 +1,7 @@
 NAME = xkeyboard-config
 VERSION = 1.7-1
 
-SRC_GIT=git@wdtz.org:/xkeyboard-config.git
+SRC_GIT=git://wdtz.org/xkeyboard-config.git
 
 include ../../support/download.mk
 
