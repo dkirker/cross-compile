@@ -1,7 +1,7 @@
 NAME = xkeyboard-config
-VERSION = 1.7
+VERSION = 1.7.1
 
-SRC_BZ2 = http://xlibs.freedesktop.org/xkbdesc/${NAME}-${VERSION}.tar.bz2
+SRC_GIT=git@wdtz.org:/xkeyboard-config.git
 
 include ../../support/download.mk
 
