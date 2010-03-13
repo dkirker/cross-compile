@@ -1,5 +1,5 @@
 NAME = xorg-server
-VERSION = 0.0.1alpha
+VERSION = 0.0.2
 DEPENDS = libsdl openssl \
 	../nonworking/bigreqsproto         \
 	../nonworking/compositeproto       \
