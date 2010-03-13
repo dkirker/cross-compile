@@ -1,5 +1,5 @@
 NAME = xkeyboard-config
-VERSION = 1.7.1
+VERSION = 1.7-1
 
 SRC_GIT=git@wdtz.org:/xkeyboard-config.git
 
@@ -8,11 +8,10 @@ include ../../support/download.mk
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
-	mkdir -p build
-	tar -C build -j -x -f $<
-	mv build/${NAME}-${VERSION} build/src
+	mkdir -p build/src
+	tar -C build/src -z -x -f $<
 	touch $@
 
 include ../../support/staging.mk
