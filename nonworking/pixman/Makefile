@@ -31,7 +31,6 @@ build/%.built: build/.unpacked
 		--prefix=${INSTALL_PREFIX} \
 		--disable-arm-neon \
 	)
-	( sed -i s/ECHO=/echo=/g build/src/libtool )
 	( cd build/src ; ${SB2} make)
 	( cd build/src ; ${SB2} make install )
 	touch $@
