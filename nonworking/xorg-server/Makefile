@@ -1,5 +1,5 @@
 NAME = xorg-server
-VERSION = 0.0.2
+VERSION = 0.0.3
 DEPENDS = libsdl openssl \
 	../nonworking/bigreqsproto         \
 	../nonworking/compositeproto       \
@@ -23,10 +23,18 @@ DEPENDS = libsdl openssl \
 	../nonworking/xfont                \
 	../nonworking/libxcb               \
 	../nonworking/pixman               \
-	gles-headers \
-	tisgxgfx
+	gles-headers                       \
+	tisgxgfx                           \
+	libpdl                             \
+	libsqlite
 
 SRC_GIT = git://git.webos-internals.org/x11/xserver.git
+
+#So this isn't the best, but here we hardcode X to
+#expect to be in this directory.  This is where X looks all it's
+#components and what-have-you, and helps avoid modifying
+#the device's /usr/local
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlauncher
 
 include ../../support/download.mk
 
@@ -50,10 +58,13 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} \
+	( rm -rf build/obj )
+	( mkdir -p build/obj )
+	( cd build/obj ; ${SB2} \
+	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${APP_DIR}/lib:.:/usr/local/lib\" \
 	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
-	./configure \
-		--prefix=${INSTALL_PREFIX} \
+	../src/configure \
+		--prefix=${APP_DIR} \
 		--enable-xsdl \
 		--enable-kdrive \
 		\
@@ -67,7 +78,7 @@ build/%.built: build/.unpacked
 		--disable-xvfb \
 		--disable-dri \
 	)
-	( cd build/src ; ${SB2} make)
+	( cd build/obj ; ${SB2} make)
 	touch $@
 
 clobber::
