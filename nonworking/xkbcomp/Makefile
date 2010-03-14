@@ -3,6 +3,8 @@ VERSION = 1.1.1
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlauncher
+
 include ../../support/download.mk
 
 .PHONY: unpack
@@ -26,12 +28,12 @@ build: build/armv7.built
 build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \
 	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
-	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=/usr/local/lib:.\" \
+	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${APP_DIR}/lib:/usr/local/lib\" \
 	./configure \
-		--prefix=${INSTALL_PREFIX} \
+		--prefix=${APP_DIR} \
 	)
 	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install )
+	#( cd build/src ; ${SB2} make install )
 	touch $@
 
 clobber::
