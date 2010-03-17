@@ -34,6 +34,7 @@ build/%.built: build/.unpacked
 		--prefix=${INSTALL_PREFIX} \
 		--without-libtiff \
 		--without-libjpeg \
+		--disable-cups \
 	)	
 	( cd build/src ; ${SB2} make)
 	( cd build/src ; ${SB2} make install)
