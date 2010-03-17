@@ -1,7 +1,7 @@
 NAME = cairo
 VERSION = 1.8.10
 
-DEPENDS = libpng12 ../nonworking/fontconfig ../nonworking/pixman
+DEPENDS = libpng12 ../nonworking/fontconfig ../nonworking/pixman ../nonworking/libx11
 
 SRC_TGZ = http://cairographics.org/releases/${NAME}-${VERSION}.tar.gz
 
