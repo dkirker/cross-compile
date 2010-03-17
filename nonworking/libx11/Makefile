@@ -19,7 +19,8 @@ DEPENDS = \
 	../nonworking/xineramaproto        \
 	../nonworking/xproto               \
 	../nonworking/xtrans               \
-	../nonworking/xau
+	../nonworking/xau                  \
+	../nonworking/libxcb
 	
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2

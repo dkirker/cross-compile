@@ -1,6 +1,7 @@
 NAME = atk
 VERSION = 1.9.1
 
+DEPENDS = glib-2.0
 SRC_BZ2 = http://ftp.acc.umu.se/pub/gnome/sources/atk/1.9/${NAME}-${VERSION}.tar.bz2
 
 include ../../support/download.mk

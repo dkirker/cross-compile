@@ -1,7 +1,7 @@
 NAME = pango
 VERSION = 1.17.5
 
-DEPENDS = ../nonworking/cairo freetype ../nonworking/fontconfig ../nonworking/atk
+DEPENDS = ../nonworking/cairo freetype ../nonworking/fontconfig ../nonworking/atk glib-2.0
 SRC_BZ2 = http://ftp.acc.umu.se/pub/gnome/sources/pango/1.17/${NAME}-${VERSION}.tar.bz2
 
 include ../../support/download.mk
