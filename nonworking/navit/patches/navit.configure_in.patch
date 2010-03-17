@@ -1,0 +1,38 @@
+diff --git a/navit/configure.in b/navit/configure.in
+index 552e4d1..cdb4339 100644
+--- a/navit/configure.in
++++ b/navit/configure.in
+@@ -69,6 +69,7 @@ vehicle_iphone=no; vehicle_iphone_reason=default
+ vehicle_android=no; vehicle_android_reason=default
+ graphics_android=no; graphics_android_reason=default
+ vehicle_maemo=no; vehicle_maemo_reason=default
++vehicle_webos=no; vehicle_webos_reason=default
+ 
+ shared_libnavit=no
+ bin_navit=yes
+@@ -876,6 +877,9 @@ AM_CONDITIONAL(VEHICLE_WINCE, test "x${vehicle_wince}" = "xyes")
+ # iphone
+ AC_ARG_ENABLE(vehicle-iphone, [  --disable-vehicle-iphone              disable vehicle type iphone], vehicle_iphone=$enableval;vehicle_iphone_reason="configure parameter")
+ AM_CONDITIONAL(VEHICLE_IPHONE, test "x${vehicle_iphone}" = "xyes")
++# webos
++AC_ARG_ENABLE(vehicle-webos, [  --disable-vehicle-webos              disable vehicle type webos], vehicle_webos=$enableval;vehicle_webos_reason="configure parameter")
++AM_CONDITIONAL(VEHICLE_WEBOS, test "x${vehicle_webos}" = "xyes")
+ if test "x${vehicle_iphone}" = "xyes"
+ then
+ 	IPHONE_LIBS=-Wl,-framework,CoreLocation
+@@ -952,6 +956,7 @@ navit/vehicle/null/Makefile
+ navit/vehicle/demo/Makefile
+ navit/vehicle/wince/Makefile
+ navit/vehicle/iphone/Makefile
++navit/vehicle/webos/Makefile
+ navit/xpm/Makefile
+ navit/maps/Makefile
+ intl/Makefile
+@@ -1058,6 +1063,7 @@ echo "  maemo:             $vehicle_maemo ($vehicle_maemo_reason)"
+ echo "  null:              $vehicle_null ($vehicle_null_reason)"
+ echo "  wince:             $vehicle_wince ($vehicle_wince_reason)"
+ echo "  iphone:            $vehicle_iphone ($vehicle_iphone_reason)"
++echo "  webos:             $vehicle_webos ($vehicle_webos_reason)"
+ 
+ if  test "x${gtk2_pkgconfig}" != "xyes" -a "x${gui_win32}" != "xyes" -a "x${gui_internal}" != "xyes" -a "x${gui_qml}" != "xyes"
+ then

@@ -1,0 +1,11 @@
+diff --git a/navit/navit/vehicle/webos/Makefile.am b/navit/navit/vehicle/webos/Makefile.am
+new file mode 100644
+index 0000000..f1829dd
+--- /dev/null
++++ b/navit/navit/vehicle/webos/Makefile.am
+@@ -0,0 +1,5 @@
++include $(top_srcdir)/Makefile.inc
++AM_CPPFLAGS = @NAVIT_CFLAGS@ @SDL_CFLAGS@ -I$(top_srcdir)/navit -DMODULE=vehicle_webos
++modulevehicle_LTLIBRARIES = libvehicle_webos.la
++libvehicle_webos_la_SOURCES = vehicle_webos.c
++libvehicle_webos_la_LDFLAGS = -L/usr/local/lib -lpdl -module -avoid-version

@@ -1,8 +1,8 @@
 NAME    = navit
 VERSION = 0.1.1
-DEPENDS = jpeg libpng12 freetype fontconfig libsdl dbus-lib 
+DEPENDS = jpeg libpng12 freetype fontconfig libsdl pdk
 SVN_URL = https://navit.svn.sourceforge.net/svnroot/navit/trunk
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/de.daemon.navit
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 REVISION= 2914
 
 .PHONY: unpack
@@ -19,7 +19,6 @@ update: build/.unpacked
 			svn update -r ${REVISION} --non-interactive; \
 			rm -f ../*.built ../.configure ../.aclocal; \
 		fi )
-	cp graphics_sdl.c ./build/src/navit/navit/graphics/sdl/graphics_sdl.c
 
 include ../../support/staging.mk
 
@@ -33,7 +32,11 @@ build/.aclocal:
 	( cd build/src/${NAME} ; ${SB2} ./autogen.sh )
 	touch $@
 	
-
+build/.patched:
+	( for patchfile in patches/*; do \
+		patch -d build/src/${NAME} -p0 < $patchfile   \
+	  done )
+	touch $@
 
 build/.configured: build/.aclocal
 	rm -f $@
@@ -46,6 +49,7 @@ build/.configured: build/.aclocal
 		--disable-binding-python --enable-avoid-float \
 		--enable-avoid-unaligned --enable-debug \
 		--disable-binding-dbus \
+		--enable-vehicle-webos \
 		--enable-svg2png-scaling="32,48,64" --enable-svg2png-scaling-flag="32,48,64" \
 		--enable-svg2png-scaling-nav="8,16,32,48,64" --disable-samplemap \
 		--disable-speech-espeak \
@@ -55,7 +59,7 @@ build/.configured: build/.aclocal
 
 # I call make in xpm/ without sb2 here, it doesn't work inside sb2
 # and creates images anyway
-build/%.built: build/.unpacked build/.configured
+build/%.built: build/.unpacked build/.patched build/.configured
 	( cd build/src/${NAME} ; ${SB2} cp `which libtool` . )
 	( cd build/src/${NAME}/navit/xpm/ ; make )
 	( cd build/src/${NAME} ; ${SB2} make && ${SB2} make install )

@@ -1,0 +1,290 @@
+diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
+index 8e7f561..22761c5 100644
+--- a/navit/navit/graphics/sdl/graphics_sdl.c
++++ b/navit/navit/graphics/sdl/graphics_sdl.c
+@@ -33,6 +33,7 @@
+ 
+ #include <SDL/SDL.h>
+ #include <math.h>
++#include <PDL.h>
+ 
+ #define RASTER
+ #undef SDL_SGE
+@@ -43,11 +44,12 @@
+ #define SDL_IMAGE
+ #undef LINUX_TOUCHSCREEN
+ 
+-#define DISPLAY_W 800
+-#define DISPLAY_H 600
++#define DISPLAY_W 320
++#define DISPLAY_H 480
+ 
+ 
+ #undef DEBUG
++/* #define DEBUG */
+ #undef PROFILE
+ 
+ #define OVERLAY_MAX 16
+@@ -140,7 +142,16 @@ struct graphics_priv {
+ };
+ 
+ static int dummy;
+-
++// PRE
++static int    quit_event_loop=0; // quit the main event loop
++static struct graphics_priv* the_graphics=NULL; 
++static int    the_graphics_count=0; // count how many graphics objects are created
++
++struct event_timeout {
++	SDL_TimerID id;
++	int multi;
++	struct callback *cb;
++};
+ 
+ struct graphics_font_priv {
+ #ifdef SDL_TTF
+@@ -1272,7 +1283,7 @@ display_text_draw(struct text_render *text, struct graphics_priv *gr, struct gra
+                                &b,
+                                &a);
+ 
+-#ifdef DEBUG
++#ifdef XXXDEBUG
+                     printf("%u %u -> %u off\n",
+                            gly->x,
+                            gly->y,
+@@ -1845,6 +1856,17 @@ static gboolean graphics_sdl_idle(void *data)
+     int ret, key;
+     char keybuf[2];
+ 
++    //printf("in graphics_sdl_idle\n");
++    //Palm Pre mode
++    if(data==NULL) {
++    	if(the_graphics!=NULL) {
++		//printf("graphics_idle: Palm Pre mode\n");
++		gr = the_graphics;
++	} 
++	else {
++		printf("graphics_idle: graphics not set!\n");
++	}
++    }
+     /* generate the initial resize callback, so the gui knows W/H
+ 
+        its unsafe to do this directly inside register_resize_callback;
+@@ -1950,9 +1972,13 @@ static gboolean graphics_sdl_idle(void *data)
+         ret = SDL_PollEvent(&ev);
+         if(ret == 0)
+         {
++            //printf("SDL_PollEvent: no pending events\n");
+             break;
+         }
+ 
++#ifdef DEBUG
++        printf("SDL_Event %d\n", ev.type);
++#endif
+         switch(ev.type)
+         {
+             case SDL_MOUSEMOTION:
+@@ -2062,6 +2088,7 @@ static gboolean graphics_sdl_idle(void *data)
+ 
+             case SDL_QUIT:
+             {
++		quit_event_loop = 1;
+                 navit_destroy(gr->nav);
+                 break;
+             }
+@@ -2102,6 +2129,7 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+     struct graphics_priv *this=g_new0(struct graphics_priv, 1);
+     struct attr *attr;
+     int ret;
++    PDL_Err pdl_err;
+     int w=DISPLAY_W,h=DISPLAY_H;
+ 
+     this->nav = nav;
+@@ -2110,14 +2138,19 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+     ret = SDL_Init(SDL_INIT_VIDEO);
+     if(ret < 0)
+     {
++	fprintf(stderr, "SDL_Init failed %d\n", ret);
+         g_free(this);
+         return NULL;
+     }
+ 
++    PDL_SetOrientation(PDL_ORIENTATION_0);
++    PDL_ScreenTimeoutEnable(PDL_FALSE);
++
+ #ifdef SDL_TTF
+     ret = TTF_Init();
+     if(ret < 0)
+     {
++	fprintf(stderr, "TTF_Init failed %d\n", ret);
+         g_free(this);
+         SDL_Quit();
+         return NULL;
+@@ -2126,11 +2159,14 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+     FT_Init_FreeType( &this->library );
+ #endif
+ 
+-    if (! event_request_system("glib","graphics_sdl_new"))
++    if (! event_request_system("sdl","graphics_sdl_new")) {
++	fprintf(stderr, "event_request_system failed");
+         return NULL;
++    }
+ 
+     this->video_bpp = 16;
+-    this->video_flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE;
++    //this->video_flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE;
++    this->video_flags = SDL_SWSURFACE;
+ 
+     if ((attr=attr_search(attrs, NULL, attr_w)))
+         w=attr->u.num;
+@@ -2144,17 +2180,18 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+ 
+     this->screen = SDL_SetVideoMode(w, h, this->video_bpp, this->video_flags);
+ 
+-    /* Use screen size instead of requested */
+-    w = this->screen->w;
+-    h = this->screen->h;
+-
+     if(this->screen == NULL)
+     {
++	fprintf(stderr, "SDL_SetVideoMode failed\n");
+         g_free(this);
+         SDL_Quit();
+         return NULL;
+     }
+ 
++    /* Use screen size instead of requested */
++    w = this->screen->w;
++    h = this->screen->h;
++
+     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+ 
+     SDL_WM_SetCaption("navit", NULL);
+@@ -2177,7 +2214,14 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+ 
+ 	*meth=graphics_methods;
+ 
+-    g_timeout_add(G_PRIORITY_DEFAULT+10, graphics_sdl_idle, this);
++    /*  Will be called by the sdl event loop
++	g_timeout_add(G_PRIORITY_DEFAULT+10, graphics_sdl_idle, this);
++    */
++    if(the_graphics!=NULL) {
++	printf("graphics_sdl_new: graphics struct already set: %d!\n", the_graphics_count);
++    }
++    the_graphics = this;
++    the_graphics_count++;
+ 
+     this->overlay_enable = 1;
+ 
+@@ -2189,9 +2233,111 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+     return this;
+ }
+ 
++static Uint32 sdl_timer_callback(Uint32 interval, void* param)
++{
++    struct event_timeout *timeout=(struct event_timeout*)param;
++
++    callback_call_0(timeout->cb);
++
++    if(timeout->multi==0) {
++    	g_free(timeout);
++	return 0; // cancel timer
++    }
++    return interval; // reactivate timer
++}
++
++static void
++event_sdl_main_loop_run(void)
++{
++        dbg(0,"enter\n");
++	while(quit_event_loop==0) {
++		graphics_sdl_idle(NULL);
++	}
++}
++
++static void
++event_sdl_main_loop_quit(void)
++{
++	PDL_ScreenTimeoutEnable(PDL_TRUE);
++	PDL_Quit();
++        dbg(0,"enter\n");
++}
++
++static struct event_watch *
++event_sdl_add_watch(void *h, enum event_watch_cond cond, struct callback *cb)
++{
++        dbg(0,"enter\n");
++	return NULL;
++}
++
++static void
++event_sdl_remove_watch(struct event_watch *ev)
++{
++	dbg(0,"enter %p\n",ev);
++}
++
++static struct event_timeout *
++event_sdl_add_timeout(int timeout, int multi, struct callback *cb)
++{
++	struct event_timeout * ret =  g_new0(struct event_timeout, 1);
++	if(!ret)
++		return ret;
++	ret->multi = multi;
++	ret->id = SDL_AddTimer(timeout, sdl_timer_callback, ret);
++	return ret;
++}
++
++static void
++event_sdl_remove_timeout(struct event_timeout *to)
++{
++    if(to!=NULL)
++    {
++        SDL_RemoveTimer(to->id);
++        g_free(to);
++    }
++}
++
++static struct event_idle *
++event_sdl_add_idle(int priority, struct callback *cb)
++{
++    return (struct event_idle *)event_sdl_add_timeout(1, 1, cb);
++}
++
++static void
++event_sdl_remove_idle(struct event_idle *ev)
++{
++    event_sdl_remove_timeout((struct event_timeout *)ev);
++}
++
++static void
++event_sdl_call_callback(struct callback_list *cb)
++{
++    dbg(0,"enter\n");
++}
++
++static struct event_methods event_sdl_methods = {
++        event_sdl_main_loop_run,
++        event_sdl_main_loop_quit,
++        event_sdl_add_watch,
++        event_sdl_remove_watch,
++        event_sdl_add_timeout,
++        event_sdl_remove_timeout,
++        event_sdl_add_idle,
++        event_sdl_remove_idle,
++        event_sdl_call_callback,
++};
++
++static struct event_priv *
++event_sdl_new(struct event_methods* methods)
++{
++	*methods = event_sdl_methods;
++	return NULL;
++}
++
+ void
+ plugin_init(void)
+ {
+         plugin_register_graphics_type("sdl", graphics_sdl_new);
++	plugin_register_event_type("sdl", event_sdl_new);
+ }
+ 
