@@ -1,5 +1,5 @@
 NAME = xkeyboard-config
-VERSION = 1.7-1
+VERSION = 1.7-2
 
 SRC_GIT=git://git.webos-internals.org/x11/xkeyboard-config.git
 

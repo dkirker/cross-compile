@@ -34,7 +34,7 @@ SRC_GIT = git://git.webos-internals.org/x11/xserver.git
 #expect to be in this directory.  This is where X looks all it's
 #components and what-have-you, and helps avoid modifying
 #the device's /usr/local
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlauncher
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.x11
 
 include ../../support/download.mk
 
