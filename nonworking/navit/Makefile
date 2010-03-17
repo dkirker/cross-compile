@@ -1,6 +1,6 @@
 NAME    = navit
 VERSION = 0.1.1
-DEPENDS = jpeg libpng12 freetype fontconfig libsdl pdk
+DEPENDS = jpeg libpng12 freetype fontconfig libsdl ../nonworking/pdl
 SVN_URL = https://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 REVISION= 2914
@@ -9,8 +9,9 @@ REVISION= 2914
 unpack: build/.unpacked
 
 build/.unpacked:
-	mkdir -p build/src
-	svn checkout -r ${REVISION} -q --non-interactive ${SVN_URL} build/src
+	mkdir -p build
+	svn checkout -r ${REVISION} -q --non-interactive ${SVN_URL} build
+	mv build/navit build/src
 	touch $@
 
 update: build/.unpacked
@@ -29,18 +30,18 @@ stage:: build/armv7.built
 
 build/.aclocal:
 	rm -f $@
-	( cd build/src/${NAME} ; ${SB2} ./autogen.sh )
+	( cd build/src ; ${SB2} ./autogen.sh )
 	touch $@
-	
+
 build/.patched:
-	( for patchfile in patches/*; do \
-		patch -d build/src/${NAME} -p0 < $patchfile   \
-	  done )
+	$(foreach patchfile, $(shell ls patches), \
+		patch -p0 build/src/`echo ${patchfile} | sed 's#__#/#g'` < patches/$(patchfile); \
+	)
 	touch $@
 
 build/.configured: build/.aclocal
 	rm -f $@
-	( cd build/src/${NAME} ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
+	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./configure --prefix=${APP_DIR} \
@@ -60,13 +61,13 @@ build/.configured: build/.aclocal
 # I call make in xpm/ without sb2 here, it doesn't work inside sb2
 # and creates images anyway
 build/%.built: build/.unpacked build/.patched build/.configured
-	( cd build/src/${NAME} ; ${SB2} cp `which libtool` . )
-	( cd build/src/${NAME}/navit/xpm/ ; make )
-	( cd build/src/${NAME} ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} cp `which libtool` . )
+	( cd build/src/navit/xpm/ ; make )
+	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 
 clean:
-	( cd build/src/${NAME} ; ${SB2} make clean )
+	( cd build/src ; ${SB2} make clean )
 
 
 clobber::
