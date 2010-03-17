@@ -1,9 +1,9 @@
 NAME = fontconfig
 VERSION = 2.8.0
 
-DEPENDS = libxml2
+DEPENDS = libxml2 freetype
 
-SRC_BZ2 = http://cgit.freedesktop.org/fontconfig/snapshot/fontconfig-2.8.0.tar.bz2
+SRC_BZ2 = http://cgit.freedesktop.org/fontconfig/snapshot/${NAME}-${VERSION}.tar.bz2
 
 include ../../support/download.mk
 
