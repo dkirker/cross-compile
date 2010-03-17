@@ -1,7 +1,7 @@
 NAME = cairo
 VERSION = 1.8.10
 
-DEPENDS = libpng12
+DEPENDS = libpng12 ../nonworking/fontconfig
 
 SRC_TGZ = http://cairographics.org/releases/${NAME}-${VERSION}.tar.gz
 

@@ -1,7 +1,12 @@
 NAME = gtk+
 VERSION = 2.12.11
 
-DEPENDS = ../nonworking/pango
+DEPENDS = ../nonworking/pango \
+		  ../nonworking/libx11 \
+		  ../nonworking/libice \
+		  ../nonworking/libsm \
+		  ../nonworking/libXext \
+		  ../nonworking/libXrender
 
 SRC_BZ2 = http://ftp.acc.umu.se/pub/gnome/sources/gtk+/2.12/${NAME}-${VERSION}.tar.bz2
 
