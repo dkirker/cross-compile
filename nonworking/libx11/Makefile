@@ -1,7 +1,26 @@
 NAME = libX11
 VERSION = 1.3.2
 
-DEPENDS = ../nonworking/libxcb
+DEPENDS = \
+	../nonworking/bigreqsproto         \
+	../nonworking/compositeproto       \
+	../nonworking/damageproto          \
+	../nonworking/fixesproto           \
+	../nonworking/fontsproto           \
+	../nonworking/inputproto           \
+	../nonworking/kbproto              \
+	../nonworking/randrproto           \
+	../nonworking/renderproto          \
+	../nonworking/resourceproto        \
+	../nonworking/scrnsaverproto       \
+	../nonworking/videoproto           \
+	../nonworking/xcmiscproto          \
+	../nonworking/xextproto            \
+	../nonworking/xineramaproto        \
+	../nonworking/xproto               \
+	../nonworking/xtrans               \
+	../nonworking/xau
+	
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 

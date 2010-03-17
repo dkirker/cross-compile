@@ -1,7 +1,7 @@
 NAME = libxcb
 VERSION = 1.5
 
-DEPENDS = ../nonworking/xcbproto ../nonworking/libpthread-stubs
+DEPENDS = ../nonworking/xcbproto ../nonworking/libpthread-stubs ../nonworking/xau
 
 SRC_BZ2 = http://xcb.freedesktop.org/dist/${NAME}-${VERSION}.tar.bz2
 

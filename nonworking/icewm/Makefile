@@ -10,6 +10,9 @@ DEPENDS = ../nonworking/libXpm \
 	  ../nonworking/libXi \
 	  ../nonworking/libXrender \
 	  ../nonworking/xinput \
+	  ../nonworking/libXext \
+	  ../nonworking/libx11 \
+	  ../nonworking/xproto
 
 include ../../support/download.mk
 

@@ -3,6 +3,8 @@ VERSION = 3.5.8
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 
+DEPENDS = ../nonworking/libx11 ../nonworking/xproto
+
 include ../../support/download.mk
 
 .PHONY: unpack
