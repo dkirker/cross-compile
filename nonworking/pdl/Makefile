@@ -1,9 +1,19 @@
 #
+# due to copyright reasons you need to create the file
+# pdk-1.4.tgz yourself, here is how:
+#
+#  - download the dmg file
+#  - mount it
+#  - copy PalmPDK.pkg to your desktop
+#  - open terminal and cd to Desktop
+#  - rename it: mv PalmPDK.pkg pdk-1.4
+#  - tar it: tar cpzf pdk-1.4.tgz pdk-1.4
+#  - put this file to the crosscompile downloads dir
+#    (from here: ../../downloads)
 #
 NAME    = pdl
 VERSION = 1.4
 DEPENDS = 
-TGZ_URL = http://www.daemon.de/idisk/palmpre/pdk-${VERSION}.tgz
 PAXFILE = Contents/Packages/palmpdk.pkg/Contents/Archive.pax.gz
 HEADERS = build/src/opt/PalmPDK/include/PDL*
 LIBS    = build/src/opt/PalmPDK/device/lib/libpdl.so
@@ -16,10 +26,7 @@ include ../../support/download.mk
 .PHONY: unpack
 unpack: build/.unpacked
 
-${DL_DIR}/pdk-${VERSION}.tgz:
-	curl -f -R -L -o ${DL_DIR}/pdk-${VERSION}.tgz ${TGZ_URL}
-
-build/.unpacked: ${DL_DIR}/pdk-${VERSION}.tgz
+build/.unpacked:
 	mkdir -p build/src
 	tar -C build -z -x -f $<
 	mv build/pdk-${VERSION} build/pkg
