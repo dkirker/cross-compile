@@ -34,7 +34,9 @@ SRC_GIT = git://git.webos-internals.org/x11/xserver.git
 #expect to be in this directory.  This is where X looks all it's
 #components and what-have-you, and helps avoid modifying
 #the device's /usr/local
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.x11
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xorg-server
+#We add this to the -rpath so we have the libs X wants
+XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
 
 include ../../support/download.mk
 
@@ -61,7 +63,7 @@ build/%.built: build/.unpacked
 	( rm -rf build/obj )
 	( mkdir -p build/obj )
 	( cd build/obj ; ${SB2} \
-	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${APP_DIR}/lib:.:/usr/local/lib\" \
+	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	../src/configure \
 		--prefix=${APP_DIR} \
