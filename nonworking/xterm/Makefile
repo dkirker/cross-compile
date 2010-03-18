@@ -1,7 +1,7 @@
 NAME = xterm
 VERSION = 256
 
-DEPENDS = ../nonworking/pango \
+DEPENDS = \
 		  ../nonworking/libx11 \
 		  ../nonworking/libice \
 		  ../nonworking/libsm \
