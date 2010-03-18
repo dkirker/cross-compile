@@ -1,7 +1,8 @@
 NAME = pidgin
 VERSION = 2.6.6
 
-DEPENDS = libgcrypt ../nonworking/gnutls 
+DEPENDS = libgcrypt \
+		  ../nonworking/gnutls ../nonworking/gtk2
 
 SRC_BZ2 = http://sourceforge.net/projects/pidgin/files/Pidgin/${NAME}-${VERSION}.tar.bz2
 
@@ -34,6 +35,7 @@ build/%.built: build/.unpacked
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 		--disable-screensaver \
+		--disable-dbus \
 		--disable-sm \
 		--disable-startup-notification \
 		--disable-gtkspell \
