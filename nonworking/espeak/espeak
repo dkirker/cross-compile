@@ -1,0 +1,11 @@
+#!/bin/sh
+
+APP_DIR=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.espeak
+export LD_LIBRARY_PATH=$APP_DIR/lib:$LD_LIBRARY_PATH
+
+sink=
+#sink=shift
+#sink=pnavigation
+
+exec $APP_DIR/bin/espeak --path $APP_DIR/share --stdout "$@" | paplay -d ${sink:-pdefaultapp}
+
