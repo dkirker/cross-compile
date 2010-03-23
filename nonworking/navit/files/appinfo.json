@@ -1,0 +1,10 @@
+{
+	"id": "org.webosinternals.navit",
+	"version": "0.2.0",
+	"vendor": "Navit Project",
+	"type": "game",
+	"main": "navit.sh",
+	"icon": "Icon.png",
+	"title": "Navit",
+	"requiredMemory": 75
+}
