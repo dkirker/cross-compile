@@ -7,6 +7,6 @@ index 50cd5f2..f8b62c2 100755
  	*convert)
 -		$svgtopng $3 -resize $1x$2 $4
 +		$svgtopng -background none $3 -resize $1x$2 $4
- 		;;
+ 		;; 
  	esac
  }
