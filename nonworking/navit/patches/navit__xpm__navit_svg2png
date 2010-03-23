@@ -2,8 +2,7 @@ diff --git a/navit/navit/xpm/navit_svg2png b/navit/navit/xpm/navit_svg2png
 index 50cd5f2..f8b62c2 100755
 --- a/navit/navit/xpm/navit_svg2png
 +++ b/navit/navit/xpm/navit_svg2png
-@@ -13,7 +13,7 @@ svgtopng()
- 		$svgtopng --without-gui --export-width=$1 --export-height=$2 --export-png=$BUILDDIR/$4 $3
+@@ -14,6 +14,6 @@ svgtopng()
  		;;
  	*convert)
 -		$svgtopng $3 -resize $1x$2 $4
