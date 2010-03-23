@@ -111,17 +111,17 @@ Navigation</text></img>
 <!--<osd enabled="yes" type="gps_status"                                                   
  x="425" y="0" w="65" h="30" align="0" background_color="#000000cc" font_size="300" /> -->
 <osd enabled="yes" type="button" command="zoom_in()"
-	x="-64"	y="-85"
+	x="-64"	y="-84"
 	src="osd_zoom_in.png"/>
 <osd enabled="yes" type="button" command="zoom_out()"
-	x="0"	y="-85"
+	x="0"	y="-84"
 	src="osd_zoom_out.png"/>
 <osd enabled="yes" type="toggle_announcer"
-	x="-64"	y="-149" w="64"	h="64"
+	x="-64"	y="-148" w="64"	h="64"
 	icon_src="$NAVIT_SHAREDIR/xpm/gui_sound_64_64.png"
-	background_color="#ffffffcc" />
+	background_color="#000000cc" />
 <osd enabled="yes" type="button" command="zoom_to_route()"
-	x="0" y="-149" w="64" h="64"
+	x="0" y="-148" w="64" h="64"
 	src="osd_zoom_to_route.png"/>
 <!--<osd enabled="yes" type="scale" font_size="150" x="0" y="150" w="320" h="50" />-->
 <osd enabled="yes" type="text" label="ETA:${navigation.item.destination_time[arrival]}"  
@@ -131,13 +131,14 @@ Navigation</text></img>
  	x="100" y="-20" w="100"	h="20"	align="4" 
  	background_color="#000000cc" font_size="200" /> 
 <osd enabled="yes" type="text" label="Dist:${navigation.item.destination_length[named]}"       
- 	x="200" y="-20" w="120" h="25"	align="4" 
+ 	x="200" y="-20" w="120" h="20"	align="4" 
  	background_color="#000000cc" font_size="200" />     
 
 		<vehicle name="Car" profilename="car" enabled="yes" active="1" source="webos://">
 			<!-- Navit can write a tracklog in several formats (gpx, nmea or textfile): -->
 			<log enabled="no" type="gpx" attr_types="position_time_iso8601,position_direction,position_speed,profilename,position_radius" data="track_%Y%m%d-%%i.gpx" flush_size="1000" flush_time="30"/>
 		</vehicle>
+		<!--<vehicle name="Bike" profilename="bike" enabled="yes" active="0" source="webos://"/>-->
 
 		<!-- For SDL, you should add follow="1" to have the view centered on your position -->
 		<!-- <vehicle name="Meins" enabled="yes" source="gpsd://localhost" color="#0000ff" follow="1"/> -->
