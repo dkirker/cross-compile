@@ -44,13 +44,13 @@ staging/mapping-%:
 	" \
 		$(SB2ROOT)/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
 
-rootfs/armv7/.unpacked: doctors/webosdoctorp100ewwsprint-1.4.0.jar
+rootfs/armv7/.unpacked: doctors/webosdoctorp100ewwsprint-1.3.5.jar
 	rm -rf rootfs/armv7
 	mkdir -p rootfs/armv7
 	${FAKEROOT} scripts/unpack-doctor-rootfs $< rootfs/armv7
 	touch $@
 
-rootfs/armv6/.unpacked: doctors/webosdoctorp200ewwsprint-1.4.0.jar
+rootfs/armv6/.unpacked: doctors/webosdoctorp200ewwsprint-1.3.5.jar
 	rm -rf rootfs/armv6
 	mkdir -p rootfs/armv6
 	${FAKEROOT} scripts/unpack-doctor-rootfs $< rootfs/armv6
@@ -79,13 +79,13 @@ downloads/i686-unknown-linux-gnu-1.4.1.tar.gz:
 	mkdir -p downloads
 	wget -O $@ http://sources.nslu2-linux.org/sources/i686-unknown-linux-gnu-1.4.1.tar.gz
 
-doctors/webosdoctorp100ewwsprint-1.4.0.jar:
+doctors/webosdoctorp100ewwsprint-1.3.5.jar:
 	mkdir -p doctors
-	wget -O $@ http://palm.cdnetworks.net/rom/pre/p14r0d02252010/sr1ntp140rod/webosdoctorp100ewwsprint.jar
+	wget -O $@ http://palm.cdnetworks.net/rom/pre/p135r0d12302009/sr1ntp135rod/webosdoctorp100ewwsprint.jar
 
-doctors/webosdoctorp200ewwsprint-1.4.0.jar:
+doctors/webosdoctorp200ewwsprint-1.3.5.jar:
 	mkdir -p doctors
-	wget -O $@ http://palm.cdnetworks.net/rom/pixi/px14r0d02252010/sr1ntp140rod/webosdoctorp200ewwsprint.jar
+	wget -O $@ http://palm.cdnetworks.net/rom/pixi/px135r0d12302009/sr1ntp135rod/webosdoctorp200ewwsprint.jar
 
 doctors/palm-sdk_1.3.5-svn234138-sdk117-pho368_i386.deb:
 	mkdir -p doctors
