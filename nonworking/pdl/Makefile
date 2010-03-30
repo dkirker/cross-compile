@@ -6,8 +6,8 @@
 #  - mount it
 #  - copy PalmPDK.pkg to your desktop
 #  - open terminal and cd to Desktop
-#  - rename it: mv PalmPDK.pkg pdk-1.4
-#  - tar it: tar cpzf pdk-1.4.tgz pdk-1.4
+#  - rename it: mv PalmPDK.pkg pdl-1.4
+#  - tar it: tar cpzf pdl-1.4.tar.gz pdl-1.4
 #  - put this file to the crosscompile downloads dir
 #    (from here: ../../downloads)
 #
@@ -28,7 +28,7 @@ unpack: build/.unpacked
 
 build/.unpacked:
 	mkdir -p build/src
-	tar -C build -z -x -f $<
+	tar -C build -z -x -f ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mv build/pdk-${VERSION} build/pkg
 	(cd build/src; gunzip -c ../pkg/${PAXFILE} | cpio -i )
 	touch $@
