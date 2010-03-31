@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..d3adf85 100644
+index e8c85de..0786f5a 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -33,6 +33,7 @@
@@ -250,7 +250,7 @@ index e8c85de..d3adf85 100644
  
      this->overlay_enable = 1;
  
-@@ -2191,12 +2270,214 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2191,12 +2270,215 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
          this->aa = attr->u.num;
  
      this->resize_callback_initial=1;
@@ -265,7 +265,7 @@ index e8c85de..d3adf85 100644
 +{
 +    struct event_timeout *timeout=(struct event_timeout*)param;
 +
-+    dbg(1,"timer fired timer=%p multi=%i interval=%i\n", param, timeout->multi, interval);
++    dbg(1,"timer(%p) multi(%d) interval(%d) fired\n", param, timeout->multi, interval);
 +
 +    SDL_Event event;
 +    SDL_UserEvent userevent;
@@ -335,7 +335,7 @@ index e8c85de..d3adf85 100644
 +    ret->multi = multi;
 +    ret->cb = cb;
 +    ret->id = SDL_AddTimer(timeout, sdl_timer_callback, ret);
-+    dbg(1,"timer multi(%d) interval(%d) cb(%p) %p added\n", multi, timeout, cb, ret);
++    dbg(1,"timer(%p) multi(%d) interval(%d) cb(%p) added\n",ret, multi, timeout, cb);
 +    return ret;
 +}
 +
@@ -347,9 +347,10 @@ index e8c85de..d3adf85 100644
 +    {
 +        if (SDL_RemoveTimer(to->id) == SDL_FALSE)
 +	    dbg(0,"SDL_RemoveTimer (%p) failed\n", to->id);
-+        g_free(to);
-+        dbg(1,"timer %p removed\n", to);
-+	
++	else {
++            g_free(to);
++            dbg(1,"timer(%p) removed\n", to);
++	}
 +    }
 +}
 +
@@ -399,7 +400,7 @@ index e8c85de..d3adf85 100644
 +static struct event_idle *
 +event_sdl_add_idle(int priority, struct callback *cb)
 +{
-+    dbg(1,"enter priority %d %p\n", priority, cb);
++    dbg(1,"add idle priority(%d) cb(%p)\n", priority, cb);
 +    if (!idle_callbacks)
 +	idle_callbacks = g_ptr_array_new();
 +
