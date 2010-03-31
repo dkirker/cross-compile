@@ -1,6 +1,6 @@
 #
 # due to copyright reasons you need to create the file
-# pdk-1.4.tgz yourself, here is how:
+# pd1-1.4.tar.gz yourself, here is how:
 #
 #  - download the dmg file
 #  - mount it
@@ -29,7 +29,7 @@ unpack: build/.unpacked
 build/.unpacked:
 	mkdir -p build/src
 	tar -C build -z -x -f ${DL_DIR}/${NAME}-${VERSION}.tar.gz
-	mv build/pdk-${VERSION} build/pkg
+	mv build/${NAME}-${VERSION} build/pkg
 	(cd build/src; gunzip -c ../pkg/${PAXFILE} | cpio -i )
 	touch $@
 
