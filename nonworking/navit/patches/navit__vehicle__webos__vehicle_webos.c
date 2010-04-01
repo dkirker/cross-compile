@@ -1,9 +1,9 @@
 diff --git a/navit/navit/vehicle/webos/vehicle_webos.c b/navit/navit/vehicle/webos/vehicle_webos.c
 new file mode 100644
-index 0000000..88bb194
+index 0000000..fdc4032
 --- /dev/null
 +++ b/navit/navit/vehicle/webos/vehicle_webos.c
-@@ -0,0 +1,248 @@
+@@ -0,0 +1,253 @@
 +/**
 + * Navit, a modular navigation system.
 + * Copyright (C) 2005-2008 Navit Team
@@ -38,19 +38,26 @@ index 0000000..88bb194
 +#include "event.h"
 +
 +static char *vehicle_webos_prefix="webos:";
++static struct callback *cb_event=NULL;
 +
 +struct vehicle_priv {
 +	char *source;
 +	char *address;
 +	struct callback_list *cbl;
-+	double time, track, speed, altitude;
++	double time, track, speed, altitude, radius;
 +	time_t fix_time;
 +	struct coord_geo geo;
 +	struct attr ** attrs;
 +	char fixiso8601[128];
 +};
 +
-+static int
++static void
++vehicle_webos_callback_event(struct callback_list *cbl, enum attr_type type)
++{
++	callback_list_call_attr_0(cbl, type);
++}
++
++static void
 +vehicle_webos_callback(PDL_ServiceParameters *params, void *user)
 +{
 +	struct vehicle_priv *priv=user;
@@ -59,65 +66,56 @@ index 0000000..88bb194
 +	err = PDL_GetParamInt(params, "errorCode");
 +	if (err != 0) {
 +		dbg(0,"Location Callback errorCode %d\n", err);
-+		return PDL_EOTHER;
++		return /*PDL_EOTHER*/;
 +	}
 +
 +	double altitude = PDL_GetParamDouble(params, "altitude");
 +	double speed = PDL_GetParamDouble(params, "velocity") * 3.6; /* multiply with 3.6 to get kph */
 +	double track = PDL_GetParamDouble(params, "heading");
++	double horizAccuracy = PDL_GetParamDouble(params, "horizAccuracy");
 +	priv->geo.lat = PDL_GetParamDouble(params, "latitude");
 +	priv->geo.lng = PDL_GetParamDouble(params, "longitude");
 +	double time = PDL_GetParamDouble(params, "timestamp") / 1000;
 +
-+	dbg(2,"Location: %f %f %f %.12g %.12g %f\n",
++	dbg(2,"Location: %f %f %f %.12g %.12g +-%fm %f\n",
 +			altitude, 
 +			speed,
 +			track,
 +			priv->geo.lat,
 +			priv->geo.lng,
++			horizAccuracy,
 +			time);
 +
-+	if (altitude != -1) {
++	if (altitude != -1)
 +		priv->altitude = altitude;
-+	}
-+	if (speed != -1) {
++	if (speed != -1)
 +		priv->speed = speed;
-+	}
-+	if (track != -1) {
++	if (track != -1)
 +		priv->track = track;
-+	}
++	if (horizAccuracy != -1)
++		priv->radius = horizAccuracy;
 +	if (time != priv->time) {
 +		dbg(2,"NEW Time: %f\n", time);
 +		priv->time = time;
 +		priv->fix_time = 0;
-+		callback_list_call_attr_0(priv->cbl, attr_position_coord_geo);
++		//callback_list_call_attr_0(priv->cbl, attr_position_coord_geo);
++		event_add_timeout(0,0,cb_event);
 +	}
 +
-+	return PDL_NOERROR;
++	return /*PDL_NOERROR*/;
 +}
 +
 +static void
 +vehicle_webos_close(struct vehicle_priv *priv)
 +{
 +	PDL_UnregisterServiceCallback((PDL_ServiceCallbackFunc)vehicle_webos_callback);
-+#if 0
-+	PDL_EnableLocationTracking(PDL_FALSE);
-+#endif
++	g_free(cb_event);
 +}
 +
 +static int
 +vehicle_webos_open(struct vehicle_priv *priv)
 +{
 +	PDL_Err err;
-+
-+#if 0
-+	err = PDL_EnableLocationTracking(PDL_TRUE);
-+	if (err != PDL_NOERROR) {
-+		dbg(1,"PDL_EnableLocationTracking(True) failed\n");
-+		vehicle_webos_close(priv);
-+		return 0;
-+	}
-+#endif
 +
 +	err = PDL_ServiceCallWithCallback("palm://com.palm.location/startTracking", 
 +			"{subscribe:true}",
@@ -145,46 +143,50 @@ index 0000000..88bb194
 +
 +static int
 +vehicle_webos_position_attr_get(struct vehicle_priv *priv,
-+			       enum attr_type type, struct attr *attr)
++		enum attr_type type, struct attr *attr)
 +{
 +	switch (type) {
-+	case attr_position_height:
-+		dbg(1,"Altitude: %f\n", priv->altitude);
-+		attr->u.numd = &priv->altitude;
-+		break;
-+	case attr_position_speed:
-+		dbg(1,"Speed: %f\n", priv->speed);
-+		attr->u.numd = &priv->speed;
-+		break;
-+	case attr_position_direction:
-+		dbg(1,"Direction: %f\n", priv->track);
-+		attr->u.numd = &priv->track;
-+		break;
-+	case attr_position_coord_geo:
-+		dbg(1,"Coord: %.12g %.12g\n", priv->geo.lat, priv->geo.lng);
-+		attr->u.coord_geo = &priv->geo;
-+		break;
-+	case attr_position_time_iso8601:
-+		if (!priv->time)
-+			return 0;
-+
-+		if (!priv->fix_time) {
-+			struct tm tm;
-+			priv->fix_time = priv->time;
-+			if (gmtime_r(&priv->fix_time, &tm))
-+				strftime(priv->fixiso8601, sizeof(priv->fixiso8601),
-+						"%Y-%m-%dT%TZ", &tm);
-+			else {
-+				priv->fix_time = 0;
++		case attr_position_height:
++			dbg(1,"Altitude: %f\n", priv->altitude);
++			attr->u.numd = &priv->altitude;
++			break;
++		case attr_position_speed:
++			dbg(1,"Speed: %f\n", priv->speed);
++			attr->u.numd = &priv->speed;
++			break;
++		case attr_position_direction:
++			dbg(1,"Direction: %f\n", priv->track);
++			attr->u.numd = &priv->track;
++			break;
++		case attr_position_coord_geo:
++			dbg(1,"Coord: %.12g %.12g\n", priv->geo.lat, priv->geo.lng);
++			attr->u.coord_geo = &priv->geo;
++			break;
++		case attr_position_radius:
++			dbg(1,"Radius: %f\n", priv->radius);
++			attr->u.numd = &priv->radius;
++			break;
++		case attr_position_time_iso8601:
++			if (!priv->time)
 +				return 0;
-+			}
-+		}
-+		dbg(1,"Fix Time: %d %s\n", priv->fix_time, priv->fixiso8601);
-+		attr->u.str=priv->fixiso8601;
 +
-+		break;
-+	default:
-+		return 0;
++			if (!priv->fix_time) {
++				struct tm tm;
++				priv->fix_time = priv->time;
++				if (gmtime_r(&priv->fix_time, &tm))
++					strftime(priv->fixiso8601, sizeof(priv->fixiso8601),
++							"%Y-%m-%dT%TZ", &tm);
++				else {
++					priv->fix_time = 0;
++					return 0;
++				}
++			}
++			dbg(1,"Fix Time: %d %s\n", priv->fix_time, priv->fixiso8601);
++			attr->u.str=priv->fixiso8601;
++
++			break;
++		default:
++			return 0;
 +	}
 +	attr->type = type;
 +	return 1;
@@ -194,23 +196,23 @@ index 0000000..88bb194
 +vehicle_webos_set_attr_do(struct vehicle_priv *priv, struct attr *attr, int init)
 +{
 +	switch (attr->type) {
-+	case attr_source:
-+		if (strncmp(vehicle_webos_prefix,attr->u.str,strlen(vehicle_webos_prefix))) {
-+			dbg(1,"source must start with '%s'\n", vehicle_webos_prefix);
++		case attr_source:
++			if (strncmp(vehicle_webos_prefix,attr->u.str,strlen(vehicle_webos_prefix))) {
++				dbg(1,"source must start with '%s'\n", vehicle_webos_prefix);
++				return 0;
++			}
++			g_free(priv->source);
++			priv->source=g_strdup(attr->u.str);
++			priv->address=priv->source+strlen(vehicle_webos_prefix);
++			if (!priv->address[0])
++				priv->address=NULL;
++			if (!init) {
++				vehicle_webos_close(priv);
++				vehicle_webos_open(priv);
++			}
++			return 1;
++		default:
 +			return 0;
-+		}
-+		g_free(priv->source);
-+		priv->source=g_strdup(attr->u.str);
-+		priv->address=priv->source+strlen(vehicle_webos_prefix);
-+		if (!priv->address[0])
-+			priv->address=NULL;
-+		if (!init) {
-+			vehicle_webos_close(priv);
-+			vehicle_webos_open(priv);
-+		}
-+		return 1;
-+	default:
-+		return 0;
 +	}
 +}
 +
@@ -228,12 +230,12 @@ index 0000000..88bb194
 +
 +static struct vehicle_priv *
 +vehicle_webos_new(struct vehicle_methods
-+		      *meth, struct callback_list
-+		      *cbl, struct attr **attrs)
++		*meth, struct callback_list
++		*cbl, struct attr **attrs)
 +{
 +	struct vehicle_priv *ret;
-+	
-+	
++
++
 +	ret = g_new0(struct vehicle_priv, 1);
 +	ret->attrs = attrs;
 +	ret->cbl = cbl;
@@ -242,6 +244,8 @@ index 0000000..88bb194
 +		vehicle_webos_set_attr_do(ret, *attrs, 1);
 +		attrs++;
 +	}
++	cb_event = callback_new_2(callback_cast(vehicle_webos_callback_event),
++			cbl, attr_position_coord_geo);
 +	vehicle_webos_open(ret);
 +	return ret;
 +}
@@ -252,3 +256,4 @@ index 0000000..88bb194
 +	dbg(1, "enter\n");
 +	plugin_register_vehicle_type("webos", vehicle_webos_new);
 +}
++
