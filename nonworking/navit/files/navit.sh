@@ -12,5 +12,5 @@ test -d $NAVIT_USER_DATADIR || mkdir -p $NAVIT_USER_DATADIR
 test -e $NAVIT_USER_DATADIR/navit.xml || cp navit.xml.dist $NAVIT_USER_DATADIR/navit.xml
 #date > $NAVIT_LOGFILE
 
-exec /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit/bin/navit -c $NAVIT_USER_DATADIR/navit.xml
+pgrep "^navit$" || exec /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit/bin/navit -c $NAVIT_USER_DATADIR/navit.xml
 
