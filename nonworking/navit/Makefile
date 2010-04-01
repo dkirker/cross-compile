@@ -3,7 +3,7 @@ VERSION = 0.2.0
 DEPENDS = jpeg libpng12 freetype fontconfig libsdl libsdl-image ../nonworking/pdl
 SVN_URL = https://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
-REVISION= 3099
+REVISION= 3110
 
 .PHONY: unpack
 unpack: build/.unpacked
