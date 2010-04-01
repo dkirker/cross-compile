@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..0786f5a 100644
+index e8c85de..7be589e 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -33,6 +33,7 @@
@@ -250,7 +250,7 @@ index e8c85de..0786f5a 100644
  
      this->overlay_enable = 1;
  
-@@ -2191,12 +2270,215 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2191,12 +2270,220 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
          this->aa = attr->u.num;
  
      this->resize_callback_initial=1;
@@ -332,10 +332,15 @@ index e8c85de..0786f5a 100644
 +    struct event_timeout * ret =  g_new0(struct event_timeout, 1);
 +    if(!ret)
 +	return ret;
++    dbg(1,"timer(%p) multi(%d) interval(%d) cb(%p) added\n",ret, multi, timeout, cb);
 +    ret->multi = multi;
 +    ret->cb = cb;
-+    ret->id = SDL_AddTimer(timeout, sdl_timer_callback, ret);
-+    dbg(1,"timer(%p) multi(%d) interval(%d) cb(%p) added\n",ret, multi, timeout, cb);
++    if (!timeout && multi != 1) {
++	ret->id = 0;
++	sdl_timer_callback(0, ret);
++    }
++    else
++    	ret->id = SDL_AddTimer(timeout, sdl_timer_callback, ret);
 +    return ret;
 +}
 +
@@ -345,7 +350,8 @@ index e8c85de..0786f5a 100644
 +    dbg(2,"enter %p\n", to);
 +    if(to!=NULL)
 +    {
-+        if (SDL_RemoveTimer(to->id) == SDL_FALSE)
++	int ret = to->id ? SDL_RemoveTimer(to->id) : SDL_TRUE;
++        if (ret == SDL_FALSE)
 +	    dbg(0,"SDL_RemoveTimer (%p) failed\n", to->id);
 +	else {
 +            g_free(to);
@@ -362,7 +368,7 @@ index e8c85de..0786f5a 100644
 +    struct idle_task *task = param;
 +    idle_events_pending++;
 +    dbg(2,"deploying idle task (%p) %i\n", task->cb, idle_events_pending);
-+    event_sdl_add_timeout(1, 2, task->cb);
++    event_sdl_add_timeout(0, 2, task->cb);
 +}
 +
 +static void
@@ -401,8 +407,6 @@ index e8c85de..0786f5a 100644
 +event_sdl_add_idle(int priority, struct callback *cb)
 +{
 +    dbg(1,"add idle priority(%d) cb(%p)\n", priority, cb);
-+    if (!idle_callbacks)
-+	idle_callbacks = g_ptr_array_new();
 +
 +    struct idle_task *task = g_new0(struct idle_task, 1);
 +    task->priority = priority;
@@ -450,6 +454,7 @@ index e8c85de..0786f5a 100644
 +static struct event_priv *
 +event_sdl_new(struct event_methods* methods)
 +{
++    idle_callbacks = g_ptr_array_new();
 +    *methods = event_sdl_methods;
 +    return NULL;
 +}
