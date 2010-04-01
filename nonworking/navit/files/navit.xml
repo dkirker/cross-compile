@@ -46,7 +46,7 @@
 		<!--<gui type="internal" enabled="yes">-->
 
 		<gui type="internal" menubar="1" toolbar="1" statusbar="1" keyboard="true"
-			font_size="350" icon_xs="32" icon_s="96" icon_l="96"><![CDATA[
+			font_size="350" icon_xs="32" icon_s="48" icon_l="48"><![CDATA[
 			<html>
 				<a name='Main Menu'><text>Main menu</text>
 					<a href='#Actions'><img src='gui_actions'>Actions</img></a>
