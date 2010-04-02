@@ -65,10 +65,11 @@ build/%.built: build/.unpacked build/.patched build/.configured
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src/navit/xpm/ ; make )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
+	${SB2} mkdir -p ${APP_DIR}/dist_files/
 	${SB2} cp files/appinfo.json ${APP_DIR}/appinfo.json
 	${SB2} cp files/Icon.png ${APP_DIR}/Icon.png
 	${SB2} cp files/navit.sh ${APP_DIR}/navit.sh
-	${SB2} cp files/navit.xml ${APP_DIR}/navit.xml.dist
+	${SB2} cp files/navit*.xml ${APP_DIR}/dist_files/
 	${SB2} cp files/osd_*.png ${APP_DIR}/share/navit/xpm/
 	touch $@
 

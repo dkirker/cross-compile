@@ -9,7 +9,7 @@ export NAVIT_USER_DATADIR=/media/internal/.app-storage/file_.media.cryptofs.apps
 export LD_LIBRARY_PATH=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit/lib
 
 test -d $NAVIT_USER_DATADIR || mkdir -p $NAVIT_USER_DATADIR
-test -e $NAVIT_USER_DATADIR/navit.xml || cp navit.xml.dist $NAVIT_USER_DATADIR/navit.xml
+test -e $NAVIT_USER_DATADIR/navit.xml || cp dist_files/navit*.xml $NAVIT_USER_DATADIR/
 #date > $NAVIT_LOGFILE
 
 pgrep "^navit$" || exec /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit/bin/navit -c $NAVIT_USER_DATADIR/navit.xml
