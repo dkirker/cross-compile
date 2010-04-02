@@ -1,9 +1,9 @@
 diff --git a/navit/navit/vehicle/webos/vehicle_webos.c b/navit/navit/vehicle/webos/vehicle_webos.c
 new file mode 100644
-index 0000000..fdc4032
+index 0000000..9dd768e
 --- /dev/null
 +++ b/navit/navit/vehicle/webos/vehicle_webos.c
-@@ -0,0 +1,253 @@
+@@ -0,0 +1,255 @@
 +/**
 + * Navit, a modular navigation system.
 + * Copyright (C) 2005-2008 Navit Team
@@ -210,6 +210,8 @@ index 0000000..fdc4032
 +				vehicle_webos_close(priv);
 +				vehicle_webos_open(priv);
 +			}
++			return 1;
++		case attr_profilename:
 +			return 1;
 +		default:
 +			return 0;
