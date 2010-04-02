@@ -37,7 +37,6 @@ build/.patched:
 	$(foreach patchfile, $(shell ls patches), \
 		patch -p0 build/src/`echo ${patchfile} | sed 's#__#/#g'` < patches/$(patchfile); \
 	)
-	cp navit.xml build/src/navit/
 	touch $@
 
 build/.configured: build/.aclocal
