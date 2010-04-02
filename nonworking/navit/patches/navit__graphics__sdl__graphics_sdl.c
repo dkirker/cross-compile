@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..7be589e 100644
+index e8c85de..ba5155d 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -33,6 +33,7 @@
@@ -21,11 +21,23 @@ index e8c85de..7be589e 100644
  
  
  #undef DEBUG
-@@ -141,6 +142,29 @@ struct graphics_priv {
+@@ -141,6 +142,41 @@ struct graphics_priv {
  
  static int dummy;
  
 +// PRE
++#define WEBOS_KEY_SHIFT 0x130
++#define WEBOS_KEY_SYM 0x131
++#define WEBOS_KEY_ORANGE 0x133
++
++#define WEBOS_KEY_MOD_SHIFT 0x1
++#define WEBOS_KEY_MOD_ORANGE 0x2
++#define WEBOS_KEY_MOD_SYM 0x4
++
++#define WEBOS_KEY_MOD_SHIFT_STICKY 0x11
++#define WEBOS_KEY_MOD_ORANGE_STICKY 0x22
++#define WEBOS_KEY_MOD_SYM_STICKY 0x44
++
 +struct event_timeout {
 +    SDL_TimerID id;
 +    int multi;
@@ -51,7 +63,7 @@ index e8c85de..7be589e 100644
  
  struct graphics_font_priv {
  #ifdef SDL_TTF
-@@ -167,6 +191,7 @@ struct graphics_image_priv {
+@@ -167,6 +203,7 @@ struct graphics_image_priv {
      SDL_Surface *img;
  };
  
@@ -59,7 +71,7 @@ index e8c85de..7be589e 100644
  
  #ifdef LINUX_TOUCHSCREEN
  static int input_ts_exit(struct graphics_priv *gr);
-@@ -193,7 +218,8 @@ graphics_destroy(struct graphics_priv *gr)
+@@ -193,7 +230,8 @@ graphics_destroy(struct graphics_priv *gr)
  #ifdef LINUX_TOUCHSCREEN
          input_ts_exit(gr);
  #endif
@@ -69,7 +81,7 @@ index e8c85de..7be589e 100644
      }
  
      g_free(gr);
-@@ -202,6 +228,7 @@ graphics_destroy(struct graphics_priv *gr)
+@@ -202,6 +240,7 @@ graphics_destroy(struct graphics_priv *gr)
  /* graphics_font */
  static char *fontfamilies[]={
  	"Liberation Mono",
@@ -77,10 +89,16 @@ index e8c85de..7be589e 100644
  	"Arial",
  	"DejaVu Sans",
  	"NcrBI4nh",
-@@ -1845,6 +1872,18 @@ static gboolean graphics_sdl_idle(void *data)
-     int ret, key;
-     char keybuf[2];
- 
+@@ -1842,8 +1881,21 @@ static gboolean graphics_sdl_idle(void *data)
+     struct input_event ie;
+     ssize_t ss;
+ #endif
+-    int ret, key;
+-    char keybuf[2];
++    int ret; //, key;
++    char keybuf[8];
++    char key_mod = 0;
++
 +    dbg(1,"data=%p\n", data);
 +    //Palm Pre mode
 +    if(data==NULL) {
@@ -92,13 +110,15 @@ index e8c85de..7be589e 100644
 +    	    return FALSE;
 +	}
 +    }
-+
+ 
      /* generate the initial resize callback, so the gui knows W/H
  
-        its unsafe to do this directly inside register_resize_callback;
-@@ -1947,12 +1986,14 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1945,14 +1997,16 @@ static gboolean graphics_sdl_idle(void *data)
+     }
+ #endif
  
-     while(1)
+-    while(1)
++    while(!quit_event_loop)
      {
 -        ret = SDL_PollEvent(&ev);
 +        //ret = SDL_PollEvent(&ev);
@@ -113,7 +133,140 @@ index e8c85de..7be589e 100644
          switch(ev.type)
          {
              case SDL_MOUSEMOTION:
-@@ -2062,6 +2103,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1965,59 +2019,118 @@ static gboolean graphics_sdl_idle(void *data)
+ 
+             case SDL_KEYDOWN:
+             {
++		memset(&keybuf, 0, sizeof(keybuf));
+                 switch(ev.key.keysym.sym)
+                 {
+                     case SDLK_LEFT:
+                     {
+-                        key = NAVIT_KEY_LEFT;
++                        keybuf[0] = NAVIT_KEY_LEFT;
+                         break;
+                     }
+                     case SDLK_RIGHT:
+                     {
+-                        key = NAVIT_KEY_RIGHT;
++                        keybuf[0] = NAVIT_KEY_RIGHT;
+                         break;
+                     }
+                     case SDLK_BACKSPACE:
+                     {
+-                        key = NAVIT_KEY_BACKSPACE;
++                        keybuf[0] = NAVIT_KEY_BACKSPACE;
+                         break;
+                     }
+                     case SDLK_RETURN:
+                     {
+-                        key = NAVIT_KEY_RETURN;
++                        keybuf[0] = NAVIT_KEY_RETURN;
+                         break;
+                     }
+                     case SDLK_DOWN:
+                     {
+-                        key = NAVIT_KEY_DOWN;
++                        keybuf[0] = NAVIT_KEY_DOWN;
+                         break;
+                     }
+                     case SDLK_PAGEUP:
+                     {
+-                        key = NAVIT_KEY_ZOOM_OUT;
++                        keybuf[0] = NAVIT_KEY_ZOOM_OUT;
+                         break;
+                     }
+                     case SDLK_UP:
+                     {
+-                        key = NAVIT_KEY_UP;
++                        keybuf[0] = NAVIT_KEY_UP;
+                         break;
+                     }
+                     case SDLK_PAGEDOWN:
+                     {
+-                        key = NAVIT_KEY_ZOOM_IN;
++                        keybuf[0] = NAVIT_KEY_ZOOM_IN;
+                         break;
+                     }
+-                    default:
++		    case WEBOS_KEY_SHIFT:
++		    {
++			if ((key_mod & WEBOS_KEY_MOD_SHIFT_STICKY) == WEBOS_KEY_MOD_SHIFT_STICKY)
++			    key_mod &= ~(WEBOS_KEY_MOD_SHIFT_STICKY);
++			else if ((key_mod & WEBOS_KEY_MOD_SHIFT) == WEBOS_KEY_MOD_SHIFT)
++			    key_mod |= WEBOS_KEY_MOD_SHIFT_STICKY;
++			else
++			    key_mod |= WEBOS_KEY_MOD_SHIFT;
++			break;
++		    }
++		    case WEBOS_KEY_ORANGE:
++		    {
++			if ((key_mod & WEBOS_KEY_MOD_ORANGE_STICKY) == WEBOS_KEY_MOD_ORANGE_STICKY)
++			    key_mod &= ~(WEBOS_KEY_MOD_ORANGE_STICKY);
++			else if ((key_mod & WEBOS_KEY_MOD_ORANGE) == WEBOS_KEY_MOD_ORANGE)
++			    key_mod |= WEBOS_KEY_MOD_ORANGE_STICKY;
++			else
++			    key_mod |= WEBOS_KEY_MOD_ORANGE;
++			break;
++		    }
++		    case WEBOS_KEY_SYM:
++		    {
++			/* Toggle the on-screen keyboard */
++			//callback_list_call_attr_1(gr->cbl, attr_keyboard_toggle);	// Not implemented yet
++			break;
++		    }
++             	    default:
+                     {
+-                        key = 0;
++                        if (ev.key.keysym.unicode < 0x80 && ev.key.keysym.unicode > 0) {
++			    keybuf[0] = (char)ev.key.keysym.unicode;
++			    if ((key_mod & WEBOS_KEY_MOD_ORANGE) == WEBOS_KEY_MOD_ORANGE) {
++				switch(keybuf[0]) {
++				    case 'e': keybuf[0] = '1'; break;
++				    case 'r': keybuf[0] = '2'; break;
++				    case 't': keybuf[0] = '3'; break;
++				    case 'd': keybuf[0] = '4'; break;
++				    case 'f': keybuf[0] = '5'; break;
++				    case 'g': keybuf[0] = '6'; break;
++				    case 'x': keybuf[0] = '7'; break;
++				    case 'c': keybuf[0] = '8'; break;
++				    case 'v': keybuf[0] = '9'; break;
++				    case '@': keybuf[0] = '0'; break;
++				    case 'u': strncpy(keybuf, "ü", sizeof(keybuf)); break;
++				    case 'a': strncpy(keybuf, "ä", sizeof(keybuf)); break;
++				    case 'o': strncpy(keybuf, "ö", sizeof(keybuf)); break;
++				    case 's': strncpy(keybuf, "ß", sizeof(keybuf)); break;
++				}
++			    }
++			    /*if ((key_mod & WEBOS_KEY_MOD_SHIFT) == WEBOS_KEY_MOD_SHIFT)
++				key -= 32;*/
++			    if ((key_mod & WEBOS_KEY_MOD_SHIFT_STICKY) != WEBOS_KEY_MOD_SHIFT_STICKY)
++				key_mod &= ~(WEBOS_KEY_MOD_SHIFT_STICKY);
++			    if ((key_mod & WEBOS_KEY_MOD_ORANGE_STICKY) != WEBOS_KEY_MOD_ORANGE_STICKY)
++			    	key_mod &= ~(WEBOS_KEY_MOD_ORANGE_STICKY);
++			}
++			else {
++			    dbg(0,"Unknown key sym: %x\n", ev.key.keysym.sym);
++			}
++			
+                         break;
+                     }
+                 }
++			  
++		dbg(0,"key mod: 0x%x\n", key_mod);
+ 
+-                keybuf[0] = key;
+-                keybuf[1] = '\0';
+-		callback_list_call_attr_1(gr->cbl, attr_keypress, (void *)keybuf);
+-
++		if (keybuf[0]) {
++		    dbg(0,"key: %s 0x%x\n", keybuf, keybuf);
++		    callback_list_call_attr_1(gr->cbl, attr_keypress, (void *)keybuf);
++		}
+                 break;
+             }
+ 
+@@ -2062,6 +2175,7 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_QUIT:
              {
@@ -121,7 +274,7 @@ index e8c85de..7be589e 100644
                  navit_destroy(gr->nav);
                  break;
              }
-@@ -2082,6 +2124,27 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2082,6 +2196,27 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
  
@@ -149,7 +302,7 @@ index e8c85de..7be589e 100644
              default:
              {
  #ifdef DEBUG
-@@ -2090,6 +2153,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2090,6 +2225,7 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
          }
@@ -157,7 +310,7 @@ index e8c85de..7be589e 100644
      }
  
      return TRUE;
-@@ -2099,6 +2163,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2099,6 +2235,7 @@ static gboolean graphics_sdl_idle(void *data)
  static struct graphics_priv *
  graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr **attrs, struct callback_list *cbl)
  {
@@ -165,7 +318,7 @@ index e8c85de..7be589e 100644
      struct graphics_priv *this=g_new0(struct graphics_priv, 1);
      struct attr *attr;
      int ret;
-@@ -2107,30 +2172,38 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2107,30 +2244,38 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      this->nav = nav;
      this->cbl = cbl;
  
@@ -209,7 +362,7 @@ index e8c85de..7be589e 100644
  
      if ((attr=attr_search(attrs, NULL, attr_w)))
          w=attr->u.num;
-@@ -2149,17 +2222,19 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2149,18 +2294,21 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
      this->screen = SDL_SetVideoMode(w, h, this->video_bpp, this->video_flags);
  
@@ -232,9 +385,11 @@ index e8c85de..7be589e 100644
 +    h = this->screen->h;
 +
      SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
++    SDL_EnableUNICODE(1);
  
      SDL_WM_SetCaption("navit", NULL);
-@@ -2180,9 +2255,13 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+ 
+@@ -2180,9 +2328,13 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      sge_Lock_ON();
  #endif
  
@@ -250,7 +405,7 @@ index e8c85de..7be589e 100644
  
      this->overlay_enable = 1;
  
-@@ -2191,12 +2270,220 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2191,12 +2343,222 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
          this->aa = attr->u.num;
  
      this->resize_callback_initial=1;
@@ -285,6 +440,7 @@ index e8c85de..7be589e 100644
 +
 +    if (timeout->multi!=1) {
 +    	g_free(timeout);
++	timeout = NULL;
 +	return 0; // cancel timer
 +    }
 +    return interval; // reactivate timer
@@ -296,17 +452,16 @@ index e8c85de..7be589e 100644
 +event_sdl_main_loop_run(void)
 +{
 +    dbg(1,"enter\n");
-+    while(quit_event_loop==0) {
-+	graphics_sdl_idle(NULL);
-+    }
++    graphics_sdl_idle(NULL);
++    PDL_ScreenTimeoutEnable(PDL_TRUE);
++    PDL_Quit();
 +}
 +
 +static void
 +event_sdl_main_loop_quit(void)
 +{
-+    PDL_ScreenTimeoutEnable(PDL_TRUE);
-+    PDL_Quit();
 +    dbg(1,"enter\n");
++    quit_event_loop = 1;
 +}
 +
 +/* Watch */
@@ -425,10 +580,12 @@ index e8c85de..7be589e 100644
 +{
 +    dbg(1,"remove %p\n", task);
 +    g_ptr_array_remove(idle_callbacks, (struct idle_task *)task);
++#if 0
 +    if (idle_callbacks->len == 0) {
 +	event_remove_timeout(idle_timer);
 +	idle_timer = NULL;
 +    }
++#endif
 +}
 +
 +/* callback */
