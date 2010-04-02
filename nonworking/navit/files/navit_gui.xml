@@ -30,8 +30,6 @@ If you don't like the internal gui, set enabled=yes for the following tag and en
 	</a>
 	<a name='Settings Display'><text>Display</text>
 		<img src='gui_display' onclick='setting_layout()'><text>Layout</text></img>
-		<img cond='fullscreen==0' src='gui_fullscreen' onclick='fullscreen=1'><text>Fullscreen</text></img>
-		<img cond='fullscreen==1' src='gui_leave_fullscreen' onclick='fullscreen=0'><text>Window Mode</text></img>
 		<img cond='navit.pitch==0' src='gui_map' onclick='navit.pitch=pitch;redraw_map();back_to_map()'><text>3D</text></img>
 		<img cond='navit.pitch!=0' src='gui_map' onclick='navit.pitch=0;redraw_map();back_to_map()'><text>2D</text></img>
 	</a>
@@ -66,15 +64,6 @@ If you don't like the internal gui, set enabled=yes for the following tag and en
 <osd enabled="yes" type="text" label="${vehicle.position_speed} / ${tracking.item.route_speed}"
  	x="-180"	y="60"	w="180" h="25"	align="8"
  	background_color="#000000cc" font_size="280"/>
-
-<!--
-<osd enabled="yes" type="compass"
-	x="-60" y="30"	w="60"	h="70"
-	background_color="#000000cc" font_size="150"/>
-<osd enabled="no" type="gps_status"
- x="425" y="0" w="65" h="30" align="0" background_color="#000000cc" font_size="300" />
-<osd enabled="yes" type="scale" font_size="150" x="0" y="150" w="320" h="50" />
--->
 <osd enabled="yes" type="button" command="zoom_in()"
 	x="-64"	y="-84"
 	src="osd_zoom_in.png"/>
@@ -83,7 +72,7 @@ If you don't like the internal gui, set enabled=yes for the following tag and en
 	src="osd_zoom_out.png"/>
 <osd enabled="yes" type="toggle_announcer"
 	x="-64"	y="-148" w="64"	h="64"
-	icon_src="$NAVIT_SHAREDIR/xpm/gui_sound_64_64.png"
+	icon_src="$NAVIT_SHAREDIR/xpm/%s_64_64.png"
 	background_color="#000000cc" />
 <osd enabled="yes" type="button" command="zoom_to_route()"
 	x="0" y="-148" w="64" h="64"
