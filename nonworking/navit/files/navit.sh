@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #unset LC_ALL
-#export LANG=de_DE.UTF-8
+export LANG=de_DE.UTF-8
 #export LC_MESSAGES=de_DE.UTF-8
 
 export NAVIT_USER_DATADIR=/media/internal/.app-storage/file_.media.cryptofs.apps.usr.palm.applications.org.webosinternals.navit_0
