@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export APP_DIR=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
+APP_DIR=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 export NAVIT_USER_DATADIR=/media/internal/.app-storage/file_.media.cryptofs.apps.usr.palm.applications.org.webosinternals.navit_0
 export LD_LIBRARY_PATH=$APP_DIR/lib
 
