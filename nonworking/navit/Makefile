@@ -1,3 +1,21 @@
+#
+# How to make localization work (maybe):
+#
+# (WARNING, this involves changes to the root-partition of your device!! You need to be very careful!)
+# 
+# The C-lib expects a locale-archive in /usr/lib/locale/locale-archive.
+# This path is hardcoded. I don't know how to generate one, but for me the following works:
+#
+# - create dir /media/cryptofs/apps/usr/lib/locale/
+# - make / writable, goto /usr/lib
+# - create symlink to /media/cryptofs/apps/usr/lib/locale/, make / read-only again
+# - copy the locale-archive of your developer machine to /media/cryptofs/apps/usr/lib/locale/
+#
+# You need to adjust the LANG-variable in navit.sh
+#
+# Good luck ...
+#
+
 NAME    = navit
 VERSION = 0.2.0
 DEPENDS = jpeg libpng12 freetype fontconfig libsdl libsdl-image ../nonworking/pdl
