@@ -1,9 +1,9 @@
 diff --git a/navit/navit/vehicle/webos/vehicle_webos.c b/navit/navit/vehicle/webos/vehicle_webos.c
 new file mode 100644
-index 0000000..ee6d8c4
+index 0000000..82b4cb6
 --- /dev/null
 +++ b/navit/navit/vehicle/webos/vehicle_webos.c
-@@ -0,0 +1,259 @@
+@@ -0,0 +1,258 @@
 +/**
 + * Navit, a modular navigation system.
 + * Copyright (C) 2005-2008 Navit Team
@@ -109,7 +109,6 @@ index 0000000..ee6d8c4
 +{
 +	PDL_UnregisterServiceCallback((PDL_ServiceCallbackFunc)vehicle_webos_callback);
 +	callback_list_destroy(priv->event_cbl);
-+	callback_destroy(priv->event_cb);
 +}
 +
 +static int
