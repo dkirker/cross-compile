@@ -12,7 +12,7 @@ build/.unpacked:
 	mkdir -p build
 #	svn checkout -r ${REVISION} -q --non-interactive ${SVN_URL} build/src
 	wget -O build/espeak-${VERSION}.zip http://espeak.sourceforge.net/test/espeak-${VERSION}.zip
-	( cd build ; unzip espeak-${VERSION}.zip ; rm -rf src ; cp -a espeak-1.43.13 src )
+	( cd build ; unzip espeak-${VERSION}.zip ; rm -rf src ; cp -a espeak-${VERSION} src )
 	touch $@
 
 update: build/.unpacked
