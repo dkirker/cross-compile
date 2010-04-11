@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..136d8db 100644
+index e8c85de..0c18a4f 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -33,6 +33,7 @@
@@ -21,7 +21,7 @@ index e8c85de..136d8db 100644
  
  
  #undef DEBUG
-@@ -141,6 +142,42 @@ struct graphics_priv {
+@@ -141,6 +142,39 @@ struct graphics_priv {
  
  static int dummy;
  
@@ -56,15 +56,12 @@ index e8c85de..136d8db 100644
 +static int quit_event_loop=0; // quit the main event loop
 +static struct graphics_priv* the_graphics=NULL; 
 +static int the_graphics_count=0; // count how many graphics objects are created
-+static struct callback *idle_cb=NULL;
-+static struct event_timeout* idle_timer=NULL;
-+static int idle_events_pending=0;
-+static GPtrArray *idle_callbacks=NULL;
++static GPtrArray *idle_tasks=NULL;
 +// PRE 
  
  struct graphics_font_priv {
  #ifdef SDL_TTF
-@@ -167,7 +204,6 @@ struct graphics_image_priv {
+@@ -167,7 +201,6 @@ struct graphics_image_priv {
      SDL_Surface *img;
  };
  
@@ -72,7 +69,7 @@ index e8c85de..136d8db 100644
  #ifdef LINUX_TOUCHSCREEN
  static int input_ts_exit(struct graphics_priv *gr);
  #endif
-@@ -193,7 +229,8 @@ graphics_destroy(struct graphics_priv *gr)
+@@ -193,7 +226,8 @@ graphics_destroy(struct graphics_priv *gr)
  #ifdef LINUX_TOUCHSCREEN
          input_ts_exit(gr);
  #endif
@@ -82,7 +79,7 @@ index e8c85de..136d8db 100644
      }
  
      g_free(gr);
-@@ -202,6 +239,7 @@ graphics_destroy(struct graphics_priv *gr)
+@@ -202,6 +236,7 @@ graphics_destroy(struct graphics_priv *gr)
  /* graphics_font */
  static char *fontfamilies[]={
  	"Liberation Mono",
@@ -90,7 +87,7 @@ index e8c85de..136d8db 100644
  	"Arial",
  	"DejaVu Sans",
  	"NcrBI4nh",
-@@ -1842,8 +1880,21 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1842,8 +1877,21 @@ static gboolean graphics_sdl_idle(void *data)
      struct input_event ie;
      ssize_t ss;
  #endif
@@ -114,16 +111,35 @@ index e8c85de..136d8db 100644
  
      /* generate the initial resize callback, so the gui knows W/H
  
-@@ -1945,14 +1996,16 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1945,14 +1993,35 @@ static gboolean graphics_sdl_idle(void *data)
      }
  #endif
  
 -    while(1)
++    unsigned int idle_tasks_idx=0;
++    struct idle_task *task;
++
 +    while(!quit_event_loop)
      {
 -        ret = SDL_PollEvent(&ev);
-+        //ret = SDL_PollEvent(&ev);
-+        ret = SDL_WaitEvent(&ev);
++	ret = 0;
++	if(idle_tasks->len > 0) 
++	{
++     	    while (!(ret = SDL_PollEvent(&ev)) && idle_tasks->len > 0)
++	    {
++		if (idle_tasks_idx >= idle_tasks->len)
++		    idle_tasks_idx = 0;
++
++		dbg(3,"idle_tasks_idx(%d)\n",idle_tasks_idx);
++		task = (struct idle_task *)g_ptr_array_index(idle_tasks,idle_tasks_idx);
++		callback_call_0(task->cb);
++
++		idle_tasks_idx++;
++	    }
++	}
++	if (!ret)	// If we get here there are no idle_tasks and we have no events pending
++	    ret = SDL_WaitEvent(&ev);
++
          if(ret == 0)
          {
              break;
@@ -134,7 +150,7 @@ index e8c85de..136d8db 100644
          switch(ev.type)
          {
              case SDL_MOUSEMOTION:
-@@ -1965,59 +2018,118 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1965,59 +2034,118 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_KEYDOWN:
              {
@@ -267,7 +283,7 @@ index e8c85de..136d8db 100644
                  break;
              }
  
-@@ -2062,6 +2174,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2062,6 +2190,7 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_QUIT:
              {
@@ -275,39 +291,37 @@ index e8c85de..136d8db 100644
                  navit_destroy(gr->nav);
                  break;
              }
-@@ -2082,6 +2195,31 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2082,6 +2211,29 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
  
 +            case SDL_USEREVENT:
 +            {
 +		SDL_UserEvent userevent = ev.user;
-+                if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_TIMER && !userevent.data2) {
++                if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_TIMER) 
++		{
 +    		    struct callback *cb = (struct callback *)userevent.data1;
 +                    dbg(1, "SDL_USEREVENT timer received cb(%p)\n", cb);
 +		    callback_call_0(cb);
 +                }
-+ 		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_CALL_CALLBACK && !userevent.data2) {
-+    		    struct callback *cbl = (struct callback_list *)userevent.data1;
++ 		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_CALL_CALLBACK) 
++		{
++    		    struct callback_list *cbl = (struct callback_list *)userevent.data1;
 +                    dbg(1, "SDL_USEREVENT call_callback received cbl(%p)\n", cbl);
 +		    callback_list_call_0(cbl);
 + 		}
-+       		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_IDLE_EVENT && !userevent.data2) {
-+    		    struct callback *cb = (struct callback *)userevent.data1;
-+                    dbg(1, "SDL_USEREVENT idle_event received cb(%p)\n", cb);
-+		    callback_call_0(cb);
-+		    idle_events_pending--;
-+		}
-+                else {
++       		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_IDLE_EVENT) 
++                    dbg(1, "SDL_USEREVENT idle_event received\n");
++                else 
 +                    dbg(1, "unknown SDL_USEREVENT\n");
-+                }
-+                break;
++                
++		break;
 +            }
 +
              default:
              {
  #ifdef DEBUG
-@@ -2090,6 +2228,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2090,6 +2242,7 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
          }
@@ -315,7 +329,7 @@ index e8c85de..136d8db 100644
      }
  
      return TRUE;
-@@ -2099,6 +2238,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2099,6 +2252,7 @@ static gboolean graphics_sdl_idle(void *data)
  static struct graphics_priv *
  graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr **attrs, struct callback_list *cbl)
  {
@@ -323,7 +337,7 @@ index e8c85de..136d8db 100644
      struct graphics_priv *this=g_new0(struct graphics_priv, 1);
      struct attr *attr;
      int ret;
-@@ -2107,30 +2247,38 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2107,30 +2261,37 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      this->nav = nav;
      this->cbl = cbl;
  
@@ -337,7 +351,6 @@ index e8c85de..136d8db 100644
      }
  
 +    PDL_SetOrientation(PDL_ORIENTATION_0);
-+    PDL_ScreenTimeoutEnable(PDL_FALSE);
 +
  #ifdef SDL_TTF
      ret = TTF_Init();
@@ -367,7 +380,7 @@ index e8c85de..136d8db 100644
  
      if ((attr=attr_search(attrs, NULL, attr_w)))
          w=attr->u.num;
-@@ -2149,18 +2297,21 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2149,18 +2310,21 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
      this->screen = SDL_SetVideoMode(w, h, this->video_bpp, this->video_flags);
  
@@ -394,7 +407,7 @@ index e8c85de..136d8db 100644
  
      SDL_WM_SetCaption("navit", NULL);
  
-@@ -2180,9 +2331,13 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2180,9 +2344,13 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      sge_Lock_ON();
  #endif
  
@@ -410,7 +423,7 @@ index e8c85de..136d8db 100644
  
      this->overlay_enable = 1;
  
-@@ -2191,12 +2346,232 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2191,12 +2359,211 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
          this->aa = attr->u.num;
  
      this->resize_callback_initial=1;
@@ -454,6 +467,7 @@ index e8c85de..136d8db 100644
 +event_sdl_main_loop_run(void)
 +{
 +    dbg(1,"enter\n");
++    PDL_ScreenTimeoutEnable(PDL_FALSE);
 +    graphics_sdl_idle(NULL);
 +    PDL_ScreenTimeoutEnable(PDL_TRUE);
 +    PDL_Quit();
@@ -515,40 +529,9 @@ index e8c85de..136d8db 100644
 +
 +/* Idle */
 +
-+static void
-+sdl_idle_callback_enqueue(void *param, void *userdata) 
-+{
-+    struct idle_task *task = param;
-+    SDL_Event event;
-+    SDL_UserEvent userevent;
-+
-+    //SDL_Delay(1);
-+
-+    idle_events_pending++;
-+    dbg(2,"deploying idle task (%p) %i\n", task->cb, idle_events_pending);
-+
-+    userevent.type = SDL_USEREVENT;
-+    userevent.code = SDL_USEREVENT_CODE_IDLE_EVENT;
-+    userevent.data1 = task->cb;
-+    userevent.data2 = NULL;
-+
-+    event.type = SDL_USEREVENT;
-+    event.user = userevent;
-+
-+    SDL_PushEvent (&event);
-+}
-+
-+static void
-+sdl_idle_timeout_callback(GPtrArray *idle_callbacks)
-+{
-+    if (!idle_events_pending && idle_callbacks->len > 0) {
-+	g_ptr_array_foreach(idle_callbacks, sdl_idle_callback_enqueue, NULL);
-+    }
-+}    
-+
 +/* sort ptr_array by priority, increasing order */
 +gint
-+sdl_sort_idle_callbacks(gconstpointer parama, gconstpointer paramb)
++sdl_sort_idle_tasks(gconstpointer parama, gconstpointer paramb)
 +{
 +    struct idle_task *a = (struct idle_task *)parama;
 +    struct idle_task *b = (struct idle_task *)paramb;
@@ -568,14 +551,27 @@ index e8c85de..136d8db 100644
 +    task->priority = priority;
 +    task->cb = cb;
 +
-+    g_ptr_array_add(idle_callbacks, (gpointer)task);
-+    g_ptr_array_sort(idle_callbacks, sdl_sort_idle_callbacks);
++    g_ptr_array_add(idle_tasks, (gpointer)task);
 +
-+    if (!idle_timer) {
-+	if(!idle_cb)
-+	    idle_cb = callback_new_1(callback_cast(sdl_idle_timeout_callback), idle_callbacks);
-+    	idle_timer = event_sdl_add_timeout(100, 1, idle_cb);
++    if (idle_tasks->len < 2)
++    {
++    	SDL_Event event;
++    	SDL_UserEvent userevent;
++
++    	dbg(1,"poking eventloop because of new idle_events\n");
++
++    	userevent.type = SDL_USEREVENT;
++    	userevent.code = SDL_USEREVENT_CODE_IDLE_EVENT;
++    	userevent.data1 = NULL;
++    	userevent.data2 = NULL;
++
++    	event.type = SDL_USEREVENT;
++    	event.user = userevent;
++
++    	SDL_PushEvent (&event);
 +    }
++    else	// more than one entry => sort the list
++	g_ptr_array_sort(idle_tasks, sdl_sort_idle_tasks);
 +
 +    return (struct event_idle *)task;
 +}
@@ -583,12 +579,8 @@ index e8c85de..136d8db 100644
 +static void
 +event_sdl_remove_idle(struct event_idle *task)
 +{
-+    dbg(1,"remove %p\n", task);
-+    g_ptr_array_remove(idle_callbacks, (struct idle_task *)task);
-+    if (idle_callbacks->len == 0) {
-+	event_remove_timeout(idle_timer);
-+	idle_timer = NULL;
-+    }
++    dbg(1,"remove task(%p)\n", task);
++    g_ptr_array_remove(idle_tasks, (gpointer)task);
 +}
 +
 +/* callback */
@@ -626,7 +618,7 @@ index e8c85de..136d8db 100644
 +static struct event_priv *
 +event_sdl_new(struct event_methods* methods)
 +{
-+    idle_callbacks = g_ptr_array_new();
++    idle_tasks = g_ptr_array_new();
 +    *methods = event_sdl_methods;
 +    return NULL;
 +}
