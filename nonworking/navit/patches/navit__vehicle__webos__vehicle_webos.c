@@ -1,9 +1,9 @@
 diff --git a/navit/navit/vehicle/webos/vehicle_webos.c b/navit/navit/vehicle/webos/vehicle_webos.c
 new file mode 100644
-index 0000000..9dd768e
+index 0000000..ee6d8c4
 --- /dev/null
 +++ b/navit/navit/vehicle/webos/vehicle_webos.c
-@@ -0,0 +1,255 @@
+@@ -0,0 +1,259 @@
 +/**
 + * Navit, a modular navigation system.
 + * Copyright (C) 2005-2008 Navit Team
@@ -38,12 +38,12 @@ index 0000000..9dd768e
 +#include "event.h"
 +
 +static char *vehicle_webos_prefix="webos:";
-+static struct callback *cb_event=NULL;
 +
 +struct vehicle_priv {
 +	char *source;
 +	char *address;
-+	struct callback_list *cbl;
++	struct callback_list *cbl, *event_cbl;
++	struct callback *event_cb;
 +	double time, track, speed, altitude, radius;
 +	time_t fix_time;
 +	struct coord_geo geo;
@@ -98,8 +98,7 @@ index 0000000..9dd768e
 +		dbg(2,"NEW Time: %f\n", time);
 +		priv->time = time;
 +		priv->fix_time = 0;
-+		//callback_list_call_attr_0(priv->cbl, attr_position_coord_geo);
-+		event_add_timeout(0,0,cb_event);
++		event_call_callback(priv->event_cbl);
 +	}
 +
 +	return /*PDL_NOERROR*/;
@@ -109,7 +108,8 @@ index 0000000..9dd768e
 +vehicle_webos_close(struct vehicle_priv *priv)
 +{
 +	PDL_UnregisterServiceCallback((PDL_ServiceCallbackFunc)vehicle_webos_callback);
-+	g_free(cb_event);
++	callback_list_destroy(priv->event_cbl);
++	callback_destroy(priv->event_cb);
 +}
 +
 +static int
@@ -235,21 +235,25 @@ index 0000000..9dd768e
 +		*meth, struct callback_list
 +		*cbl, struct attr **attrs)
 +{
-+	struct vehicle_priv *ret;
++	struct vehicle_priv *priv;
 +
 +
-+	ret = g_new0(struct vehicle_priv, 1);
-+	ret->attrs = attrs;
-+	ret->cbl = cbl;
++	priv = g_new0(struct vehicle_priv, 1);
++	priv->attrs = attrs;
++	priv->cbl = cbl;
 +	*meth = vehicle_webos_methods;
 +	while (*attrs) {
-+		vehicle_webos_set_attr_do(ret, *attrs, 1);
++		vehicle_webos_set_attr_do(priv, *attrs, 1);
 +		attrs++;
 +	}
-+	cb_event = callback_new_2(callback_cast(vehicle_webos_callback_event),
++	priv->event_cbl = callback_list_new();
++	priv->event_cb = callback_new_2(callback_cast(vehicle_webos_callback_event),
 +			cbl, attr_position_coord_geo);
-+	vehicle_webos_open(ret);
-+	return ret;
++	callback_list_add(priv->event_cbl, priv->event_cb);
++
++	vehicle_webos_open(priv);
++	
++	return priv;
 +}
 +
 +void
