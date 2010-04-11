@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..021d274 100644
+index e8c85de..136d8db 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -33,6 +33,7 @@
@@ -254,14 +254,14 @@ index e8c85de..021d274 100644
                      }
                  }
 +			  
-+		dbg(0,"key mod: 0x%x\n", key_mod);
++		dbg(2,"key mod: 0x%x\n", key_mod);
  
 -                keybuf[0] = key;
 -                keybuf[1] = '\0';
 -		callback_list_call_attr_1(gr->cbl, attr_keypress, (void *)keybuf);
 -
 +		if (keybuf[0]) {
-+		    dbg(0,"key: %s 0x%x\n", keybuf, keybuf);
++		    dbg(2,"key: %s 0x%x\n", keybuf, keybuf);
 +		    callback_list_call_attr_1(gr->cbl, attr_keypress, (void *)keybuf);
 +		}
                  break;
@@ -522,7 +522,7 @@ index e8c85de..021d274 100644
 +    SDL_Event event;
 +    SDL_UserEvent userevent;
 +
-+    SDL_Delay(1);
++    //SDL_Delay(1);
 +
 +    idle_events_pending++;
 +    dbg(2,"deploying idle task (%p) %i\n", task->cb, idle_events_pending);
@@ -574,7 +574,7 @@ index e8c85de..021d274 100644
 +    if (!idle_timer) {
 +	if(!idle_cb)
 +	    idle_cb = callback_new_1(callback_cast(sdl_idle_timeout_callback), idle_callbacks);
-+    	idle_timer = event_sdl_add_timeout(150, 1, idle_cb);
++    	idle_timer = event_sdl_add_timeout(100, 1, idle_cb);
 +    }
 +
 +    return (struct event_idle *)task;
