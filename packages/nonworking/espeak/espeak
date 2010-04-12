@@ -6,5 +6,5 @@ export LD_LIBRARY_PATH=$APP_DIR/lib:$LD_LIBRARY_PATH
 #ESPEAK_SINK=pnavigation
 #ESPEAK_VOICE=de
 
-echo "$1" | $APP_DIR/bin/espeak --path $APP_DIR/share --stdout -v ${ESPEAK_VOICE:-en} | paplay -d ${ESPEAK_SINK:-pdefaultapp}
+( echo "$1" | $APP_DIR/bin/espeak --path $APP_DIR/share --stdout -v ${ESPEAK_VOICE:-en} | paplay -d ${ESPEAK_SINK:-pdefaultapp} )&
 
