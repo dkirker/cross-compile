@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..0c18a4f 100644
+index e8c85de..74cac7a 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -33,6 +33,7 @@
@@ -111,12 +111,13 @@ index e8c85de..0c18a4f 100644
  
      /* generate the initial resize callback, so the gui knows W/H
  
-@@ -1945,14 +1993,35 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1945,14 +1993,43 @@ static gboolean graphics_sdl_idle(void *data)
      }
  #endif
  
 -    while(1)
 +    unsigned int idle_tasks_idx=0;
++    unsigned int idle_tasks_cur_priority;
 +    struct idle_task *task;
 +
 +    while(!quit_event_loop)
@@ -132,9 +133,16 @@ index e8c85de..0c18a4f 100644
 +
 +		dbg(3,"idle_tasks_idx(%d)\n",idle_tasks_idx);
 +		task = (struct idle_task *)g_ptr_array_index(idle_tasks,idle_tasks_idx);
-+		callback_call_0(task->cb);
-+
-+		idle_tasks_idx++;
++		
++		if (idle_tasks_idx == 0)	// only execute tasks with lowest priority value
++		    idle_tasks_cur_priority = task->priority;
++		if (task->priority > idle_tasks_cur_priority)
++		    idle_tasks_idx = 0;
++		else 
++		{
++		    callback_call_0(task->cb);
++		    idle_tasks_idx++;
++		}
 +	    }
 +	}
 +	if (!ret)	// If we get here there are no idle_tasks and we have no events pending
@@ -150,7 +158,7 @@ index e8c85de..0c18a4f 100644
          switch(ev.type)
          {
              case SDL_MOUSEMOTION:
-@@ -1965,59 +2034,118 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1965,59 +2042,119 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_KEYDOWN:
              {
@@ -249,6 +257,7 @@ index e8c85de..0c18a4f 100644
 +				    case 'c': keybuf[0] = '8'; break;
 +				    case 'v': keybuf[0] = '9'; break;
 +				    case '@': keybuf[0] = '0'; break;
++				    case ',': keybuf[0] = '-'; break;
 +				    case 'u': strncpy(keybuf, "ü", sizeof(keybuf)); break;
 +				    case 'a': strncpy(keybuf, "ä", sizeof(keybuf)); break;
 +				    case 'o': strncpy(keybuf, "ö", sizeof(keybuf)); break;
@@ -283,7 +292,7 @@ index e8c85de..0c18a4f 100644
                  break;
              }
  
-@@ -2062,6 +2190,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2062,6 +2199,7 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_QUIT:
              {
@@ -291,7 +300,7 @@ index e8c85de..0c18a4f 100644
                  navit_destroy(gr->nav);
                  break;
              }
-@@ -2082,6 +2211,29 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2082,6 +2220,29 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
  
@@ -321,7 +330,7 @@ index e8c85de..0c18a4f 100644
              default:
              {
  #ifdef DEBUG
-@@ -2090,6 +2242,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2090,6 +2251,7 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
          }
@@ -329,7 +338,7 @@ index e8c85de..0c18a4f 100644
      }
  
      return TRUE;
-@@ -2099,6 +2252,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2099,6 +2261,7 @@ static gboolean graphics_sdl_idle(void *data)
  static struct graphics_priv *
  graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr **attrs, struct callback_list *cbl)
  {
@@ -337,7 +346,7 @@ index e8c85de..0c18a4f 100644
      struct graphics_priv *this=g_new0(struct graphics_priv, 1);
      struct attr *attr;
      int ret;
-@@ -2107,30 +2261,37 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2107,30 +2270,37 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      this->nav = nav;
      this->cbl = cbl;
  
@@ -380,7 +389,7 @@ index e8c85de..0c18a4f 100644
  
      if ((attr=attr_search(attrs, NULL, attr_w)))
          w=attr->u.num;
-@@ -2149,18 +2310,21 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2149,18 +2319,21 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
      this->screen = SDL_SetVideoMode(w, h, this->video_bpp, this->video_flags);
  
@@ -407,7 +416,7 @@ index e8c85de..0c18a4f 100644
  
      SDL_WM_SetCaption("navit", NULL);
  
-@@ -2180,9 +2344,13 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2180,9 +2353,13 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      sge_Lock_ON();
  #endif
  
@@ -423,7 +432,7 @@ index e8c85de..0c18a4f 100644
  
      this->overlay_enable = 1;
  
-@@ -2191,12 +2359,211 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2191,12 +2368,211 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
          this->aa = attr->u.num;
  
      this->resize_callback_initial=1;
