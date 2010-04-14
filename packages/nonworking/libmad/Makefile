@@ -4,7 +4,7 @@ DEPENDS =
 
 SRC_TGZ = ftp://ftp.mars.org/pub/mpeg/${NAME}-${VERSION}.tar.gz
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -16,9 +16,9 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage:: build/armv7.built
 
