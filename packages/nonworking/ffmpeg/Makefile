@@ -16,11 +16,11 @@ build/.unpacked:
 	curl ${PATCH} | tar xvOzf - | patch -d build/src -p1
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/stage-rootfs.mk
+include ../../../support/stage-rootfs.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage:: build/armv7.built
 
