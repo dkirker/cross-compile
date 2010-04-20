@@ -69,10 +69,11 @@ build/.configured: build/.aclocal
 		--enable-avoid-unaligned --enable-debug \
 		--disable-binding-dbus \
 		--enable-vehicle-webos \
-		--enable-svg2png-scaling="32,48,64" --enable-svg2png-scaling-flag="32,48,64" \
-		--enable-svg2png-scaling-nav="8,16,32,48,64" --disable-samplemap \
-		--disable-speech-espeak \
-		--with-svg2png-use-convert )
+		--enable-svg2png-scaling="32,48,64" \
+		--enable-svg2png-scaling-flag="32,48,64" \
+		--enable-svg2png-scaling-nav="8,16,32,48,64" \
+		--disable-samplemap --disable-speech-espeak \
+		--disable-svg --with-svg2png-use-rsvg-convert )
 	touch $@
 
 
