@@ -39,9 +39,9 @@ update: build/.unpacked
 			rm -f ../*.built ../.configure ../.aclocal; \
 		fi )
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage:: build/armv7.built
 
