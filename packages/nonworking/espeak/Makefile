@@ -1,5 +1,5 @@
 NAME    = espeak
-VERSION = 1.43.17
+VERSION = 1.43.20
 #DEPENDS = pulseaudio
 SVN_URL = https://espeak.svn.sourceforge.net/svnroot/espeak/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.espeak
@@ -22,9 +22,9 @@ update: build/.unpacked
 #			rm -f ../*.built ../.configure ../.aclocal; \
 #		fi )
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage:: build/armv7.built
 
