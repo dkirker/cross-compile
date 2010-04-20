@@ -25,7 +25,7 @@ toolchain: toolchain/arm-2007q3/.unpacked toolchain/i686-unknown-linux-gnu/.unpa
 rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked rootfs/i686/.unpacked
 
 .PHONY: stage
-stage: toolchain rootfs # staging-armv7 staging-armv6 staging-i686
+stage: toolchain rootfs staging-armv7 staging-armv6 staging-i686
 
 .PHONY: staging-%
 staging-%: staging/mapping-%
