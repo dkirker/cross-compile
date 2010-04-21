@@ -21,7 +21,7 @@ PDLIPK  = build/src/opt/PalmPDK/share/packages/Native-SDK/castle/libpdl_1.0-32_a
 	  build/src/opt/PalmPDK/share/packages/Native-SDK/pixie/libpdl_1.0-32_armv6.ipk
 
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -33,9 +33,9 @@ build/.unpacked:
 	(cd build/src; gunzip -c ../pkg/${PAXFILE} | cpio -i )
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage:: build/armv7.built
 
