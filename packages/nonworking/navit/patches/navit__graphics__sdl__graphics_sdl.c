@@ -1,31 +1,37 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..74cac7a 100644
+index e8c85de..2130762 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
-@@ -33,6 +33,7 @@
- 
+@@ -34,6 +34,10 @@
  #include <SDL/SDL.h>
  #include <math.h>
-+#include <PDL.h>
  
++#ifdef USE_WEBOS
++# include <PDL.h>
++#endif
++
  #define RASTER
  #undef SDL_SGE
-@@ -43,8 +44,8 @@
+ #undef SDL_GFX
+@@ -43,8 +47,13 @@
  #define SDL_IMAGE
  #undef LINUX_TOUCHSCREEN
  
--#define DISPLAY_W 800
--#define DISPLAY_H 600
-+#define DISPLAY_W 320
-+#define DISPLAY_H 480
++#ifdef USE_WEBOS
++#define DISPLAY_W 0
++#define DISPLAY_H 0
++#else
+ #define DISPLAY_W 800
+ #define DISPLAY_H 600
++#endif
  
  
  #undef DEBUG
-@@ -141,6 +142,39 @@ struct graphics_priv {
+@@ -141,6 +150,39 @@ struct graphics_priv {
  
  static int dummy;
  
-+// PRE
++#ifdef USE_WEBOS
 +#define WEBOS_KEY_SHIFT 0x130
 +#define WEBOS_KEY_SYM 0x131
 +#define WEBOS_KEY_ORANGE 0x133
@@ -57,48 +63,41 @@ index e8c85de..74cac7a 100644
 +static struct graphics_priv* the_graphics=NULL; 
 +static int the_graphics_count=0; // count how many graphics objects are created
 +static GPtrArray *idle_tasks=NULL;
-+// PRE 
++#endif 
  
  struct graphics_font_priv {
  #ifdef SDL_TTF
-@@ -167,7 +201,6 @@ struct graphics_image_priv {
-     SDL_Surface *img;
- };
- 
--
- #ifdef LINUX_TOUCHSCREEN
- static int input_ts_exit(struct graphics_priv *gr);
- #endif
-@@ -193,7 +226,8 @@ graphics_destroy(struct graphics_priv *gr)
+@@ -193,6 +235,9 @@ graphics_destroy(struct graphics_priv *gr)
  #ifdef LINUX_TOUCHSCREEN
          input_ts_exit(gr);
  #endif
--        SDL_Quit();
++#ifdef USE_WEBOS
 +        PDL_Quit();
-+	SDL_Quit();
++#endif
+         SDL_Quit();
      }
  
-     g_free(gr);
-@@ -202,6 +236,7 @@ graphics_destroy(struct graphics_priv *gr)
+@@ -202,6 +247,9 @@ graphics_destroy(struct graphics_priv *gr)
  /* graphics_font */
  static char *fontfamilies[]={
  	"Liberation Mono",
++#ifdef USE_WEBOS
 +	"Prelude",
++#endif
  	"Arial",
  	"DejaVu Sans",
  	"NcrBI4nh",
-@@ -1842,8 +1877,21 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1842,8 +1890,21 @@ static gboolean graphics_sdl_idle(void *data)
      struct input_event ie;
      ssize_t ss;
  #endif
 -    int ret, key;
 -    char keybuf[2];
-+    int ret; //, key;
-+    char keybuf[8];
++    int ret;
 +    char key_mod = 0;
++    char keybuf[8];
 +
-+    dbg(1,"data=%p\n", data);
-+    //Palm Pre mode
++#ifdef USE_WEBOS
 +    if(data==NULL) {
 +    	if(the_graphics!=NULL) {
 +	    gr = the_graphics;
@@ -108,21 +107,25 @@ index e8c85de..74cac7a 100644
 +    	    return FALSE;
 +	}
 +    }
++#endif
  
      /* generate the initial resize callback, so the gui knows W/H
  
-@@ -1945,14 +1993,43 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1945,14 +2006,52 @@ static gboolean graphics_sdl_idle(void *data)
      }
  #endif
  
--    while(1)
++#ifdef USE_WEBOS
 +    unsigned int idle_tasks_idx=0;
 +    unsigned int idle_tasks_cur_priority;
 +    struct idle_task *task;
 +
 +    while(!quit_event_loop)
++#else
+     while(1)
++#endif
      {
--        ret = SDL_PollEvent(&ev);
++#ifdef USE_WEBOS
 +	ret = 0;
 +	if(idle_tasks->len > 0) 
 +	{
@@ -147,22 +150,25 @@ index e8c85de..74cac7a 100644
 +	}
 +	if (!ret)	// If we get here there are no idle_tasks and we have no events pending
 +	    ret = SDL_WaitEvent(&ev);
-+
++#else
+         ret = SDL_PollEvent(&ev);
++#endif
          if(ret == 0)
          {
              break;
          }
--
-+	
+ 
++#ifdef USE_WEBOS
 +	dbg(1,"SDL_Event %d\n", ev.type);
++#endif
          switch(ev.type)
          {
              case SDL_MOUSEMOTION:
-@@ -1965,59 +2042,119 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1965,59 +2064,124 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_KEYDOWN:
              {
-+		memset(&keybuf, 0, sizeof(keybuf));
++		keybuf[1] = 0;
                  switch(ev.key.keysym.sym)
                  {
                      case SDLK_LEFT:
@@ -213,7 +219,7 @@ index e8c85de..74cac7a 100644
 +                        keybuf[0] = NAVIT_KEY_ZOOM_IN;
                          break;
                      }
--                    default:
++#ifdef USE_WEBOS
 +		    case WEBOS_KEY_SHIFT:
 +		    {
 +			if ((key_mod & WEBOS_KEY_MOD_SHIFT_STICKY) == WEBOS_KEY_MOD_SHIFT_STICKY)
@@ -240,9 +246,11 @@ index e8c85de..74cac7a 100644
 +			//callback_list_call_attr_1(gr->cbl, attr_keyboard_toggle);	// Not implemented yet
 +			break;
 +		    }
-+             	    default:
++#endif
+                     default:
                      {
 -                        key = 0;
++#ifdef USE_WEBOS
 +                        if (ev.key.keysym.unicode < 0x80 && ev.key.keysym.unicode > 0) {
 +			    keybuf[0] = (char)ev.key.keysym.unicode;
 +			    if ((key_mod & WEBOS_KEY_MOD_ORANGE) == WEBOS_KEY_MOD_ORANGE) {
@@ -274,7 +282,9 @@ index e8c85de..74cac7a 100644
 +			else {
 +			    dbg(0,"Unknown key sym: %x\n", ev.key.keysym.sym);
 +			}
-+			
++#else
++			keybuf[0] = 0;
++#endif			
                          break;
                      }
                  }
@@ -292,18 +302,21 @@ index e8c85de..74cac7a 100644
                  break;
              }
  
-@@ -2062,6 +2199,7 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2062,6 +2226,9 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_QUIT:
              {
++#ifdef USE_WEBOS
 +		quit_event_loop = 1;
++#endif
                  navit_destroy(gr->nav);
                  break;
              }
-@@ -2082,6 +2220,29 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2082,6 +2249,30 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
  
++#ifdef USE_WEBOS
 +            case SDL_USEREVENT:
 +            {
 +		SDL_UserEvent userevent = ev.user;
@@ -326,70 +339,62 @@ index e8c85de..74cac7a 100644
 +                
 +		break;
 +            }
-+
++#endif
              default:
              {
  #ifdef DEBUG
-@@ -2090,6 +2251,7 @@ static gboolean graphics_sdl_idle(void *data)
-                 break;
-             }
-         }
-+	dbg(1, "event processed\n");
-     }
- 
-     return TRUE;
-@@ -2099,6 +2261,7 @@ static gboolean graphics_sdl_idle(void *data)
- static struct graphics_priv *
- graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr **attrs, struct callback_list *cbl)
- {
-+    dbg(1,"enter\n");
-     struct graphics_priv *this=g_new0(struct graphics_priv, 1);
-     struct attr *attr;
-     int ret;
-@@ -2107,30 +2270,37 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2107,9 +2298,14 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      this->nav = nav;
      this->cbl = cbl;
  
--    ret = SDL_Init(SDL_INIT_VIDEO);
++#ifdef USE_WEBOS
 +    ret = SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
++#else
+     ret = SDL_Init(SDL_INIT_VIDEO);
++#endif
      if(ret < 0)
      {
 +	dbg(0,"SDL_Init failed %d\n", ret);
          g_free(this);
          return NULL;
      }
- 
-+    PDL_SetOrientation(PDL_ORIENTATION_0);
-+
- #ifdef SDL_TTF
+@@ -2118,7 +2314,11 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      ret = TTF_Init();
      if(ret < 0)
      {
--        g_free(this);
--        SDL_Quit();
 +        dbg(0,"TTF_Init failed %d\n", ret);
-+	g_free(this);
+         g_free(this);
++#ifdef USE_WEBOS
 +        PDL_Quit();
-+	SDL_Quit();
++#endif
+         SDL_Quit();
          return NULL;
      }
- #else
+@@ -2126,11 +2326,22 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      FT_Init_FreeType( &this->library );
  #endif
  
 -    if (! event_request_system("glib","graphics_sdl_new"))
++#ifdef USE_WEBOS
 +    if (! event_request_system("sdl","graphics_sdl_new")) {
++#else
++    if (! event_request_system("glib","graphics_sdl_new")) {
++#endif
 +	dbg(0,"event_request_system failed");
          return NULL;
 +    }
  
++#ifdef USE_WEBOS
++    this->video_bpp = 32;
++    this->video_flags = SDL_SWSURFACE | SDL_RESIZABLE;
++#else
      this->video_bpp = 16;
--    this->video_flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE;
-+    this->video_flags = SDL_SWSURFACE /*SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE*/;
+     this->video_flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE;
++#endif
  
      if ((attr=attr_search(attrs, NULL, attr_w)))
          w=attr->u.num;
-@@ -2149,18 +2319,21 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2149,18 +2360,25 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
      this->screen = SDL_SetVideoMode(w, h, this->video_bpp, this->video_flags);
  
@@ -401,9 +406,10 @@ index e8c85de..74cac7a 100644
      {
 +	dbg(0,"SDL_SetVideoMode failed\n");
          g_free(this);
--        SDL_Quit();
++#ifdef USE_WEBOS
 +        PDL_Quit();
-+	SDL_Quit();
++#endif
+         SDL_Quit();
          return NULL;
      }
  
@@ -412,34 +418,36 @@ index e8c85de..74cac7a 100644
 +    h = this->screen->h;
 +
      SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
++#ifdef USE_WEBOS
 +    SDL_EnableUNICODE(1);
++#endif
  
      SDL_WM_SetCaption("navit", NULL);
  
-@@ -2180,9 +2353,13 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2180,9 +2398,17 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      sge_Lock_ON();
  #endif
  
 -	*meth=graphics_methods;
 +    *meth=graphics_methods;
  
--    g_timeout_add(G_PRIORITY_DEFAULT+10, graphics_sdl_idle, this);
++#ifdef USE_WEBOS
 +    if(the_graphics!=NULL) {
 +	dbg(0,"graphics_sdl_new: graphics struct already set: %d!\n", the_graphics_count);
 +    }
 +    the_graphics = this;
 +    the_graphics_count++;
++#else
+     g_timeout_add(G_PRIORITY_DEFAULT+10, graphics_sdl_idle, this);
++#endif
  
      this->overlay_enable = 1;
  
-@@ -2191,12 +2368,211 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
-         this->aa = attr->u.num;
- 
-     this->resize_callback_initial=1;
-+    dbg(1, "leave\n");
+@@ -2194,9 +2420,208 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      return this;
  }
  
++#ifdef USE_WEBOS
 +/* ---------- SDL Eventhandling ---------- */
 +
 +static Uint32 
@@ -475,17 +483,14 @@ index e8c85de..74cac7a 100644
 +static void
 +event_sdl_main_loop_run(void)
 +{
-+    dbg(1,"enter\n");
 +    PDL_ScreenTimeoutEnable(PDL_FALSE);
 +    graphics_sdl_idle(NULL);
 +    PDL_ScreenTimeoutEnable(PDL_TRUE);
-+    PDL_Quit();
 +}
 +
 +static void
 +event_sdl_main_loop_quit(void)
 +{
-+    dbg(1,"enter\n");
 +    quit_event_loop = 1;
 +}
 +
@@ -633,12 +638,15 @@ index e8c85de..74cac7a 100644
 +}
 +
 +/* ---------- SDL Eventhandling ---------- */
++#endif
 +
  void
  plugin_init(void)
  {
 -        plugin_register_graphics_type("sdl", graphics_sdl_new);
++#ifdef USE_WEBOS
 +    plugin_register_event_type("sdl", event_sdl_new);
++#endif
 +    plugin_register_graphics_type("sdl", graphics_sdl_new);
  }
  
