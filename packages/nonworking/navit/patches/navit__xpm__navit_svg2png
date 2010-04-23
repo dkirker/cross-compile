@@ -1,5 +1,5 @@
 diff --git a/navit/navit/xpm/navit_svg2png b/navit/navit/xpm/navit_svg2png
-index 50cd5f2..f8b62c2 100755
+index 50cd5f2..db24264 100755
 --- a/navit/navit/xpm/navit_svg2png
 +++ b/navit/navit/xpm/navit_svg2png
 @@ -13,7 +13,7 @@ svgtopng()
@@ -11,3 +11,27 @@ index 50cd5f2..f8b62c2 100755
  		;;
  	esac
  }
+@@ -36,7 +36,7 @@ case "$png" in
+ 		svg=${png%.png}
+ 		;;
+ esac
+-if [ ! -f $svg.svg -a ! -f $svg.svgz ]
++if [ ! -f $svg.svg -a ! -f $svg.svgz -a ! -f $svg.xpm ]
+ then
+ 	svg="$SRCDIR/$svg"
+ fi
+@@ -69,6 +69,14 @@ else
+ 		fi
+ 		svgtopng $w $h $svg.svg $png
+ 		rm -f $svg.svg
++	elif [ -f $svg.xpm ]
++	then
++		echo "w:$w h:$h"
++		if [ -z "$w" -a -z "$h" ]; then		
++			convert -background none $svg.xpm $png
++		else
++			convert -background none $svg.xpm -resize ${w}x${h} $png			
++		fi
+ 	fi
+ fi
+ exit 0

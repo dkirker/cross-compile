@@ -1,0 +1,177 @@
+diff --git a/navit/navit/xpm/Makefile.am b/navit/navit/xpm/Makefile.am
+index 5ca23e3..9f98478 100644
+--- a/navit/navit/xpm/Makefile.am
++++ b/navit/navit/xpm/Makefile.am
+@@ -1,72 +1,72 @@
+ include $(top_srcdir)/Makefile.inc
+ 
+-xpm_DATA = bench.xpm
+-xpm_DATA += biergarten.xpm
+-xpm_DATA += boundary_stone.xpm
+-xpm_DATA += bus_halt.xpm
+-xpm_DATA += cafe.xpm
+-xpm_DATA += camping.xpm
+-xpm_DATA += car_dealer.xpm
+-xpm_DATA += castle.xpm
+-xpm_DATA += ruins.xpm
+-xpm_DATA += cemetery.xpm
+-xpm_DATA += cursor.xpm
+-xpm_DATA += dumping_station.xpm
+-xpm_DATA += fountain.xpm
+-xpm_DATA += flag_bk_tr.xpm flag_bk_wh.xpm flag_bl_wh.xpm flag_wh_bk.xpm
+-xpm_DATA += golf.xpm
+-xpm_DATA += gc_tradi.xpm
+-xpm_DATA += gc_multi.xpm
+-xpm_DATA += gc_mystery.xpm
+-xpm_DATA += gc_event.xpm
+-xpm_DATA += gc_reference.xpm
+-xpm_DATA += gc_webcam.xpm
+-xpm_DATA += gc_question.xpm
+-xpm_DATA += gc_stages.xpm
+-xpm_DATA += heliport.xpm
+-xpm_DATA += highway_exit.xpm
+-xpm_DATA += hunting_stand.xpm
+-xpm_DATA += hotel.xpm
+-xpm_DATA += information.xpm
+-xpm_DATA += justice.xpm
+-xpm_DATA += level_crossing.xpm
+-xpm_DATA += library.xpm
+-xpm_DATA += mark.xpm
+-xpm_DATA += mini_roundabout.xpm
+-xpm_DATA += memorial.xpm
+-xpm_DATA += military.xpm
+-xpm_DATA += museum.xpm
+-xpm_DATA += nav_left_1.xpm nav_left_2.xpm
+-xpm_DATA += nav_right_1.xpm nav_right_2.xpm
+-xpm_DATA += nav_straight.xpm nav_straight_32.xpm
+-xpm_DATA += nav_left_1_32.xpm nav_left_2_32.xpm
+-xpm_DATA += nav_right_1_32.xpm nav_right_2_32.xpm
+-xpm_DATA += parking.xpm
+-xpm_DATA += pharmacy.xpm
+-xpm_DATA += picnic.xpm
+-xpm_DATA += potable_water.xpm
+-xpm_DATA += restaurant.xpm
+-xpm_DATA += restroom.xpm
+-xpm_DATA += shelter.xpm
+-xpm_DATA += skiing.xpm
+-xpm_DATA += sport.xpm
+-xpm_DATA += swimming.xpm
+-xpm_DATA += telephone.xpm
+-xpm_DATA += theater.xpm
+-xpm_DATA += toilets.xpm
+-xpm_DATA += tower.xpm
+-xpm_DATA += townhall.xpm
+-xpm_DATA += trailerpark.xpm
+-xpm_DATA += unknown.xpm
+-xpm_DATA += wifi.xpm
+-xpm_DATA += viewpoint.xpm
+-xpm_DATA += zoo.xpm
+-xpm_DATA += zoom_in.xpm
+-xpm_DATA += zoom_out.xpm
+-xpm_DATA += toggle_fullscreen.xpm
+-xpm_DATA += menu.xpm
+-xpm_DATA += school.xpm
+-xpm_DATA += public_office.xpm
++xpms = bench.xpm
++xpms += biergarten.xpm
++xpms += boundary_stone.xpm
++xpms += bus_halt.xpm
++xpms += cafe.xpm
++xpms += camping.xpm
++xpms += car_dealer.xpm
++xpms += castle.xpm
++xpms += ruins.xpm
++xpms += cemetery.xpm
++#xpms += cursor.xpm
++xpms += dumping_station.xpm
++xpms += fountain.xpm
++xpms += flag_bk_tr.xpm flag_bk_wh.xpm flag_bl_wh.xpm flag_wh_bk.xpm
++xpms += golf.xpm
++xpms += gc_tradi.xpm
++xpms += gc_multi.xpm
++xpms += gc_mystery.xpm
++xpms += gc_event.xpm
++xpms += gc_reference.xpm
++xpms += gc_webcam.xpm
++xpms += gc_question.xpm
++xpms += gc_stages.xpm
++xpms += heliport.xpm
++xpms += highway_exit.xpm
++xpms += hunting_stand.xpm
++xpms += hotel.xpm
++xpms += information.xpm
++xpms += justice.xpm
++xpms += level_crossing.xpm
++xpms += library.xpm
++xpms += mark.xpm
++xpms += mini_roundabout.xpm
++xpms += memorial.xpm
++xpms += military.xpm
++xpms += museum.xpm
++#xpms += nav_left_1.xpm nav_left_2.xpm
++#xpms += nav_right_1.xpm nav_right_2.xpm
++#xpms += nav_straight.xpm nav_straight_32.xpm
++#xpms += nav_left_1_32.xpm nav_left_2_32.xpm
++#xpms += nav_right_1_32.xpm nav_right_2_32.xpm
++xpms += parking.xpm
++xpms += pharmacy.xpm
++xpms += picnic.xpm
++xpms += potable_water.xpm
++xpms += restaurant.xpm
++xpms += restroom.xpm
++xpms += shelter.xpm
++xpms += skiing.xpm
++xpms += sport.xpm
++xpms += swimming.xpm
++xpms += telephone.xpm
++xpms += theater.xpm
++xpms += toilets.xpm
++xpms += tower.xpm
++xpms += townhall.xpm
++xpms += trailerpark.xpm
++xpms += unknown.xpm
++xpms += wifi.xpm
++xpms += viewpoint.xpm
++xpms += zoo.xpm
++xpms += zoom_in.xpm
++xpms += zoom_out.xpm
++xpms += toggle_fullscreen.xpm
++xpms += menu.xpm
++xpms += school.xpm
++xpms += public_office.xpm
+ 
+ svgs  = gui_about.svg
+ svgs += gui_actions.svg
+@@ -183,6 +183,8 @@ flag_svgs += country_TZ.svgz country_UA.svgz country_UG.svgz country_UM.svgz cou
+ flag_svgs += country_VA.svgz country_VC.svgz country_VE.svgz country_VG.svgz country_VI.svgz country_VN.svgz country_VU.svgz
+ flag_svgs += country_WF.svgz country_WS.svgz country_YE.svgz country_YT.svgz country_ZA.svgz country_ZM.svgz country_ZW.svgz
+ 
++xpm_DATA=
++
+ if USE_SVG
+   xpm_DATA += $(svgs) $(nav_svgs) $(flag_svgs)
+ endif
+@@ -192,8 +194,10 @@ if USE_SVG2PNG
+ 	SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir) $(srcdir)/navit_svg2png "@SVG2PNG@" "$@"
+ %.png: $(srcdir)/*.svg
+ 	SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir) $(srcdir)/navit_svg2png "@SVG2PNG@" "$@"
++%.png: $(srcdir)/*.xpm
++	SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir) $(srcdir)/navit_svg2png "@SVG2PNG@" "$@"
+ 
+-pngs  = $(addsuffix .png,$(basename $(svgs)))
++pngs  = $(addsuffix .png,$(basename $(svgs))) $(addsuffix .png,$(basename $(xpms)))
+ xsize = $(word 1,$(subst x, ,$(scale)))
+ ysize = $(word $(words $(scale)),$(subst x, ,$(scale)))
+ comma =,
+@@ -211,8 +215,11 @@ if USE_SVG2PNG_SCALES_NAV
+ pngs += $(foreach scale, $(subst $(comma), ,@SVG2PNG_SCALES_NAV@), $(addsuffix _$(xsize)_$(ysize).png,$(basename $(nav_svgs))))
+ endif
+ xpm_DATA += $(pngs)
++else
++xpm_DATA += $(xpms)
+ endif
+ 
++
+ if !SUPPORT_WIN32
+   DESKTOPFILEdir=$(datadir)/applications
+   DESKTOPFILE_DATA = desktop_icons/navit.desktop
