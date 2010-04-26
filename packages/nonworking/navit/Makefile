@@ -89,6 +89,7 @@ build/%.built: build/.unpacked build/.patched build/.configured
 	${SB2} cp files/navit.sh ${APP_DIR}/navit.sh
 	${SB2} cp files/navit*.xml ${APP_DIR}/dist_files/
 	${SB2} cp files/osd_*.png ${APP_DIR}/share/navit/xpm/
+	${SB2} cp files/poi_png/*.png ${APP_DIR}/share/navit/xpm/
 	touch $@
 
 clean:
