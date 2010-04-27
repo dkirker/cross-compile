@@ -1,5 +1,5 @@
 NAME    = espeak
-VERSION = 1.43.20
+VERSION = 1.43.21
 #DEPENDS = pulseaudio
 SVN_URL = https://espeak.svn.sourceforge.net/svnroot/espeak/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.espeak
@@ -48,11 +48,11 @@ build/%.built: build/.unpacked build/.patched build/.configured
 	( cd build/src/src ; ${SB2} make PREFIX=${APP_DIR} \
 		AUDIO="" \
 		CXXFLAGS="-O2" all)
-	( ${SB2} mkdir -p ${APP_DIR}/bin ${APP_DIR}/lib ${APP_DIR}/share )
-	( ${SB2} cp -dR build/src/src/espeak ${APP_DIR}/bin/ )
-	( ${SB2} cp -dR build/src/src/libespeak.so.1* ${APP_DIR}/lib/libespeak.so.1 )
-	( ${SB2} cp -dR build/src/espeak-data ${APP_DIR}/share/ )
-	( ${SB2} cp -dR espeak ${APP_DIR}/ )
+	( ${SB2} mkdir -p build/${APP_DIR}/bin build/${APP_DIR}/lib build/${APP_DIR}/share )
+	( ${SB2} cp -dR build/src/src/espeak build/${APP_DIR}/bin/ )
+	( ${SB2} cp -dR build/src/src/libespeak.so.1* build/${APP_DIR}/lib/libespeak.so.1 )
+	( ${SB2} cp -dR build/src/espeak-data build/${APP_DIR}/share/ )
+	( ${SB2} cp -dR espeak build/${APP_DIR}/ )
 	touch $@
 
 clean:
