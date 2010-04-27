@@ -1,15 +1,14 @@
 #
 # due to copyright reasons you need to create the file
-# pd1-1.4.tar.gz yourself, here is how:
+# PalmPDK.pkg.tar.gz yourself, here is how:
 #
 #  - download the dmg file
 #  - mount it
 #  - copy PalmPDK.pkg to your desktop
 #  - open terminal and cd to Desktop
-#  - rename it: mv PalmPDK.pkg pdl-1.4
-#  - tar it: tar cpzf pdl-1.4.tar.gz pdl-1.4
-#  - put this file to the crosscompile downloads dir
-#    (from here: ../../downloads)
+#  - tar it: tar zcvf PalmPDK.pkg.tar.gz PalmPDK.pkg
+#  - put this file to the cross-compile/doctors dir
+#    (from here: ../../../doctors)
 #
 NAME    = pdl
 VERSION = 1.4
@@ -21,16 +20,13 @@ PDLIPK  = build/src/opt/PalmPDK/share/packages/Native-SDK/castle/libpdl_1.0-32_a
 	  build/src/opt/PalmPDK/share/packages/Native-SDK/pixie/libpdl_1.0-32_armv6.ipk
 
 
-include ../../../support/download.mk
-
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked:
+build/.unpacked: ../../../doctors/PalmPDK.pkg.tar.gz
 	mkdir -p build/src
-	tar -C build -z -x -f ${DL_DIR}/${NAME}-${VERSION}.tar.gz
-	mv build/${NAME}-${VERSION} build/pkg
-	(cd build/src; gunzip -c ../pkg/${PAXFILE} | cpio -i )
+	tar -C build -z -x -f ../../../doctors/PalmPDK.pkg.tar.gz
+	(cd build/src; gunzip -c ../PalmPDK.pkg/${PAXFILE} | cpio -i )
 	touch $@
 
 include ../../../support/staging.mk

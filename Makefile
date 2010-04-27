@@ -91,6 +91,10 @@ doctors/palm-sdk_1.3.5-svn234138-sdk117-pho368_i386.deb:
 	mkdir -p doctors
 	wget -O $@ --no-check-certificate https://cdn.downloads.palm.com/sdkdownloads/1.3.5.368/sdkBinaries/palm-sdk_1.3.5-svn234138-sdk117-pho368_i386.deb
 
+doctors/PalmPDK.pkg.tar.gz:
+	mkdir -p doctors
+	echo "Download the MacOSX PDK, mount it, run tar zcvf PalmPDK.pkg.tar.gz PalmPDK.pkg and copy the resulting file into doctors"
+
 .PHONY: clean
 clean:
 	rm -f .*~ *~ scripts/*~ support/*~ packages/*/*~
