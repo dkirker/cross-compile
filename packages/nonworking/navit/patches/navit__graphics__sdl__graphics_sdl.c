@@ -1,19 +1,20 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..2130762 100644
+index e8c85de..97f2b3f 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
-@@ -34,6 +34,10 @@
+@@ -34,6 +34,11 @@
  #include <SDL/SDL.h>
  #include <math.h>
  
 +#ifdef USE_WEBOS
 +# include <PDL.h>
++# define USE_WEBOS_ACCELEROMETER
 +#endif
 +
  #define RASTER
  #undef SDL_SGE
  #undef SDL_GFX
-@@ -43,8 +47,13 @@
+@@ -43,8 +48,13 @@
  #define SDL_IMAGE
  #undef LINUX_TOUCHSCREEN
  
@@ -27,7 +28,20 @@ index e8c85de..2130762 100644
  
  
  #undef DEBUG
-@@ -141,6 +150,39 @@ struct graphics_priv {
+@@ -121,6 +131,12 @@ struct graphics_priv {
+     struct navit *nav;
+     struct callback_list *cbl;
+ 
++#ifdef USE_WEBOS_ACCELEROMETER
++    SDL_Joystick *accelerometer;
++    char orientation;
++    int real_w, real_h;
++#endif
++
+ #ifdef LINUX_TOUCHSCREEN
+     int ts_fd;
+     int32_t ts_hit;
+@@ -141,6 +157,47 @@ struct graphics_priv {
  
  static int dummy;
  
@@ -44,9 +58,17 @@ index e8c85de..2130762 100644
 +#define WEBOS_KEY_MOD_ORANGE_STICKY 0x22
 +#define WEBOS_KEY_MOD_SYM_STICKY 0x44
 +
++#ifdef USE_WEBOS_ACCELEROMETER
++# define WEBOS_ORIENTATION_PORTRAIT 0x0
++# define WEBOS_ORIENTATION_LANDSCAPE 0x1
++#endif
++
 +#define SDL_USEREVENT_CODE_TIMER 0x1
 +#define SDL_USEREVENT_CODE_CALL_CALLBACK 0x2
 +#define SDL_USEREVENT_CODE_IDLE_EVENT 0x4
++#ifdef USE_WEBOS_ACCELEROMETER
++# define SDL_USEREVENT_CODE_ROTATE 0x8
++#endif
 +
 +struct event_timeout {
 +    SDL_TimerID id;
@@ -67,17 +89,20 @@ index e8c85de..2130762 100644
  
  struct graphics_font_priv {
  #ifdef SDL_TTF
-@@ -193,6 +235,9 @@ graphics_destroy(struct graphics_priv *gr)
+@@ -193,6 +250,12 @@ graphics_destroy(struct graphics_priv *gr)
  #ifdef LINUX_TOUCHSCREEN
          input_ts_exit(gr);
  #endif
++#ifdef USE_WEBOS_ACCELEROMETER
++    	SDL_JoystickClose(gr->accelerometer);
++#endif
 +#ifdef USE_WEBOS
 +        PDL_Quit();
 +#endif
          SDL_Quit();
      }
  
-@@ -202,6 +247,9 @@ graphics_destroy(struct graphics_priv *gr)
+@@ -202,6 +265,9 @@ graphics_destroy(struct graphics_priv *gr)
  /* graphics_font */
  static char *fontfamilies[]={
  	"Liberation Mono",
@@ -87,7 +112,51 @@ index e8c85de..2130762 100644
  	"Arial",
  	"DejaVu Sans",
  	"NcrBI4nh",
-@@ -1842,8 +1890,21 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1832,6 +1898,43 @@ static int input_ts_exit(struct graphics_priv *gr)
+ }
+ #endif
+ 
++#ifdef USE_WEBOS_ACCELEROMETER
++static void
++sdl_accelerometer_handler(void* param) 
++{
++    struct graphics_priv *gr = (struct graphics_priv *)param;
++    int xAxis = SDL_JoystickGetAxis(gr->accelerometer, 0);
++    int yAxis = SDL_JoystickGetAxis(gr->accelerometer, 1);
++    int zAxis = SDL_JoystickGetAxis(gr->accelerometer, 2);
++    char new_orientation;
++
++    if (xAxis < -15000 && yAxis > -7000 && yAxis < 7000)
++	new_orientation = WEBOS_ORIENTATION_LANDSCAPE;
++    else if (zAxis < -15000 && (yAxis < -23000 || yAxis > 23000))
++	new_orientation = WEBOS_ORIENTATION_PORTRAIT;
++    else
++	return;
++
++    if (new_orientation != gr->orientation)
++    {
++    	dbg(1,"x(%d) y(%d) z(%d) o(%d)\n",xAxis, yAxis, zAxis, new_orientation);
++	gr->orientation = new_orientation;
++    	
++	SDL_Event event;
++    	SDL_UserEvent userevent;
++
++    	userevent.type = SDL_USEREVENT;
++    	userevent.code = SDL_USEREVENT_CODE_ROTATE;
++    	userevent.data1 = NULL;
++    	userevent.data2 = NULL;
++
++    	event.type = SDL_USEREVENT;
++    	event.user = userevent;
++
++    	SDL_PushEvent (&event);
++    }
++}
++#endif
+ 
+ static gboolean graphics_sdl_idle(void *data)
+ {
+@@ -1842,8 +1945,21 @@ static gboolean graphics_sdl_idle(void *data)
      struct input_event ie;
      ssize_t ss;
  #endif
@@ -111,10 +180,14 @@ index e8c85de..2130762 100644
  
      /* generate the initial resize callback, so the gui knows W/H
  
-@@ -1945,14 +2006,52 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1945,14 +2061,56 @@ static gboolean graphics_sdl_idle(void *data)
      }
  #endif
  
++#ifdef USE_WEBOS_ACCELEROMETER
++    struct callback* accel_cb = callback_new_1(callback_cast(sdl_accelerometer_handler), gr);
++    struct event_timeout* accel_to = event_add_timeout(200, 1, accel_cb);
++#endif
 +#ifdef USE_WEBOS
 +    unsigned int idle_tasks_idx=0;
 +    unsigned int idle_tasks_cur_priority;
@@ -164,7 +237,7 @@ index e8c85de..2130762 100644
          switch(ev.type)
          {
              case SDL_MOUSEMOTION:
-@@ -1965,59 +2064,124 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1965,59 +2123,124 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_KEYDOWN:
              {
@@ -302,7 +375,7 @@ index e8c85de..2130762 100644
                  break;
              }
  
-@@ -2062,6 +2226,9 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2062,6 +2285,9 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_QUIT:
              {
@@ -312,7 +385,7 @@ index e8c85de..2130762 100644
                  navit_destroy(gr->nav);
                  break;
              }
-@@ -2082,6 +2249,30 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2082,6 +2308,53 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
  
@@ -334,6 +407,29 @@ index e8c85de..2130762 100644
 + 		}
 +       		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_IDLE_EVENT) 
 +                    dbg(1, "SDL_USEREVENT idle_event received\n");
++#ifdef USE_WEBOS_ACCELEROMETER
++		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_ROTATE)
++		{
++		    dbg(1, "SDL_USEREVENT rotate received\n");
++                    switch(gr->orientation)
++		    {
++			case WEBOS_ORIENTATION_PORTRAIT:
++			    gr->screen = SDL_SetVideoMode(gr->real_w, gr->real_h, gr->video_bpp, gr->video_flags);
++			    break;
++			case WEBOS_ORIENTATION_LANDSCAPE:
++			    gr->screen = SDL_SetVideoMode(gr->real_h, gr->real_w, gr->video_bpp, gr->video_flags);
++			    break;
++		    }
++                    if(gr->screen == NULL)
++                    {
++                    	navit_destroy(gr->nav);
++                    }
++                    else
++                    {
++		    	callback_list_call_attr_2(gr->cbl, attr_resize, (void *)gr->screen->w, (void *)gr->screen->h);
++                    }
++		}
++#endif
 +                else 
 +                    dbg(1, "unknown SDL_USEREVENT\n");
 +                
@@ -343,12 +439,28 @@ index e8c85de..2130762 100644
              default:
              {
  #ifdef DEBUG
-@@ -2107,9 +2298,14 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2092,6 +2365,11 @@ static gboolean graphics_sdl_idle(void *data)
+         }
+     }
+ 
++#ifdef USE_WEBOS_ACCELEROMETER
++    event_remove_timeout(accel_to);
++    callback_destroy(accel_cb);
++#endif
++ 
+     return TRUE;
+ }
+ 
+@@ -2107,9 +2385,18 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      this->nav = nav;
      this->cbl = cbl;
  
 +#ifdef USE_WEBOS
++# ifdef USE_WEBOS_ACCELEROMETER
++    ret = SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_JOYSTICK);
++# else
 +    ret = SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
++# endif
 +#else
      ret = SDL_Init(SDL_INIT_VIDEO);
 +#endif
@@ -358,7 +470,7 @@ index e8c85de..2130762 100644
          g_free(this);
          return NULL;
      }
-@@ -2118,7 +2314,11 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2118,7 +2405,11 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      ret = TTF_Init();
      if(ret < 0)
      {
@@ -370,7 +482,7 @@ index e8c85de..2130762 100644
          SDL_Quit();
          return NULL;
      }
-@@ -2126,11 +2326,22 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2126,11 +2417,22 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      FT_Init_FreeType( &this->library );
  #endif
  
@@ -394,7 +506,7 @@ index e8c85de..2130762 100644
  
      if ((attr=attr_search(attrs, NULL, attr_w)))
          w=attr->u.num;
-@@ -2149,18 +2360,25 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2149,18 +2451,30 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
      this->screen = SDL_SetVideoMode(w, h, this->video_bpp, this->video_flags);
  
@@ -416,6 +528,11 @@ index e8c85de..2130762 100644
 +    /* Use screen size instead of requested */
 +    w = this->screen->w;
 +    h = this->screen->h;
++#ifdef USE_WEBOS_ACCELEROMETER
++    this->real_w = w;
++    this->real_h = h;
++    this->accelerometer = SDL_JoystickOpen(0);
++#endif
 +
      SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 +#ifdef USE_WEBOS
@@ -424,7 +541,7 @@ index e8c85de..2130762 100644
  
      SDL_WM_SetCaption("navit", NULL);
  
-@@ -2180,9 +2398,17 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2180,9 +2494,17 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      sge_Lock_ON();
  #endif
  
@@ -443,7 +560,7 @@ index e8c85de..2130762 100644
  
      this->overlay_enable = 1;
  
-@@ -2194,9 +2420,208 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2194,9 +2516,208 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      return this;
  }
  
