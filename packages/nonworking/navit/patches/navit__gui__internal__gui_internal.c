@@ -1,8 +1,8 @@
 diff --git a/navit/navit/gui/internal/gui_internal.c b/navit/navit/gui/internal/gui_internal.c
-index 8e507c4..dd77e80 100644
+index df3c8d8..d235a2c 100644
 --- a/navit/navit/gui/internal/gui_internal.c
 +++ b/navit/navit/gui/internal/gui_internal.c
-@@ -2949,10 +2949,17 @@ gui_internal_keyboard_key_data(struct gui_priv *this, struct widget *wkbd, char
+@@ -3171,10 +3171,17 @@ gui_internal_keyboard_key_data(struct gui_priv *this, struct widget *wkbd, char
  		NULL, gravity_center|orientation_vertical, func, data));
  	wk->data_free=data_free;
  	wk->background=this->background;
@@ -20,7 +20,7 @@ index 8e507c4..dd77e80 100644
  	return wk;
  }
  
-@@ -5982,7 +5989,11 @@ static struct gui_priv * gui_internal_new(struct navit *nav, struct gui_methods
+@@ -6247,7 +6254,11 @@ static struct gui_priv * gui_internal_new(struct navit *nav, struct gui_methods
  	      this->text_foreground_color=*attr->u.color;
  	else
  	      this->text_foreground_color=COLOR_WHITE;
