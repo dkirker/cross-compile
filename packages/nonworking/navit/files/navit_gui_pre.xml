@@ -33,8 +33,10 @@ Navigation</text></img>
 		<img src='gui_display' onclick='setting_layout()'><text>Layout</text></img>
 		<img cond='navit.pitch==0' src='gui_map' onclick='navit.pitch=pitch;redraw_map();back_to_map()'><text>3D</text></img>
 		<img cond='navit.pitch!=0' src='gui_map' onclick='navit.pitch=0;redraw_map();back_to_map()'><text>2D</text></img>
-		<img cond='navit.autozoom_active!=0' src='gui_map' onclick='navit.autozoom_active=0;redraw_map();back_to_map()'><text>AutoZoom off</text></img>
-		<img cond='navit.autozoom_active==0' src='gui_map' onclick='navit.autozoom_active=1;redraw_map();back_to_map()'><text>AutoZoom on</text></img>
+		<img cond='navit.autozoom_active!=0' src='gui_map' onclick='navit.autozoom_active=0;redraw_map();back_to_map()'><text>AutoZoom
+off</text></img>
+		<img cond='navit.autozoom_active==0' src='gui_map' onclick='navit.autozoom_active=1;redraw_map();back_to_map()'><text>AutoZoom
+on</text></img>
 	</a>
 	<a name='Tools'><text>Tools</text>
 		<img src='gui_actions' onclick='locale()'><text>Show Locale</text></img>
@@ -51,20 +53,20 @@ Navigation</text></img>
 
 <!-- http://wiki.navit-project.org/index.php/OSD_Layouts -->
 <!-- background images -->
-<osd enabled="yes" type="button" x="-99" y="0" align="10" w="56" h="270"  command="" src="$NAVIT_SHAREDIR/xpm/skin/top-right-pre.png" />
+<osd enabled="yes" type="button" x="-99" y="0" align="10" w="56" h="270"  command="" src="skin/top-right-pre.png" />
 <!-- Big -->
-<osd enabled="no" type="button" x="0" y="0" align="10" w="197" h="80"  command="" src="$NAVIT_SHAREDIR/xpm/skin/top-left-pre.png" />
-<osd enabled="no" type="button" x="0" y="-140" align="2"  command="" src="$NAVIT_SHAREDIR/xpm/skin/bottom-left-pre.png" />
+<osd enabled="no" type="button" x="0" y="0" align="10" w="197" h="80"  command="" src="skin/top-left-pre.png" />
+<osd enabled="no" type="button" x="0" y="-140" align="2"  command="" src="skin/bottom-left-pre.png" />
 <!-- Small -->
-<osd enabled="yes" type="button" x="0" y="0" align="10" w="110" h="100"  command="" src="$NAVIT_SHAREDIR/xpm/skin/top-left-pre-small.png" />
-<osd enabled="yes" type="button" x="0" y="-140" align="2"  command="" src="$NAVIT_SHAREDIR/xpm/skin/bottom-left-pre-small.png" />
+<osd enabled="yes" type="button" x="0" y="0" align="10" w="110" h="100"  command="" src="skin/top-left-pre-small.png" />
+<osd enabled="yes" type="button" x="0" y="-140" align="2"  command="" src="skin/bottom-left-pre-small.png" />
 
 
 <!-- menu right/top-right -->
 <osd enabled="yes" type="toggle_announcer"	x="-50"	y="6" w="45"	h="45"	icon_src="$NAVIT_SHAREDIR/xpm/skin/%s_48_48.png" background_color="#646FC3cc"/>
-<osd enabled="yes"  type="button"    x="-52" y="52"  w="50" h="50" command="zoom_in()" src="$NAVIT_SHAREDIR/xpm/skin/empty.png"/>
-<osd enabled="yes"  type="button"    x="-52" y="102" w="50" h="50" command="zoom_out()" src="$NAVIT_SHAREDIR/xpm/skin/empty.png"/>
-<osd enabled="yes"  type="button"    x="-52" y="152" w="50" h="50" command="zoom_to_route()" src="$NAVIT_SHAREDIR/xpm/skin/empty.png"/>
+<osd enabled="yes"  type="button"    x="-52" y="52"  w="50" h="50" command="zoom_in()" src="skin/empty.png"/>
+<osd enabled="yes"  type="button"    x="-52" y="102" w="50" h="50" command="zoom_out()" src="skin/empty.png"/>
+<osd enabled="yes"  type="button"    x="-52" y="152" w="50" h="50" command="zoom_to_route()" src="skin/empty.png"/>
 
 <!-- bottom-left elements -->
 <osd enabled="yes" type="text" label="${navigation.item.street_name} ${navigation.item.street_name_systematic}" x="4" y="-40" w="297" h="20" align="4" background_color="#646FC3cc" font_size="330" />
