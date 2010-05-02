@@ -33,8 +33,7 @@
 		[-][D]D.d[d]... [-][D][D]D.d[d]...
 		[-]0xX [-]0xX -->
 
-	<navit center="0x10b6f5 0x6c435d" zoom="64" tracking="1"
-		orientation="-1" recent_dest="10" autozoom_active="0">
+	<navit center="0x10b6f5 0x6c435d" zoom="64" tracking="1" orientation="-1" recent_dest="10" autozoom_active="0" pitch="20">
 		<!-- Use one of gtk_drawing_area, qt_qpainter or sdl. -->
 		<graphics type="sdl"/>
 		<!-- for a debug log -->
@@ -67,7 +66,7 @@
 			<map type="binfile" enabled="yes" data="/media/internal/MapsNavit/*.bin"/>
 		</mapset>
 		
-		<xi:include href="$NAVIT_USER_DATADIR/navit_gui.xml"/>
+		<xi:include href="$NAVIT_USER_DATADIR/navit_gui_pre.xml"/>
 		<xi:include href="$NAVIT_USER_DATADIR/navit_layout.xml"/>
 		<xi:include href="$NAVIT_USER_DATADIR/navit_vehicleprofile.xml"/>
 	</navit>
