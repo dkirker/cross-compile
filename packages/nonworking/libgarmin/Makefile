@@ -1,0 +1,37 @@
+NAME = libgarmin
+VERSION = 1.0.17
+SVN_URL = http://libgarmin.svn.sourceforge.net/svnroot/libgarmin/libgarmin/dev
+REVISION = 320
+
+include ../../../support/download.mk
+
+.PHONY: unpack
+unpack: build/.unpacked
+
+build/.unpacked: ${DL_DIR}/libsndfile-${VERSION}.tar.gz
+	rm -rf build
+	mkdir -p build
+	svn checkout -r ${REVISION} -q --non-interactive ${SVN_URL} build/src
+	touch $@
+
+include ../../../support/staging.mk
+
+include ../../../support/stage-rootfs.mk
+
+include ../../../support/cross-compile.mk
+
+stage:: build/armv7.built
+#	( cd ${STAGING_DIR}/usr/lib ; \
+#     [ -e libgarmin.so ] || ln -s libgarmin.so.1.0.17 libsndfile.so )
+
+build/%.built: build/.unpacked
+	rm -f $@
+	( cd build/src ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
+		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
+		${SB2} ./autosh.sh &&\
+ 	        ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
+	( cd build/src ; ${SB2} make install )
+	touch $@
+
+clobber::
+	rm -rf build
