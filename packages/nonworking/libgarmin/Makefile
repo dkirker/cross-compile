@@ -1,7 +1,7 @@
 NAME = libgarmin
-VERSION = 1.0.17
-SVN_URL = http://libgarmin.svn.sourceforge.net/svnroot/libgarmin/libgarmin/dev
 REVISION = 320
+VERSION = ${REVISION}
+SVN_URL = http://libgarmin.svn.sourceforge.net/svnroot/libgarmin/libgarmin/dev
 
 include ../../../support/download.mk
 
