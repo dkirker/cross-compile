@@ -1,0 +1,10 @@
+{
+   "id": "org.webosinternals.espeak",
+   "version": "1.43.21",
+   "vendor": "eSpeak Project",
+   "type": "game",
+   "main": "test.sh",
+   "icon": "Icon.png",
+   "title": "eSpeak",
+   "requiredMemory": 5
+}

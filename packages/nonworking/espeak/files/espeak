@@ -1,0 +1,19 @@
+#!/bin/sh
+
+APP_DIR=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.espeak
+export LD_LIBRARY_PATH=$APP_DIR/lib:$LD_LIBRARY_PATH
+export QUEUE_DIR=/tmp/espeak_queue
+
+
+if [ ! -d $QUEUE_DIR ]
+then
+   mkdir $QUEUE_DIR
+fi
+echo "$1" > $QUEUE_DIR/`date +%s`.${$}.txt
+
+running="`ps xaf | grep voice_reader | grep -v grep`"
+
+if [ "~$running" == "~" ]
+then
+   ${APP_DIR}/voice_reader &
+fi
