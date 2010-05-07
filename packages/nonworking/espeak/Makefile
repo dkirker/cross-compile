@@ -1,5 +1,5 @@
 NAME    = espeak
-VERSION = 1.43.21
+VERSION = 1.43.23
 #DEPENDS = pulseaudio
 SVN_URL = https://espeak.svn.sourceforge.net/svnroot/espeak/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.espeak
