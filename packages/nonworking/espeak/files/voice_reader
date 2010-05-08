@@ -1,0 +1,24 @@
+#!/bin/sh
+
+APP_DIR=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.espeak
+export LD_LIBRARY_PATH=$APP_DIR/lib:$LD_LIBRARY_PATH
+export QUEUE_DIR=/tmp/espeak_queue
+
+if [ "~$ESPEAK_VOICE" == "~" ]
+then
+   locale=`sqlite3 /var/luna/preferences/systemprefs.db 'select value from Preferences where key="locale"'`
+   ESPEAK_VOICE=`echo "${locale}"|sed 's/,//g;s/ //g;s/^.*languageCode...\([a-z][a-z]\).*$/\1/'`
+fi
+
+# Custom chime, at beginning of all batched announcements...
+paplay -d ${ESPEAK_SINK:-pdefaultapp} /usr/palm/sounds/notification.wav
+
+textfile="`ls -1 ${QUEUE_DIR} | head -1`"
+
+while [ "~${textfile}" != "~" ]
+do
+   cat ${QUEUE_DIR}/${textfile} | $APP_DIR/bin/espeak --path $APP_DIR/share --stdout -s 140 -a 200 -v ${ESPEAK_VOICE:-en} | paplay -d ${ESPEAK_SINK:-pdefaultapp}
+   rm ${QUEUE_DIR}/${textfile}
+   sleep 1
+   textfile="`ls -1 ${QUEUE_DIR} | head -1`"
+done

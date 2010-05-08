@@ -1,5 +1,5 @@
 NAME    = espeak
-VERSION = 1.43.21
+VERSION = 1.43.23
 #DEPENDS = pulseaudio
 SVN_URL = https://espeak.svn.sourceforge.net/svnroot/espeak/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.espeak
@@ -52,7 +52,7 @@ build/%.built: build/.unpacked build/.patched build/.configured
 	( ${SB2} cp -dR build/src/src/espeak build/${APP_DIR}/bin/ )
 	( ${SB2} cp -dR build/src/src/libespeak.so.1* build/${APP_DIR}/lib/libespeak.so.1 )
 	( ${SB2} cp -dR build/src/espeak-data build/${APP_DIR}/share/ )
-	( ${SB2} cp -dR espeak build/${APP_DIR}/ )
+	( ${SB2} cp -dR files/* build/${APP_DIR}/ )
 	touch $@
 
 clean:
