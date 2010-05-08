@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..97f2b3f 100644
+index e8c85de..9b2b0c9 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -34,6 +34,11 @@
@@ -385,7 +385,7 @@ index e8c85de..97f2b3f 100644
                  navit_destroy(gr->nav);
                  break;
              }
-@@ -2082,6 +2308,53 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2082,6 +2308,55 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
  
@@ -415,9 +415,11 @@ index e8c85de..97f2b3f 100644
 +		    {
 +			case WEBOS_ORIENTATION_PORTRAIT:
 +			    gr->screen = SDL_SetVideoMode(gr->real_w, gr->real_h, gr->video_bpp, gr->video_flags);
++			    PDL_SetOrientation(PDL_ORIENTATION_0);
 +			    break;
 +			case WEBOS_ORIENTATION_LANDSCAPE:
 +			    gr->screen = SDL_SetVideoMode(gr->real_h, gr->real_w, gr->video_bpp, gr->video_flags);
++			    PDL_SetOrientation(PDL_ORIENTATION_270);
 +			    break;
 +		    }
 +                    if(gr->screen == NULL)
@@ -439,7 +441,7 @@ index e8c85de..97f2b3f 100644
              default:
              {
  #ifdef DEBUG
-@@ -2092,6 +2365,11 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -2092,6 +2367,11 @@ static gboolean graphics_sdl_idle(void *data)
          }
      }
  
@@ -451,7 +453,7 @@ index e8c85de..97f2b3f 100644
      return TRUE;
  }
  
-@@ -2107,9 +2385,18 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2107,9 +2387,18 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      this->nav = nav;
      this->cbl = cbl;
  
@@ -470,7 +472,7 @@ index e8c85de..97f2b3f 100644
          g_free(this);
          return NULL;
      }
-@@ -2118,7 +2405,11 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2118,7 +2407,11 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      ret = TTF_Init();
      if(ret < 0)
      {
@@ -482,7 +484,7 @@ index e8c85de..97f2b3f 100644
          SDL_Quit();
          return NULL;
      }
-@@ -2126,11 +2417,22 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2126,11 +2419,22 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      FT_Init_FreeType( &this->library );
  #endif
  
@@ -506,7 +508,7 @@ index e8c85de..97f2b3f 100644
  
      if ((attr=attr_search(attrs, NULL, attr_w)))
          w=attr->u.num;
-@@ -2149,18 +2451,30 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2149,18 +2453,31 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
      this->screen = SDL_SetVideoMode(w, h, this->video_bpp, this->video_flags);
  
@@ -537,11 +539,12 @@ index e8c85de..97f2b3f 100644
      SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 +#ifdef USE_WEBOS
 +    SDL_EnableUNICODE(1);
++    PDL_SetOrientation(PDL_ORIENTATION_0);
 +#endif
  
      SDL_WM_SetCaption("navit", NULL);
  
-@@ -2180,9 +2494,17 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2180,9 +2497,17 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      sge_Lock_ON();
  #endif
  
@@ -560,7 +563,7 @@ index e8c85de..97f2b3f 100644
  
      this->overlay_enable = 1;
  
-@@ -2194,9 +2516,208 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -2194,9 +2519,208 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      return this;
  }
  
