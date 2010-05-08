@@ -8,7 +8,7 @@ include ../../../support/download.mk
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked: ${DL_DIR}/libsndfile-${VERSION}.tar.gz
+build/.unpacked:
 	rm -rf build
 	mkdir -p build
 	svn checkout -r ${REVISION} -q --non-interactive ${SVN_URL} build/src
@@ -22,7 +22,7 @@ include ../../../support/cross-compile.mk
 
 stage:: build/armv7.built
 #	( cd ${STAGING_DIR}/usr/lib ; \
-#     [ -e libgarmin.so ] || ln -s libgarmin.so.1.0.17 libsndfile.so )
+#     [ -e libgarmin.so ] || ln -s libgarmin.so.1.0.17 libgarmin.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
