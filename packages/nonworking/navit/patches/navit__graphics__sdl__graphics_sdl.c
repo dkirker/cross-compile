@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..9b2b0c9 100644
+index e8c85de..5602180 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -34,6 +34,11 @@
@@ -128,7 +128,7 @@ index e8c85de..9b2b0c9 100644
 +
 +    if (xAxis < -15000 && yAxis > -7000 && yAxis < 7000)
 +	new_orientation = WEBOS_ORIENTATION_LANDSCAPE;
-+    else if (zAxis < -15000 && (yAxis < -23000 || yAxis > 23000))
++    else if (yAxis > 15000 && xAxis > -7000 && xAxis < 7000)
 +	new_orientation = WEBOS_ORIENTATION_PORTRAIT;
 +    else
 +	return;
