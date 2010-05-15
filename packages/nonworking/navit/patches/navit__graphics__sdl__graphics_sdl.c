@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..5602180 100644
+index e8c85de..32697d3 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -34,6 +34,11 @@
@@ -499,8 +499,8 @@ index e8c85de..5602180 100644
 +    }
  
 +#ifdef USE_WEBOS
-+    this->video_bpp = 32;
-+    this->video_flags = SDL_SWSURFACE | SDL_RESIZABLE;
++    this->video_bpp = 0;
++    this->video_flags = SDL_SWSURFACE | SDL_ANYFORMAT | SDL_RESIZABLE;
 +#else
      this->video_bpp = 16;
      this->video_flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE;
