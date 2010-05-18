@@ -2,7 +2,7 @@ NAME = dbus-lib
 VERSION = 1.1.20
 DEPENDS = common/expat
 
-SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/dbus-1.1.20.tar.gz
+SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/dbus-1.1.20.tar.gz
 
 include ../../../support/download.mk
 

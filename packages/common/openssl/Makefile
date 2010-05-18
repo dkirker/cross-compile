@@ -41,4 +41,6 @@ build/%.built: build/.unpacked
 	touch $@
 
 clobber::
-	rm -rf build
+	-rm -rf build
+	-rm ${STAGING_DIR}/usr/lib/libcrypt.so
+	-rm ${STAGING_DIR}/usr/lib/libssl.so

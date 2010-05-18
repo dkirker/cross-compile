@@ -1,7 +1,7 @@
 NAME = zlib
 VERSION = 1.2.3
 
-SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tar.bz2
+SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
 

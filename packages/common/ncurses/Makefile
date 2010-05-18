@@ -2,7 +2,7 @@ NAME = ncurses
 VERSION = 5.4
 DEPENDS = 
 
-SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tar.gz
+SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tar.gz
 
 include ../../../support/download.mk
 

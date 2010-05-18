@@ -2,8 +2,8 @@ NAME = fuse
 VERSION = 2.7.2
 DEPENDS = 
 
-SRC_GZ = http://palm.cdnetworks.net/opensource/1.3.5/fuse-2.7.2.tar.gz
-PATCH =  http://palm.cdnetworks.net/opensource/1.3.5/fuse-2.7.2-patches.tgz
+SRC_GZ = http://palm.cdnetworks.net/opensource/1.4.1.1/fuse-2.7.2.tar.gz
+PATCH =  http://palm.cdnetworks.net/opensource/1.4.1.1/fuse-2.7.2-patches.tgz
 
 .PHONY: unpack
 unpack: build/.unpacked

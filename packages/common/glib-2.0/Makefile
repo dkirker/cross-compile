@@ -1,9 +1,9 @@
 NAME = glib-2.0
-VERSION = 2.14.4
+VERSION = 2.16.6
 DEPENDS = 
 
-SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.3.5/glib-${VERSION}.tar.bz2
-PATCH = http://palm.cdnetworks.net/opensource/1.3.5/glib-${VERSION}-patches.tgz
+SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.4.1.1/glib-${VERSION}.tar.bz2
+PATCH = http://palm.cdnetworks.net/opensource/1.4.1.1/glib-${VERSION}-patches.tgz
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -31,8 +31,11 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ;  LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src; ${SB2} make install-pkgconfigDATA install-exec-local )
+	( cd build/src ; \
+	CFLAGS="-O3 -march=armv7-a -mtune=cortex-a8 -mcpu=cortex-a8 -mfloat-abi=softfp -mfpu=neon -ftree-vectorize -I/usr/local/include" \
+	LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" \
+		${SB2} ./configure --prefix=${INSTALL_PREFIX} )
+	( cd build/src; ${SB2} make install-pkgconfigDATA install-configexecincludeDATA ) #this used to be 'install-exec-local', don't see equiv
 	( cd build/src/glib ; ${SB2} make )
 	( cd build/src/glib ; ${SB2} make install-glibincludeHEADERS \
 		install-glibsubincludeHEADERS )
