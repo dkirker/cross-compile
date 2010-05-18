@@ -1,11 +1,13 @@
 NAME = libxcb
 VERSION = 1.5
 
-DEPENDS = ../nonworking/xcbproto ../nonworking/libpthread-stubs ../nonworking/xau
+DEPENDS = x/xcbproto         \
+		  x/libpthread-stubs \
+		  x/xau
 
 SRC_BZ2 = http://xcb.freedesktop.org/dist/${NAME}-${VERSION}.tar.bz2
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -18,11 +20,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	sed -i s/src\ tests\ doc/src\ tests/g build/src/Makefile.in
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 

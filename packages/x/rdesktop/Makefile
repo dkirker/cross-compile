@@ -2,18 +2,18 @@ NAME = rdesktop
 VERSION = 1.6.0
 
 #XXX: err, what DOES it depend on?
-DEPENDS = ../nonworking/pango \
-		  ../nonworking/libx11 \
-		  ../nonworking/libice \
-		  ../nonworking/libsm \
-		  ../nonworking/libXext \
-		  ../nonworking/libXrender \
-		  ../nonworking/libXaw \
-		  glib-2.0
+DEPENDS = x/pango \
+		  x/libx11 \
+		  x/libice \
+		  x/libsm \
+		  x/libXext \
+		  x/libXrender \
+		  x/libXaw \
+		  common/glib-2.0
 
 SRC_TGZ = http://prdownloads.sourceforge.net/${NAME}/${NAME}-${VERSION}.tar.gz?download
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -25,11 +25,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 

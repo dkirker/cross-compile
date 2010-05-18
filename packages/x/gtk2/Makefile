@@ -1,17 +1,17 @@
 NAME = gtk+
 VERSION = 2.12.11
 
-DEPENDS = ../nonworking/pango \
-		  ../nonworking/libx11 \
-		  ../nonworking/libice \
-		  ../nonworking/libsm \
-		  ../nonworking/libXext \
-		  ../nonworking/libXrender \
-		  glib-2.0
+DEPENDS = x/pango \
+		  x/libx11 \
+		  x/libice \
+		  x/libsm \
+		  x/libXext \
+		  x/libXrender \
+		  common/glib-2.0
 
 SRC_BZ2 = http://ftp.acc.umu.se/pub/gnome/sources/gtk+/2.12/${NAME}-${VERSION}.tar.bz2
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -23,11 +23,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 

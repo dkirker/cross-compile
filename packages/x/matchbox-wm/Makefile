@@ -1,11 +1,12 @@
 NAME = matchbox-window-manager
 VERSION = 1.2
 
-DEPENDS = ../nonworking/matchbox-common ../nonworking/libmatchbox 
+DEPENDS = x/matchbox-common \
+		  x/libmatchbox 
 
 SRC_BZ2 = http://matchbox-project.org/sources/${NAME}/${VERSION}/${NAME}-${VERSION}.tar.bz2
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -17,11 +18,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 

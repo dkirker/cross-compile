@@ -2,20 +2,20 @@ NAME = xterm
 VERSION = 256
 
 DEPENDS = \
-		  ../nonworking/libx11 \
-		  ../nonworking/libice \
-		  ../nonworking/libsm \
-		  ../nonworking/libXext \
-		  ../nonworking/libXrender \
-		  ../nonworking/libXaw \
-		  glib-2.0 \
-		  ncurses
+		  x/libx11 \
+		  x/libice \
+		  x/libsm \
+		  x/libXext \
+		  x/libXrender \
+		  x/libXaw \
+		  common/glib-2.0 \
+		  common/ncurses
 
 SRC_TGZ = ftp://invisible-island.net/${NAME}/${NAME}-${VERSION}.tgz
 #We add this to the -rpath so we have the libs X wants
 XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -27,11 +27,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 

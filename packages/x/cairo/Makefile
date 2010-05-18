@@ -1,11 +1,14 @@
 NAME = cairo
 VERSION = 1.8.10
 
-DEPENDS = libpng12 ../nonworking/fontconfig ../nonworking/pixman ../nonworking/libx11
+DEPENDS = media/libpng12 \
+		  x/fontconfig \
+		  x/pixman \
+		  x/libx11
 
 SRC_TGZ = http://cairographics.org/releases/${NAME}-${VERSION}.tar.gz
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -17,11 +20,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 

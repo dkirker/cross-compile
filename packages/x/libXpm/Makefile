@@ -3,9 +3,9 @@ VERSION = 3.5.8
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 
-DEPENDS = ../nonworking/libx11 ../nonworking/xproto
+DEPENDS = x/libx11 x/xproto
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -17,11 +17,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 

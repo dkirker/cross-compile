@@ -1,11 +1,13 @@
 NAME = libXfont
 VERSION = 1.4.1
 
-DEPENDS = zlib ../nonworking/xtrans ../nonworking/libfontenc
+DEPENDS = common/zlib \
+		  x/xtrans \
+		  x/libfontenc
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -17,11 +19,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 

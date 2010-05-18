@@ -1,32 +1,34 @@
 NAME = xorg-server
 VERSION = 0.0.3
-DEPENDS = libsdl openssl \
-	../nonworking/bigreqsproto         \
-	../nonworking/compositeproto       \
-	../nonworking/damageproto          \
-	../nonworking/fixesproto           \
-	../nonworking/fontsproto           \
-	../nonworking/inputproto           \
-	../nonworking/kbproto              \
-	../nonworking/randrproto           \
-	../nonworking/renderproto          \
-	../nonworking/resourceproto        \
-	../nonworking/scrnsaverproto       \
-	../nonworking/videoproto           \
-	../nonworking/xcmiscproto          \
-	../nonworking/xextproto            \
-	../nonworking/xineramaproto        \
-	../nonworking/xproto               \
-	../nonworking/xtrans               \
-	../nonworking/xau                  \
-	../nonworking/xkbfile              \
-	../nonworking/xfont                \
-	../nonworking/libxcb               \
-	../nonworking/pixman               \
-	gles-headers                       \
-	tisgxgfx                           \
-	libpdl                             \
-	libsqlite
+DEPENDS = \
+	common/openssl         \
+	dev-sdl/libsdl         \
+	x/bigreqsproto         \
+	x/compositeproto       \
+	x/damageproto          \
+	x/fixesproto           \
+	x/fontsproto           \
+	x/inputproto           \
+	x/kbproto              \
+	x/randrproto           \
+	x/renderproto          \
+	x/resourceproto        \
+	x/scrnsaverproto       \
+	x/videoproto           \
+	x/xcmiscproto          \
+	x/xextproto            \
+	x/xineramaproto        \
+	x/xproto               \
+	x/xtrans               \
+	x/xau                  \
+	x/xkbfile              \
+	x/xfont                \
+	x/libxcb               \
+	x/pixman               \
+	dev-gl/gles-headers                       \
+	common/tisgxgfx                           \
+	common/libpdl                             \
+	common/libsqlite
 
 SRC_GIT = git://git.webos-internals.org/x11/xserver.git
 
@@ -38,7 +40,7 @@ APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xorg-ser
 #We add this to the -rpath so we have the libs X wants
 XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -50,11 +52,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mv src build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 

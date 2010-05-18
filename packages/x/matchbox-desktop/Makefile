@@ -1,11 +1,13 @@
 NAME = matchbox-desktop
 VERSION = 2.0
 
-DEPENDS = ../nonworking/matchbox-common ../nonworking/libmatchbox ../nonworking/gtk2 
+DEPENDS = x/matchbox-common \
+		  x/libmatchbox     \
+		  x/gtk2 
 
 SRC_BZ2 = http://matchbox-project.org/sources/${NAME}/${VERSION}/${NAME}-${VERSION}.tar.bz2
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -17,11 +19,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 
