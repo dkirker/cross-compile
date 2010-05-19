@@ -1,6 +1,8 @@
 NAME = libXrender
 VERSION = 0.9.5
 
+DEPENDS = x/libx11 x/renderproto
+
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
