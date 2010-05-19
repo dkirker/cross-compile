@@ -29,8 +29,10 @@ stage: toolchain rootfs staging-armv7 staging-armv6 staging-i686
 
 .PHONY: staging-%
 staging-%: staging/mapping-%
-	for f in `find packages -mindepth 1 -maxdepth 1 -type d -print` ; do \
-	  if [ -e $$f/Makefile ]; then \
+	for f in `find packages -mindepth 2 -maxdepth 2 -type d -print` ; do \
+	  if expr "$$f" : "packages/nonworking/.*" > /dev/null ; then \
+	    true ; \
+	  elif [ -e $$f/Makefile ]; then \
 	    ${MAKE} -C $$f ARCH=$* stage || exit ; \
 	  fi; \
 	done
@@ -106,7 +108,9 @@ clobber: clobber-armv7 clobber-armv6 clobber-i686
 .PHONY: clobber-%
 clobber-%:
 	for f in `find packages -mindepth 2 -maxdepth 2 -type d -print` ; do \
-	  if [ -e $$f/Makefile ]; then \
+	  if expr "$$f" : "packages/nonworking/.*" > /dev/null ; then \
+	    true ; \
+	  elif [ -e $$f/Makefile ] ; then \
 	    ${MAKE} -C $$f ARCH=$* clobber || exit ; \
 	  fi; \
 	done
