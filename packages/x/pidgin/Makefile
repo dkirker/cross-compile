@@ -1,12 +1,13 @@
 NAME = pidgin
 VERSION = 2.6.6
 
-DEPENDS = libgcrypt \
-		  ../nonworking/gnutls ../nonworking/gtk2
+DEPENDS = common/libgcrypt \
+		  common/gnutls    \
+		  x/gtk2
 
 SRC_BZ2 = http://sourceforge.net/projects/pidgin/files/Pidgin/${NAME}-${VERSION}.tar.bz2
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -18,11 +19,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 
