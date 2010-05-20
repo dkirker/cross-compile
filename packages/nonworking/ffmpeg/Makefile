@@ -2,8 +2,8 @@ NAME = ffmpeg
 VERSION = 16648
 DEPENDS = 
 
-SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.3.5/ffmpeg_${VERSION}.tar.gz
-PATCH = http://palm.cdnetworks.net/opensource/1.3.5/ffmpeg_${VERSION}_patches.tgz
+SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.4.1.1/ffmpeg_${VERSION}.tar.gz
+PATCH = http://palm.cdnetworks.net/opensource/1.4.1.1/ffmpeg_${VERSION}_patches.tgz
 
 .PHONY: unpack
 unpack: build/.unpacked

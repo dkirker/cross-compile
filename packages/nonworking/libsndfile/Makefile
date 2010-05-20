@@ -2,7 +2,7 @@ NAME = libsndfile1
 VERSION = 1.0.17
 DEPENDS = alsa-lib
 
-SRC_TGZ = http://palm.cdnetworks.net/opensource/1.3.5/libsndfile-${VERSION}.tar.gz
+SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/libsndfile-${VERSION}.tar.gz
 
 include ../../support/download.mk
 
@@ -15,7 +15,7 @@ build/.unpacked: ${DL_DIR}/libsndfile-${VERSION}.tar.gz
 	tar -C build -z -x -f $<
 	mv build/libsndfile-${VERSION} build/src
 	# Patch throws m4 into an infinite loop, don't need it anyway
-#	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.3.5/libsndfile-${VERSION}-patches.tgz \
+#	${MAKE} SRC_FILE=http://palm.cdnetworks.net/opensource/1.4.1.1/libsndfile-${VERSION}-patches.tgz \
 #		LOCAL_FILE=libsndfile-${VERSION}-patches.tgz download
 #	tar -zxOf ${DL_DIR}/libsndfile-${VERSION}-patches.tgz | patch -d build/src -p1
 	touch $@

@@ -3,7 +3,7 @@ VERSION = 1.2.12
 DEPENDS = common/zlib
 
 
-SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.3.5/${NAME}-${VERSION}.tar.bz2
+SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
 
@@ -24,9 +24,9 @@ include ../../../support/stage-rootfs.mk
 stage::
 	cp -pP ${ROOTFS_DIR}/usr/lib/libpng12.so* ${STAGING_DIR}/usr/lib
 	( cd ${STAGING_DIR}/usr/lib ; \
-	  [ -e ${NAME}.so ] || ln -f -s ${NAME}.so.3.12.0 ${NAME}.so )
+	  [ -e ${NAME}.so ] || ln -f -s ${NAME}.so.3.42.0 ${NAME}.so )
 	( cd ${STAGING_DIR}/usr/lib ; \
-	  [ -e libpng12.so ] || ln -f -s libpng12.so.0.12.0 libpng12.so )
+	  [ -e libpng12.so ] || ln -f -s libpng12.so.0.42.0 libpng12.so )
 
 include ../../../support/cross-compile.mk
 
