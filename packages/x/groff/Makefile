@@ -1,24 +1,19 @@
-NAME = libXaw
-VERSION = 1.0.7
+NAME = groff
+VERSION = 1.20.1
 
-DEPENDS = \
-		x/xorg-server \
-		x/libxt \
-		x/libXmu \
-		x/libXpm \
-		x/groff
+DEPENDS =
 
-SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
+SRC_TGZ = ftp://ftp.gnu.org/gnu/${NAME}/${NAME}-${VERSION}.tar.gz
 
 include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
-	tar -C build -j -x -f $<
+	tar -C build -z -x -f $<
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
