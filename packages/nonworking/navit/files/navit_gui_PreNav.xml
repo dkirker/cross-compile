@@ -54,32 +54,32 @@ on</text></img>
 
 <!-- http://wiki.navit-project.org/index.php/OSD_Layouts -->
 <!-- background images -->
-<osd enabled="yes" type="button" x="0" y="0" w="480" h="38" command="" src="skin2/head_bg.png" /> 
+<osd enabled="yes" type="button" x="0" y="0" w="480" h="38" command="" src="PreNav/head_bg.png" /> 
 
 <osd enabled="yes" type="text" x="0" y="0" w="480" h="18" label=" Distance: ${navigation.item.destination_length[named]} - Arrival: ${navigation.item.destination_time[arrival]}, ${navigation.item.destination_time[remaining]} - R:${vehicle.position_radius}m" background_color="#000000FF" align="4"/> 
 
-<osd enabled="yes" type="button" x="0" y="-128" w="480" h="128" command="" src="skin2/bottom_bg.png" /> 
+<osd enabled="yes" type="button" x="0" y="-128" w="480" h="128" command="" src="PreNav/bottom_bg.png" /> 
 
 
-<osd enabled="yes" type="button" x="-20" y="-74" w="20" h="20" command="" src="skin2/ecke_ur.png" /> 
+<osd enabled="yes" type="button" x="-20" y="-74" w="20" h="20" command="" src="PreNav/ecke_ur.png" /> 
 
 
 <!-- TOP SPEED -->
 <osd enabled="yes" type="text" label="${tracking.item.route_speed}" x="13" y="31" w="94" h="47" background_color="#FF0000CC" align="0" font_size="300"/>
 <osd enabled="yes" type="text" label="${vehicle.position_speed}" x="13" y="78" w="94" h="47" background_color="#000000CC" align="0" font_size="300"/>
-<osd enabled="yes" type="button" x="6" y="24" w="108" h="108" command="" src="skin2/geschw.png" /> 
+<osd enabled="yes" type="button" x="6" y="24" w="108" h="108" command="" src="PreNav/geschw.png" /> 
 
 <!-- menu right/top-right -->
 
-<osd enabled="yes" type="button" x="-70" y="18" w="20" h="20" command="" src="skin2/ecke_or.png" /> 
+<osd enabled="yes" type="button" x="-70" y="18" w="20" h="20" command="" src="PreNav/ecke_or.png" /> 
 
-<osd enabled="yes"  type="button"    x="-50" y="18" w="50" h="50" command="zoom_out()" src="skin2/zoom_out.png"/>
+<osd enabled="yes"  type="button"    x="-50" y="18" w="50" h="50" command="zoom_out()" src="PreNav/zoom_out.png"/>
 
-<osd enabled="yes" type="toggle_announcer" x="-50"	y="68" w="50"	h="50" icon_src="skin2/%s.png" background_color="#00000088"/>
+<osd enabled="yes" type="toggle_announcer" x="-50"	y="68" w="50"	h="50" icon_src="$NAVIT_SHAREDIR/xpm/PreNav/%s.png" background_color="#00000088"/>
 
-<osd enabled="yes" type="button" command="zoom_to_route()" x="-50" y="118" w="50" h="50" src="skin2/zoom_route.png"/>
+<osd enabled="yes" type="button" command="zoom_to_route()" x="-50" y="118" w="50" h="50" src="PreNav/zoom_route.png"/>
 
-<osd enabled="yes" type="button" x="-50" y="168"  w="50" h="50" command="zoom_in()" src="skin2/zoom_in.png"/>
+<osd enabled="yes" type="button" x="-50" y="168"  w="50" h="50" command="zoom_in()" src="PreNav/zoom_in.png"/>
 
 
 
