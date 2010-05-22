@@ -24,7 +24,6 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \
-	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} \
 	)

@@ -28,7 +28,6 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \
-	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	./configure \
 		--prefix=${APP_DIR} \

@@ -38,7 +38,6 @@ build: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} \
-	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	CFLAGS=\"-O2 -I/usr/local/include -I/usr/local/include/ncurses\" \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	PATH=\"/usr/local/bin:${PATH}\" \

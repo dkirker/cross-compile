@@ -28,7 +28,6 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; \
 		LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} \
-	    PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 		./configure --disable-static --prefix=${INSTALL_PREFIX} )
 	( cd build/src ; ${SB2} make install-pkgconfigDATA )
 	( cd build/src/liboil ; ${SB2} make install-pkgincludeHEADERS )

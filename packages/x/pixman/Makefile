@@ -26,7 +26,6 @@ build: build/armv7.built
 #The sed line might be "needed" due to incompatible libtool on my machine...
 build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \
-	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} \
 		--disable-arm-neon \

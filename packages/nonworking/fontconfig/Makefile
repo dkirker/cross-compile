@@ -28,7 +28,6 @@ build: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} \
-	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} --sysconfdir=/usr/local/share \
 		--host=i386 --build=arm --with-arch=arm \

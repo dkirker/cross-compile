@@ -30,7 +30,6 @@ build: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} \
-	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	CFLAGS=\"-I/usr/local/include\" \
 	LDFLAGS=\"-L/usr/local/lib\" \
 	./configure \
