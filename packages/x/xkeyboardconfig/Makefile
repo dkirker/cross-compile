@@ -3,7 +3,7 @@ VERSION = 1.7-2
 
 SRC_GIT=git://git.webos-internals.org/x11/xkeyboard-config.git
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -14,17 +14,16 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	tar -C build/src -z -x -f $<
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 
 build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \
-	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} \
 	)

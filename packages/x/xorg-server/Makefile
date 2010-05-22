@@ -66,7 +66,6 @@ build/%.built: build/.unpacked
 	( mkdir -p build/obj )
 	( cd build/obj ; ${SB2} \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
-	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	../src/configure \
 		--prefix=${APP_DIR} \
 		--enable-xsdl \

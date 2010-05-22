@@ -6,7 +6,7 @@ SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.ta
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xorg-server
 XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -18,17 +18,16 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 
 build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \
-	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	./configure \
 		--prefix=${APP_DIR} \
