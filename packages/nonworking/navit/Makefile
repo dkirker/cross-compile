@@ -93,6 +93,8 @@ build/%.built: build/.unpacked build/.patched build/.configured
 	${SB2} cp files/poi_png/*.png build/${APP_DIR}/share/navit/xpm/
 	${SB2} mkdir -p build/${APP_DIR}/share/navit/xpm/skin/
 	${SB2} cp files/skin/*.png build/${APP_DIR}/share/navit/xpm/skin/
+	${SB2} mkdir -p build/${APP_DIR}/share/navit/xpm/PreNav/
+	${SB2} cp files/PreNav/*.png build/${APP_DIR}/share/navit/xpm/PreNav/
 	touch $@
 
 clean:
