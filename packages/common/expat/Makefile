@@ -31,5 +31,10 @@ build/%.built: build/.unpacked
 		lib/expat_external.h ${INSTALL_PREFIX}/include )
 	touch $@
 
+stage::
+	cp -pP ${ROOTFS_DIR}/usr/lib/libexpat.so* ${STAGING_DIR}/usr/lib
+	( cd ${STAGING_DIR}/usr/lib ; \
+	  [ -e lib${NAME}.so ] || ln -f -s lib${NAME}.so.0 lib${NAME}.so )
+
 clobber::
-	rm -rf build
+	rm -rf build ${STAGING_DIR}/usr/lib/lib${NAME}.so*
