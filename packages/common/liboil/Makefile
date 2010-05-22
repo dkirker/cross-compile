@@ -1,6 +1,6 @@
 NAME = liboil
 VERSION = 0.3.14
-DEPENDS = 
+DEPENDS = common/glib-2.0
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tar.gz
 
@@ -26,7 +26,10 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
+	( cd build/src ; \
+		LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} \
+	    PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+		./configure --disable-static --prefix=${INSTALL_PREFIX} )
 	( cd build/src ; ${SB2} make install-pkgconfigDATA )
 	( cd build/src/liboil ; ${SB2} make install-pkgincludeHEADERS )
 	( cd build/src ; ${SB2} make install )

@@ -1,20 +1,19 @@
-NAME = matchbox-window-manager
-VERSION = 1.2
+NAME = dbus-glib
+VERSION = 0.80
 
-DEPENDS = x/matchbox-common \
-		  x/libmatchbox 
+DEPENDS = common/expat
 
-SRC_BZ2 = http://matchbox-project.org/sources/${NAME}/${VERSION}/${NAME}-${VERSION}.tar.bz2
+SRC_TGZ = http://dbus.freedesktop.org/releases/${NAME}/${NAME}-${VERSION}.tar.gz
 
 include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
-	tar -C build -j -x -f $<
+	tar -C build -z -x -f $<
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
@@ -28,11 +27,13 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
+	cp dbus-bus-introspect.xml build/src/tools
 	( cd build/src ; ${SB2} \
 	PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
 	LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
+		--disable-tests \
 	)	
 	( cd build/src ; ${SB2} make)
 	( cd build/src ; ${SB2} make install)
