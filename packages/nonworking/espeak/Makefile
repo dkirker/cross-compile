@@ -1,26 +1,26 @@
 NAME    = espeak
-VERSION = 1.43.23
+VERSION = 1.43.31
 #DEPENDS = pulseaudio
 SVN_URL = https://espeak.svn.sourceforge.net/svnroot/espeak/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.espeak
-REVISION= 241
+REVISION= 243
 
 .PHONY: unpack
 unpack: build/.unpacked
 
 build/.unpacked:
 	mkdir -p build
-#	svn checkout -r ${REVISION} -q --non-interactive ${SVN_URL} build/src
-	wget -O build/espeak-${VERSION}.zip http://espeak.sourceforge.net/test/espeak-${VERSION}.zip
-	( cd build ; unzip espeak-${VERSION}.zip ; rm -rf src ; cp -a espeak-${VERSION} src )
+	svn checkout -r ${REVISION} -q --non-interactive ${SVN_URL} build/src
+#	wget -O build/espeak-${VERSION}.zip http://espeak.sourceforge.net/test/espeak-${VERSION}.zip
+#	( cd build ; unzip espeak-${VERSION}.zip ; rm -rf src ; cp -a espeak-${VERSION} src )
 	touch $@
 
 update: build/.unpacked
-#	( cd build/src ; \
-#		if [ -n "`svn status -u | egrep -v '^Status' | egrep -v '^\?'`" ]; then \
-#			svn update -r ${REVISION} --non-interactive; \
-#			rm -f ../*.built ../.configure ../.aclocal; \
-#		fi )
+	( cd build/src ; \
+		if [ -n "`svn status -u | egrep -v '^Status' | egrep -v '^\?'`" ]; then \
+			svn update -r ${REVISION} --non-interactive; \
+			rm -f ../*.built ../.configure ../.aclocal; \
+		fi )
 
 include ../../../support/staging.mk
 
@@ -51,7 +51,7 @@ build/%.built: build/.unpacked build/.patched build/.configured
 	( ${SB2} mkdir -p build/${APP_DIR}/bin build/${APP_DIR}/lib build/${APP_DIR}/share )
 	( ${SB2} cp -dR build/src/src/espeak build/${APP_DIR}/bin/ )
 	( ${SB2} cp -dR build/src/src/libespeak.so.1* build/${APP_DIR}/lib/libespeak.so.1 )
-	( ${SB2} cp -dR build/src/espeak-data build/${APP_DIR}/share/ )
+	( ${SB2} cp -dR espeak-data build/${APP_DIR}/share/ )
 	( ${SB2} cp -dR files/* build/${APP_DIR}/ )
 	touch $@
 
