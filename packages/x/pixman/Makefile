@@ -1,6 +1,8 @@
 NAME = pixman
 VERSION = 0.17.8
 
+DEPENDS = x/fontconfig 
+
 SRC_BZ2 = http://cgit.freedesktop.org/pixman/snapshot/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
