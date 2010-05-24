@@ -1,20 +1,21 @@
 NAME = icewm
 VERSION = 1.2.37
 
-SRC_TGZ = http://downloads.sourceforge.net/project/icewm/icewm-stable/${VERSION}/${NAME}-${VERSION}.tar.gz?use_mirror=cdnetworks-us-2
+SRC_TGZ =http://sourceforge.net/projects/icewm/files/icewm-1.2/${VERSION}/${NAME}-${VERSION}.tar.gz/download
 
-DEPENDS = ../nonworking/libXpm \
-	  ../nonworking/libXrandr \
-	  ../nonworking/fontconfig \
-	  ../nonworking/libXft \
-	  ../nonworking/libXi \
-	  ../nonworking/libXrender \
-	  ../nonworking/xinput \
-	  ../nonworking/libXext \
-	  ../nonworking/libx11 \
-	  ../nonworking/xproto
+DEPENDS = \
+	x/libXpm \
+	x/libXrandr \
+	x/fontconfig \
+	x/libXft \
+	x/libXi \
+	x/libXrender \
+	x/xinput \
+	x/libXext \
+	x/libx11 \
+	x/xproto
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -26,11 +27,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
 stage:: build
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 build: build/armv7.built
 
