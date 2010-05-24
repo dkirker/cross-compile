@@ -13,8 +13,15 @@ export LANG=${lng}_${country}.UTF-8
 export ESPEAK_VOICE=${lng}
 export ESPEAK_SINK=pnavigation
 
-#export NAVIT_LOGFILE=$NAVIT_USER_DATADIR/navit.log
-#date > $NAVIT_LOGFILE
+export NAVIT_LOGFILE=$NAVIT_USER_DATADIR/navit.log
+#delete log if it is more the 300kb
+if [ `ls -l $NAVIT_LOGFILE | awk '{print $5}'` -gt 300000 ];then
+	rm -f ${NAVIT_LOGFILE}.gz
+	gzip -9 $NAVIT_LOGFILE
+fi
+
+echo "------------------------- Start Navit ----------------------------------" >> $NAVIT_LOGFILE
+date >> $NAVIT_LOGFILE
 
 test -d $NAVIT_USER_DATADIR || mkdir -p $NAVIT_USER_DATADIR
 test -e $NAVIT_USER_DATADIR/navit.xml || cp $APP_DIR/dist_files/navit*.xml $NAVIT_USER_DATADIR/                                                                 
