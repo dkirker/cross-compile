@@ -21,7 +21,7 @@ VERSION = 0.2.0
 DEPENDS = media/jpeg media/libpng12 common/freetype common/fontconfig dev-sdl/libsdl dev-sdl/libsdl-image nonworking/pdl nonworking/libgarmin
 SVN_URL = https://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
-REVISION= 3292
+REVISION= 3323
 
 .PHONY: unpack
 unpack: build/.unpacked

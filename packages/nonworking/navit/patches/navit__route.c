@@ -1,8 +1,8 @@
 diff --git a/navit/navit/route.c b/navit/navit/route.c
-index 19b7ec0..9e84991 100644
+index 1411522..2efe55c 100644
 --- a/navit/navit/route.c
 +++ b/navit/navit/route.c
-@@ -644,7 +644,7 @@ route_path_update_done(struct route *this, int new_graph)
+@@ -664,7 +664,7 @@ route_path_update_done(struct route *this, int new_graph)
  			/* FIXME */
  			int seg_time=route_time_seg(this->vehicleprofile, seg->data, NULL);
  			if (seg_time == INT_MAX) {
