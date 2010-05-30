@@ -1,7 +1,8 @@
 NAME = libXext
 VERSION = 1.1.1
 
-DEPENDS = #XXX: ??
+DEPENDS = x/xproto \
+          x/libx11
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 
