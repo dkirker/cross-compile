@@ -1,16 +1,14 @@
 diff --git a/navit/navit/xpm/Makefile.am b/navit/navit/xpm/Makefile.am
-index 5ca23e3..9f98478 100644
+index b6f94b7..b70a062 100644
 --- a/navit/navit/xpm/Makefile.am
 +++ b/navit/navit/xpm/Makefile.am
-@@ -1,72 +1,72 @@
+@@ -1,61 +1,61 @@
  include $(top_srcdir)/Makefile.inc
  
 -xpm_DATA = bench.xpm
 -xpm_DATA += biergarten.xpm
 -xpm_DATA += boundary_stone.xpm
 -xpm_DATA += bus_halt.xpm
--xpm_DATA += cafe.xpm
--xpm_DATA += camping.xpm
 -xpm_DATA += car_dealer.xpm
 -xpm_DATA += castle.xpm
 -xpm_DATA += ruins.xpm
@@ -31,32 +29,24 @@ index 5ca23e3..9f98478 100644
 -xpm_DATA += heliport.xpm
 -xpm_DATA += highway_exit.xpm
 -xpm_DATA += hunting_stand.xpm
--xpm_DATA += hotel.xpm
--xpm_DATA += information.xpm
 -xpm_DATA += justice.xpm
 -xpm_DATA += level_crossing.xpm
 -xpm_DATA += library.xpm
 -xpm_DATA += mark.xpm
--xpm_DATA += mini_roundabout.xpm
 -xpm_DATA += memorial.xpm
 -xpm_DATA += military.xpm
--xpm_DATA += museum.xpm
 -xpm_DATA += nav_left_1.xpm nav_left_2.xpm
 -xpm_DATA += nav_right_1.xpm nav_right_2.xpm
 -xpm_DATA += nav_straight.xpm nav_straight_32.xpm
 -xpm_DATA += nav_left_1_32.xpm nav_left_2_32.xpm
 -xpm_DATA += nav_right_1_32.xpm nav_right_2_32.xpm
--xpm_DATA += parking.xpm
--xpm_DATA += pharmacy.xpm
 -xpm_DATA += picnic.xpm
 -xpm_DATA += potable_water.xpm
--xpm_DATA += restaurant.xpm
 -xpm_DATA += restroom.xpm
 -xpm_DATA += shelter.xpm
 -xpm_DATA += skiing.xpm
 -xpm_DATA += sport.xpm
 -xpm_DATA += swimming.xpm
--xpm_DATA += telephone.xpm
 -xpm_DATA += theater.xpm
 -xpm_DATA += toilets.xpm
 -xpm_DATA += tower.xpm
@@ -70,14 +60,11 @@ index 5ca23e3..9f98478 100644
 -xpm_DATA += zoom_out.xpm
 -xpm_DATA += toggle_fullscreen.xpm
 -xpm_DATA += menu.xpm
--xpm_DATA += school.xpm
 -xpm_DATA += public_office.xpm
 +xpms = bench.xpm
 +xpms += biergarten.xpm
 +xpms += boundary_stone.xpm
 +xpms += bus_halt.xpm
-+xpms += cafe.xpm
-+xpms += camping.xpm
 +xpms += car_dealer.xpm
 +xpms += castle.xpm
 +xpms += ruins.xpm
@@ -98,32 +85,24 @@ index 5ca23e3..9f98478 100644
 +xpms += heliport.xpm
 +xpms += highway_exit.xpm
 +xpms += hunting_stand.xpm
-+xpms += hotel.xpm
-+xpms += information.xpm
 +xpms += justice.xpm
 +xpms += level_crossing.xpm
 +xpms += library.xpm
 +xpms += mark.xpm
-+xpms += mini_roundabout.xpm
 +xpms += memorial.xpm
 +xpms += military.xpm
-+xpms += museum.xpm
 +#xpms += nav_left_1.xpm nav_left_2.xpm
 +#xpms += nav_right_1.xpm nav_right_2.xpm
 +#xpms += nav_straight.xpm nav_straight_32.xpm
 +#xpms += nav_left_1_32.xpm nav_left_2_32.xpm
 +#xpms += nav_right_1_32.xpm nav_right_2_32.xpm
-+xpms += parking.xpm
-+xpms += pharmacy.xpm
 +xpms += picnic.xpm
 +xpms += potable_water.xpm
-+xpms += restaurant.xpm
 +xpms += restroom.xpm
 +xpms += shelter.xpm
 +xpms += skiing.xpm
 +xpms += sport.xpm
 +xpms += swimming.xpm
-+xpms += telephone.xpm
 +xpms += theater.xpm
 +xpms += toilets.xpm
 +xpms += tower.xpm
@@ -137,12 +116,11 @@ index 5ca23e3..9f98478 100644
 +xpms += zoom_out.xpm
 +xpms += toggle_fullscreen.xpm
 +xpms += menu.xpm
-+xpms += school.xpm
 +xpms += public_office.xpm
  
  svgs  = gui_about.svg
  svgs += gui_actions.svg
-@@ -183,6 +183,8 @@ flag_svgs += country_TZ.svgz country_UA.svgz country_UG.svgz country_UM.svgz cou
+@@ -187,6 +187,8 @@ flag_svgs += country_TZ.svgz country_UA.svgz country_UG.svgz country_UM.svgz cou
  flag_svgs += country_VA.svgz country_VC.svgz country_VE.svgz country_VG.svgz country_VI.svgz country_VN.svgz country_VU.svgz
  flag_svgs += country_WF.svgz country_WS.svgz country_YE.svgz country_YT.svgz country_ZA.svgz country_ZM.svgz country_ZW.svgz
  
@@ -151,7 +129,7 @@ index 5ca23e3..9f98478 100644
  if USE_SVG
    xpm_DATA += $(svgs) $(nav_svgs) $(flag_svgs)
  endif
-@@ -192,8 +194,10 @@ if USE_SVG2PNG
+@@ -196,8 +198,10 @@ if USE_SVG2PNG
  	SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir) $(srcdir)/navit_svg2png "@SVG2PNG@" "$@"
  %.png: $(srcdir)/*.svg
  	SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir) $(srcdir)/navit_svg2png "@SVG2PNG@" "$@"
@@ -163,7 +141,7 @@ index 5ca23e3..9f98478 100644
  xsize = $(word 1,$(subst x, ,$(scale)))
  ysize = $(word $(words $(scale)),$(subst x, ,$(scale)))
  comma =,
-@@ -211,8 +215,11 @@ if USE_SVG2PNG_SCALES_NAV
+@@ -215,8 +219,11 @@ if USE_SVG2PNG_SCALES_NAV
  pngs += $(foreach scale, $(subst $(comma), ,@SVG2PNG_SCALES_NAV@), $(addsuffix _$(xsize)_$(ysize).png,$(basename $(nav_svgs))))
  endif
  xpm_DATA += $(pngs)
