@@ -1,5 +1,7 @@
 NAME = libavcodec
 
+DEPENDS = media/libfaac
+
 include ../../../support/staging.mk
 
 include ../../../support/stage-rootfs.mk

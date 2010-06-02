@@ -1,5 +1,7 @@
 NAME = libavformat
 
+DEPENDS = common/zlib
+
 include ../../../support/staging.mk
 
 include ../../../support/stage-rootfs.mk
