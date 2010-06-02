@@ -1,4 +1,4 @@
-NAME = amrnb
+NAME = opencore-amr
 
 include ../../../support/staging.mk
 

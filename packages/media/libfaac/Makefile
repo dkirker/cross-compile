@@ -1,4 +1,4 @@
-NAME = amrwb
+NAME = libfaac
 
 include ../../../support/staging.mk
 
