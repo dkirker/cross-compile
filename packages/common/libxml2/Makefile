@@ -4,13 +4,15 @@ DEPENDS =
 
 SRC_TGZ = ftp://xmlsoft.org/libxml2/old/libxml2-2.6.26.tar.gz
 
+include ../../../support/download.mk
+
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked:
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
-	curl ${SRC_TGZ} | tar -C build -zxf -
+	tar -C build -zxf $<
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
