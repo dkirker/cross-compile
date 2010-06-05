@@ -1,6 +1,8 @@
 NAME = xkeyboard-config
 VERSION = 1.7-2
 
+DEPENDS=x/xkbcomp
+
 SRC_GIT=git://git.webos-internals.org/x11/xkeyboard-config.git
 
 include ../../../support/download.mk
