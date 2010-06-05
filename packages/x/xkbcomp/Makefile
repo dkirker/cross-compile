@@ -3,8 +3,8 @@ VERSION = 1.1.1
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xorg-server
-XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
+#APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xorg-server
+#XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
 
 include ../../../support/download.mk
 
@@ -30,10 +30,10 @@ build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	./configure \
-		--prefix=${APP_DIR} \
+		--prefix=${INSTALL_PREFIX} \
 	)
 	( cd build/src ; ${SB2} make)
-	#( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} make install )
 	touch $@
 
 clobber::
