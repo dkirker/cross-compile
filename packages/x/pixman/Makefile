@@ -1,7 +1,7 @@
 NAME = pixman
 VERSION = 0.17.8
 
-DEPENDS = x/fontconfig 
+DEPENDS = x/fontconfig
 
 SRC_BZ2 = http://cgit.freedesktop.org/pixman/snapshot/${NAME}-${VERSION}.tar.bz2
 
@@ -31,6 +31,7 @@ build/%.built: build/.unpacked
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} \
 		--disable-arm-neon \
+		--disable-gtk \
 	)
 	( cd build/src ; ${SB2} make)
 	( cd build/src ; ${SB2} make install )
