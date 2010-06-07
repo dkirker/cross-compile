@@ -7,6 +7,7 @@ DEPENDS = x/pango \
 		  x/libsm \
 		  x/libXext \
 		  x/libXrender \
+		  x/libXrandr \
 		  common/glib-2.0
 
 SRC_BZ2 = http://ftp.acc.umu.se/pub/gnome/sources/gtk+/2.12/${NAME}-${VERSION}.tar.bz2
