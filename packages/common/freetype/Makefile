@@ -30,7 +30,7 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure )
+	( cd build/src ; ${SB2} ./configure GNUMAKE=$(MAKE) )
 	( cd build/src ; ${SB2} $(MAKE) )
 	( ${SB2} install -m 777 -d /usr/local/include/freetype )
 	( ${SB2} install -m 777 -d /usr/local/include/freetype/config )
