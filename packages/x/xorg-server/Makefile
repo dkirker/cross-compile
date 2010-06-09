@@ -81,7 +81,7 @@ build/%.built: build/.unpacked
 		--disable-xvfb \
 		--disable-dri \
 	)
-	( cd build/obj ; ${SB2} make)
+	( cd build/obj ; ${SB2} $(MAKE))
 	touch $@
 
 clobber::

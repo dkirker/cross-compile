@@ -35,7 +35,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} LDFLAGS=-L/usr/local/lib ./configure )
-	( cd build/src ; ${SB2} make DESTDIR= install-data )
+	( cd build/src ; ${SB2} $(MAKE) DESTDIR= install-data )
 	touch $@
 
 clobber::

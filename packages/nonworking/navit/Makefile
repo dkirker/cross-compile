@@ -1,5 +1,5 @@
 #
-# How to make localization work (maybe):
+# How to $(MAKE) localization work (maybe):
 #
 # (WARNING, this involves changes to the root-partition of your device!! You need to be very careful!)
 # 
@@ -7,8 +7,8 @@
 # This path is hardcoded. I don't know how to generate one, but for me the following works:
 #
 # - create dir /media/cryptofs/apps/usr/lib/locale/
-# - make / writable, goto /usr/lib
-# - create symlink to /media/cryptofs/apps/usr/lib/locale/, make / read-only again
+# - $(MAKE) / writable, goto /usr/lib
+# - create symlink to /media/cryptofs/apps/usr/lib/locale/, $(MAKE) / read-only again
 # - copy the locale-archive of your developer machine to /media/cryptofs/apps/usr/lib/locale/
 #
 # You need to adjust the LANG-variable in navit.sh
@@ -78,12 +78,12 @@ build/.configured: build/.aclocal
 	touch $@
 
 
-# I call make in xpm/ without sb2 here, it doesn't work inside sb2
+# I call $(MAKE) in xpm/ without sb2 here, it doesn't work inside sb2
 # and creates images anyway
 build/%.built: build/.unpacked build/.patched build/.configured
 	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src/navit/xpm/ ; make )
-	( cd build/src ; ${SB2} make && ${SB2} make DESTDIR=`cd .. ; pwd` install )
+	( cd build/src/navit/xpm/ ; $(MAKE) )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make DESTDIR=`cd .. ; pwd` install )
 	${SB2} mkdir -p build/${APP_DIR}/dist_files/
 	${SB2} cp files/appinfo.json build/${APP_DIR}/appinfo.json
 	${SB2} cp files/Icon.png build/${APP_DIR}/Icon.png
@@ -98,7 +98,7 @@ build/%.built: build/.unpacked build/.patched build/.configured
 	touch $@
 
 clean:
-	( cd build/src ; ${SB2} make clean )
+	( cd build/src ; ${SB2} $(MAKE) clean )
 
 
 clobber::

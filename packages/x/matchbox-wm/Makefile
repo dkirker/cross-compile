@@ -33,8 +33,8 @@ build/%.built: build/.unpacked
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)	
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install)
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::

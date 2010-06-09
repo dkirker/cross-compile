@@ -28,7 +28,7 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} make CC=gcc )
+	( cd build/src ; ${SB2} $(MAKE) CC=gcc )
 	touch $@
 
 clobber::

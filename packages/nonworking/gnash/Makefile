@@ -37,11 +37,11 @@ build/.configured:
 
 build/%.built: build/.unpacked build/.configured
 	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 
 clean:
-	( cd build/src/${NAME} ; ${SB2} make clean )
+	( cd build/src/${NAME} ; ${SB2} $(MAKE) clean )
 
 
 clobber::

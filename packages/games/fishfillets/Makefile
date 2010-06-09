@@ -42,7 +42,7 @@ build/%.built: build/.unpacked build/.configured build/.patched
 	touch $@
 
 clean:
-	( cd build/src/${NAME} ; ${SB2} make clean )
+	( cd build/src/${NAME} ; ${SB2} $(MAKE) clean )
 
 
 clobber::
@@ -58,7 +58,7 @@ clobber::
 fishinstall: build/.fishinstall build/.fishdatainstall
 
 build/.fishinstall: build/armv7.built 
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 
 build/.fishdatadownload:

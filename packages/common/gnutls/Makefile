@@ -28,8 +28,8 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/src/includes ; ${SB2} make install )
-	( cd build/src/lib ; ${SB2} make install-pkgconfigDATA )
+	( cd build/src/includes ; ${SB2} $(MAKE) install )
+	( cd build/src/lib ; ${SB2} $(MAKE) install-pkgconfigDATA )
 	( ${SB2} ln -f -s libgnutls.so.13.2.2 ${INSTALL_PREFIX}/lib/libgnutls.so )
 	touch $@
 

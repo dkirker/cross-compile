@@ -42,8 +42,8 @@ build/%.built: build/.unpacked
 		--without-libjpeg \
 		--disable-cups \
 	)	
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install)
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::

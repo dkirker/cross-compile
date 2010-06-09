@@ -30,8 +30,8 @@ build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} make install-binSCRIPTS install-pkgconfigDATA )
-	( cd build/src/include ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) install-binSCRIPTS install-pkgconfigDATA )
+	( cd build/src/include ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

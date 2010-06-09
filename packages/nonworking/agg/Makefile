@@ -26,7 +26,7 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} make )
+	( cd build/src ; ${SB2} $(MAKE) )
 	 # Automatic staging doesn't work for agg
 	cp -pP build/src/src/libagg.a ${STAGING_DIR}/usr/lib/
 	mkdir -p ${STAGING_DIR}/usr/include/agg2

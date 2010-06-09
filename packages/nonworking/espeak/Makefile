@@ -45,7 +45,7 @@ build/.configured: build/.aclocal
 
 
 build/%.built: build/.unpacked build/.patched build/.configured
-	( cd build/src/src ; ${SB2} make PREFIX=${APP_DIR} \
+	( cd build/src/src ; ${SB2} $(MAKE) PREFIX=${APP_DIR} \
 		AUDIO="" \
 		CXXFLAGS="-O2" all)
 	( ${SB2} mkdir -p build/${APP_DIR}/bin build/${APP_DIR}/lib build/${APP_DIR}/share )
@@ -56,7 +56,7 @@ build/%.built: build/.unpacked build/.patched build/.configured
 	touch $@
 
 clean:
-	( cd build/src/src ; ${SB2} make clean )
+	( cd build/src/src ; ${SB2} $(MAKE) clean )
 
 
 clobber::

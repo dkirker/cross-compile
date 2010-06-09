@@ -22,7 +22,7 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src/src ; ${SB2}	CC=gcc LDFLAGS="\"-L/usr/local/lib -Wl,-rpath,/usr/local/lib\"" make )
+	( cd build/src/src ; ${SB2}	CC=gcc LDFLAGS="\"-L/usr/local/lib -Wl,-rpath,/usr/local/lib\"" $(MAKE) )
 	( ${SB2} install -m 644 build/src/src/unionfs /usr/local/bin/unionfs )
 	touch $@
 

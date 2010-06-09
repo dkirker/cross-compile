@@ -28,7 +28,7 @@ build/%.built: build/.unpacked
 		--prefix=${INSTALL_PREFIX} \
 		--disable-xmms-plugin \
     )
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 
 clobber::

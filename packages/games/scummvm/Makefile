@@ -29,7 +29,7 @@ build/%.built: build/.unpacked
 		--prefix=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.scummvm \
 		--enable-plugins --default-dynamic --disable-all-engines \
 		--enable-scumm --enable-scumm_7_8 --enable-sky --enable-queen )
-	( cd build/src ; ${SB2} make)
+	( cd build/src ; ${SB2} $(MAKE))
 	touch $@
 
 clobber::

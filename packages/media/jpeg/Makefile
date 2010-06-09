@@ -33,7 +33,7 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure )
 	mkdir -p ${STAGING_DIR}/usr/include
-	( cd build/src ; ${SB2} make DESTDIR= install-headers )
+	( cd build/src ; ${SB2} $(MAKE) DESTDIR= install-headers )
 	touch $@
 
 clobber::
