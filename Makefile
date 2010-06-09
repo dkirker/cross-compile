@@ -29,15 +29,11 @@ rootfs: rootfs/armv7/.unpacked
 # stage: toolchain rootfs staging-armv7 staging-armv6 staging-i686
 stage: toolchain rootfs staging-armv7
 
+include support/build.mk
+
 .PHONY: staging-%
-staging-%: staging/mapping-%
-	for f in `find packages -mindepth 2 -maxdepth 2 -type d -print` ; do \
-	  if expr "$$f" : "packages/nonworking/.*" > /dev/null ; then \
-	    true ; \
-	  elif [ -e $$f/Makefile ]; then \
-	    ${MAKE} -C $$f ARCH=$* stage || exit ; \
-	  fi; \
-	done
+staging-%: staging/mapping-% $(dep_files)
+	$(MAKE) -C . ARCH=$* build_all
 
 .PRECIOUS: staging/mapping-%
 staging/mapping-%:
