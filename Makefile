@@ -32,7 +32,7 @@ stage: toolchain rootfs staging-armv7
 include support/build.mk
 
 .PHONY: staging-%
-staging-%: staging/mapping-% $(dep_files)
+staging-%: toolchain rootfs staging/mapping-% $(dep_files)
 	$(MAKE) -C . ARCH=$* INC_DEPS=1 buildall
 
 .PRECIOUS: staging/mapping-%

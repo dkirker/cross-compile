@@ -2,20 +2,11 @@
 # These rules are for the toplevel makefile
 #=============
 
-#Generate a rule in the form
-#build_dev-sdl/libsdl: build_common/libnapp build_common/piranha (etc)
-#and stash it in the .depends.inc for a given directory
-#also generates clobber rule
-packages/%/.depends.inc: packages/%/Makefile packages/%/.depends
-	echo "build_$*: $(addprefix build_,$(shell cat packages/$*/.depends))" > $@
-	echo '	$$(MAKE) -C packages/$* stage ARCH=$$(ARCH)' >> $@
-	echo >> $@
-	echo "clobber_$*: " > $@
-	echo '	$$(MAKE) -C packages/$* clobber ARCH=$$(ARCH)' >> $@
-
-#General and simple rule to update the .depends file for a given package
-%/.depends: %/Makefile
-	$(MAKE) -C $* .depends
+#General and simple rule to update the .depends.inc file for a given package
+#Note that Make will automatically try to update the files it "include"s, so
+#this rule guarantees we use up-to-date depends files
+%/.depends.inc: %/Makefile
+	$(MAKE) -C $* .depends.inc
 
 
 #=============
@@ -54,9 +45,3 @@ endif
 #Rule to build every package using the dependencies we've created
 buildall: $(all_targets)
 clobberall: $(clobber_targets)
-
-#This rule expects to be called on things like
-#build_dev-sdl/libsdl
-#Note that the dependencies are dealt with via including those
-#.depends.inc files, here we have the simple task of building it
-build_%:
