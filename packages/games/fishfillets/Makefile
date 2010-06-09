@@ -27,17 +27,17 @@ include ../../../support/cross-compile.mk
 
 stage:: build/armv7.built
 
-build/.patched:
+build/.patched: build/.unpacked
 	cp -r modified-${VERSION}/* build/src/src/
 	touch $@
 
-build/.configured:
+build/.configured: build/.patched
 	rm -f $@
 	( cd build/src ; ${SB2} LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" \
 	./configure --prefix=${APP_DIR} --datadir=${APP_DIR}/data --disable-sdltest --disable-dependency-tracking --with-sdl-prefix=/usr/local )
 	touch $@
 
-build/%.built: build/.unpacked build/.configured build/.patched
+build/%.built: build/.configured
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	touch $@
 
