@@ -1,6 +1,6 @@
 NAME = openssl
 VERSION = 0.9.8k
-DEPENDS = 
+DEPENDS = common/glib-2.0
 
 SRC_TGZ = http://www.openssl.org/source/openssl-0.9.8k.tar.gz
 
