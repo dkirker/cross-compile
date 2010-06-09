@@ -1,8 +1,7 @@
 NAME = libIDL
 VERSION = 0.8.13
 
-#XXX ???
-#DEPENDS = 
+DEPENDS = glib-2.0
 
 SRC_BZ2 = http://ftp.gnome.org/pub/GNOME/sources/libIDL/0.8/${NAME}-${VERSION}.tar.bz2
 
