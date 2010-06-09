@@ -17,7 +17,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/staging.mk
 
-stage::
+stage:: build
 
 include ../../../support/cross-compile.mk
 
