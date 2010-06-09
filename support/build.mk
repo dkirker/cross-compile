@@ -45,3 +45,24 @@ endif
 #Rule to build every package using the dependencies we've created
 buildall: $(all_targets)
 clobberall: $(clobber_targets)
+
+#This rule tries every package by itself after a fresh clobber
+#to help draw out packages with missing deps
+ifeq ("$(INC_DEPS)","")
+#This rule just exists to making invoking simpler
+debug:
+	$(MAKE) -C . debug INC_DEPS=1 ARCH=armv7
+else
+debug:
+	@for i in $(all_targets); do \
+		$(MAKE) -C . clobber-$(ARCH) >& /dev/null \
+		rm -rf staging; \
+		$(MAKE) -C . setup; >& /dev/null; \
+		echo "==================================="; \
+		echo "Testing package $$i..."; \
+		echo "==================================="; \
+		$(MAKE) -C . $$i INC_DEPS=1 ARCH=$(ARCH) || exit 1; \
+	done
+
+
+endif
