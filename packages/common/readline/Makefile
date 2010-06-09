@@ -1,6 +1,6 @@
 NAME = readline
 VERSION = 4.3
-DEPENDS = 
+DEPENDS = common/ncurses
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tar.gz
 
