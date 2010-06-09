@@ -1,7 +1,7 @@
 NAME = dbus-glib
 VERSION = 0.80
 
-DEPENDS = common/expat common/dbus-lib
+DEPENDS = common/expat common/dbus-lib common/glib-2.0
 
 SRC_TGZ = http://dbus.freedesktop.org/releases/${NAME}/${NAME}-${VERSION}.tar.gz
 
