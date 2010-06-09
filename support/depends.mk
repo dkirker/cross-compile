@@ -17,12 +17,14 @@ PKG_PATH = $(PKG_CAT)/$(PKG_NAME)
 #clobber_common/bison:
 .depends.inc: Makefile
 	echo "build_$(PKG_PATH): $(addprefix build_,$(DEPENDS))" > $@
-	echo '	$$(MAKE) -C packages/$(PKG_PATH) stage ARCH=$$(ARCH)' >> $@
+	echo '	$$(MAKE) -C packages/$(PKG_PATH) stage ARCH=$$(ARCH) DEPS=1' >> $@
 	echo >> $@
 	echo "clobber_$(PKG_PATH): " >> $@
 	echo '	$$(MAKE) -C packages/$(PKG_PATH) clobber ARCH=$$(ARCH)' >> $@
 
 #This allows us to still run 'make stage' from a particular package directory
 #and have it build the dependencies just for that package (and the package itself)
+ifeq ("$(DEPS)","")
 stage::
 	make -C ../../../ ARCH=$(ARCH) INC_DEPS=1 build_$(PKG_PATH)
+endif
