@@ -1,6 +1,8 @@
 NAME = Python
 VERSION = 2.5.5
 
+DEPENDS = common/readline common/ncurses common/openssl common/libsqlite
+
 SRC_BZ2 = http://www.python.org/ftp/python/${VERSION}/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
