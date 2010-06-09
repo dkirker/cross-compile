@@ -36,7 +36,7 @@ build/%.built: build/.unpacked
 	PATH=/usr/local/bin/:${PATH} \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
-		--disable-doc \
+		--disable-docs \
 	)
 	( cd build/src ; ${SB2} $(MAKE))
 	( cd build/src ; ${SB2} $(MAKE) install )
