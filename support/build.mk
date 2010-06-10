@@ -55,7 +55,7 @@ debug:
 else
 debug:
 	@for i in $(all_targets); do \
-		$(MAKE) -C . clobber-$(ARCH) >& /dev/null \
+		$(MAKE) -C . clobber-$(ARCH) >& /dev/null; \
 		rm -rf staging; \
 		$(MAKE) -C . setup; >& /dev/null; \
 		echo "==================================="; \
