@@ -2,7 +2,8 @@ NAME = matchbox-window-manager
 VERSION = 1.2
 
 DEPENDS = x/matchbox-common \
-		  x/libmatchbox 
+		  x/libmatchbox \
+			x/libXext
 
 SRC_BZ2 = http://matchbox-project.org/sources/${NAME}/${VERSION}/${NAME}-${VERSION}.tar.bz2
 
