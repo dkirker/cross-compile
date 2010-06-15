@@ -26,6 +26,8 @@ PKG_PATH = $(PKG_CAT)/$(PKG_NAME)
 #This allows us to still run 'make stage' from a particular package directory
 #and have it build the dependencies just for that package (and the package itself)
 ifeq ("$(ALREADY_BUILT_DEPS)","")
-stage::
+stage:: build_deps
+
+build_deps:
 	@$(MAKE) -C ../../../ ARCH=$(ARCH) INC_DEPS=1 build_$(PKG_PATH)
 endif
