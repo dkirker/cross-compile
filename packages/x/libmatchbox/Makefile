@@ -4,7 +4,8 @@ VERSION = 1.9
 DEPENDS = media/libpng12 \
 		  common/freetype \
 		  x/libXft \
-		  x/xorg-server
+			x/libXext \
+			x/libx11
 
 SRC_BZ2 = http://matchbox-project.org/sources/${NAME}/${VERSION}/${NAME}-${VERSION}.tar.bz2
 

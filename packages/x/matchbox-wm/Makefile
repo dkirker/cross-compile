@@ -5,6 +5,7 @@ DEPENDS = x/matchbox-common \
 		  x/libmatchbox \
 			x/libXext
 
+
 SRC_BZ2 = http://matchbox-project.org/sources/${NAME}/${VERSION}/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
