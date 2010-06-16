@@ -8,6 +8,9 @@
 %/.depends.inc: %/Makefile
 	$(MAKE) -C $* .depends.inc
 
+#This rule exists for those directories that don't have a Makefile
+%/.depends.inc:
+	touch $@
 
 #=============
 # Here we deal with including all the dep files
