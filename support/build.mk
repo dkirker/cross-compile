@@ -23,7 +23,9 @@
 package_cats = $(shell cd packages; ls |grep -v "^nonworking$$")
 
 #This is a list of every package we want, builds on the above
-package_dirs := $(shell cd packages; find $(package_cats) -mindepth 1 -maxdepth 1 -type d -print)
+package_dirs := \
+	$(shell cd packages; find $(package_cats) -mindepth 1 -maxdepth 1 -type d \
+	-exec [ -e {}/Makefile ] \; -print)
 
 #same as above, with with the packages/ prefix
 build_dirs := $(addprefix packages/,$(package_dirs))
