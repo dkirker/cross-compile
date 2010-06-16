@@ -50,6 +50,7 @@ build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
+		--disable-specs \
 	)
 	( cd build/src ; ${SB2} $(MAKE))
 	( cd build/src ; ${SB2} $(MAKE) install )
