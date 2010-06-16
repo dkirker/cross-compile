@@ -5,12 +5,9 @@
 #General and simple rule to update the .depends.inc file for a given package
 #Note that Make will automatically try to update the files it "include"s, so
 #this rule guarantees we use up-to-date depends files
-%/.depends.inc: %/Makefile
-	$(MAKE) -C $* .depends.inc
-
-#This rule exists for those directories that don't have a Makefile
-%/.depends.inc:
-	touch $@
+%/.depends.inc: %/Makefile support/depends.mk
+	@echo "Creating dependencies for $*"
+	@($(MAKE) -C $* .depends.inc V=$(V)) >& /dev/null
 
 #=============
 # Here we deal with including all the dep files

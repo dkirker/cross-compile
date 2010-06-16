@@ -16,11 +16,10 @@ PKG_PATH = $(PKG_CAT)/$(PKG_NAME)
 #and
 #clobber_common/bison:
 .depends.inc: Makefile
-	@echo "Creating dep file for $(PKG_PATH)..."
-	@echo "build_$(PKG_PATH): $(addprefix build_,$(DEPENDS))" > $@
+	@echo 'build_$(PKG_PATH): $(addprefix build_,$(DEPENDS))' > $@
 	@echo '	$$(MAKE) -C packages/$(PKG_PATH) stage ARCH=$$(ARCH) ALREADY_BUILT_DEPS=1' >> $@
 	@echo >> $@
-	@echo "clobber_$(PKG_PATH): " >> $@
+	@echo 'clobber_$(PKG_PATH): ' >> $@
 	@echo '	$$(MAKE) -C packages/$(PKG_PATH) clobber ARCH=$$(ARCH)' >> $@
 
 #This allows us to still run 'make stage' from a particular package directory
