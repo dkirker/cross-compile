@@ -8,6 +8,7 @@
 %/.depends.inc: %/Makefile support/depends.mk
 	@echo "Creating dependencies for $*"
 	@($(MAKE) -C $* .depends.inc V=$(V)) >& /dev/null
+	@touch $@
 
 #=============
 # Here we deal with including all the dep files
