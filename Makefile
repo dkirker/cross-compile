@@ -1,5 +1,5 @@
-DOCTORPRE  = webosdoctorp100ewwsprint-1.3.5.jar
-DOCTORPIXI = webosdoctorp200ewwsprint-1.3.5.jar
+DOCTORPRE  = webosdoctorp100ewwsprint-1.4.1.1.jar
+DOCTORPIXI = webosdoctorp200ewwsprint-1.4.1.1.jar
 SB2ROOT = $(shell dirname `which sb2`)/..
 
 ifeq ($(shell uname -s),Darwin)
