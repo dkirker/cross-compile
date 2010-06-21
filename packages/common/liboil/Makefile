@@ -29,9 +29,9 @@ build/%.built: build/.unpacked
 	( cd build/src ; \
 		LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} \
 		./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} make install-pkgconfigDATA )
-	( cd build/src/liboil ; ${SB2} make install-pkgincludeHEADERS )
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	( cd build/src/liboil ; ${SB2} $(MAKE) install-pkgincludeHEADERS )
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

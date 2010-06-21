@@ -26,7 +26,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} PATH=/usr/local/bin:${PATH} ./configure --disable-mmx )
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

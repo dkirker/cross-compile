@@ -5,8 +5,7 @@ DEPENDS = \
 		x/xorg-server \
 		x/libxt \
 		x/libXmu \
-		x/libXpm \
-		x/groff
+		x/libXpm
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 
@@ -37,9 +36,10 @@ build/%.built: build/.unpacked
 	PATH=/usr/local/bin/:${PATH} \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
+		--disable-docs \
 	)
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

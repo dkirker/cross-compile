@@ -25,8 +25,8 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} make linux )
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) linux )
+	( cd build/src ; ${SB2} $(MAKE) install )
 	( cd build/src/etc ; ${SB2} install -d ${INSTALL_PREFIX}/lib/pkgconfig )
 	( cd build/src/etc ; ${SB2} install -m 644 lua.pc ${INSTALL_PREFIX}/lib/pkgconfig )
 	touch $@

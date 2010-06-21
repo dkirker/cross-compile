@@ -27,7 +27,8 @@ stage:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( ${SB2} install -m 644 build/src/json.h /usr/local/include/json.h )
+	${SB2} install -d ${INSTALL_PREFIX}/include
+	( ${SB2} install -m 644 build/src/json.h ${INSTALL_PREFIX}/include/json.h )
 	touch $@
 
 clobber::

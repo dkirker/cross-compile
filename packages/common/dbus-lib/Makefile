@@ -35,8 +35,8 @@ build/%.built: build/.unpacked
 		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
 		./configure --disable-static --prefix=${INSTALL_PREFIX} \
 		--with-xml-expat )
-	( cd build/src ; ${SB2} make install-pkgconfigDATA )
-	( cd build/src/dbus ; ${SB2} make install-dbusincludeHEADERS \
+	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	( cd build/src/dbus ; ${SB2} $(MAKE) install-dbusincludeHEADERS \
 		install-dbusarchincludeHEADERS )
 	touch $@
 

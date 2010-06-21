@@ -1,6 +1,6 @@
 NAME = readline
 VERSION = 4.3
-DEPENDS = 
+DEPENDS = common/ncurses
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tar.gz
 
@@ -32,7 +32,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} make install-headers )
+	( cd build/src ; ${SB2} $(MAKE) install-headers )
 	touch $@
 
 clobber::

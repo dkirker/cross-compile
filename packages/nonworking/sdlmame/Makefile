@@ -25,7 +25,7 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} make OSD=sdl TARGETOS=unix OPTIMIZE=0 NO_X11=1 NO_OPENGL=1 NOASM=1 USE_DISPATCH_GL=0 )
+	( cd build/src ; ${SB2} $(MAKE) OSD=sdl TARGETOS=unix OPTIMIZE=0 NO_X11=1 NO_OPENGL=1 NOASM=1 USE_DISPATCH_GL=0 )
 	touch $@
 
 clobber::

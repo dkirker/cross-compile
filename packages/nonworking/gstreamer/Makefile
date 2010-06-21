@@ -29,7 +29,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} ./configure --prefix=/usr/local --disable-static --disable-dependency-tracking --disable-valgrind --disable-examples --disable-parse )
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 
 clobber::

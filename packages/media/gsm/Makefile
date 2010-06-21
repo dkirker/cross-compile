@@ -25,7 +25,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	${SB2} rm -f /usr/local/lib/libgsm.a /usr/local/include/gsm.h
-	( cd build/src ; ${SB2} make INSTALL_ROOT=/usr/local GSM_INSTALL_INC=/usr/local/include gsminstall)
+	( cd build/src ; ${SB2} $(MAKE) INSTALL_ROOT=/usr/local GSM_INSTALL_INC=/usr/local/include gsminstall)
 	touch $@
 
 clobber::

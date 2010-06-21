@@ -28,7 +28,7 @@ build: stage
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src/sdltests ; ${SB2} make )
+	( cd build/src/sdltests ; ${SB2} $(MAKE) )
 	touch $@
 
 clobber::

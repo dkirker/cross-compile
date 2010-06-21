@@ -27,6 +27,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
+	${SB2} install -d ${INSTALL_PREFIX}/include
 	( cd build/src ; ${SB2} /usr/bin/install -c -m 644 lib/expat.h \
 		lib/expat_external.h ${INSTALL_PREFIX}/include )
 	touch $@

@@ -32,7 +32,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure )
-	( cd build/src ; ${SB2} make install-bin install-hdrs install-data )
+	( cd build/src ; ${SB2} $(MAKE) install-bin install-hdrs install-data )
 	touch $@
 
 clobber::

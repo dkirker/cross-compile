@@ -1,8 +1,7 @@
 NAME = libIDL
 VERSION = 0.8.13
 
-#XXX ???
-#DEPENDS = 
+DEPENDS = common/glib-2.0
 
 SRC_BZ2 = http://ftp.gnome.org/pub/GNOME/sources/libIDL/0.8/${NAME}-${VERSION}.tar.bz2
 
@@ -32,8 +31,8 @@ build/%.built: build/.unpacked
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

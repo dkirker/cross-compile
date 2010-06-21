@@ -24,10 +24,10 @@ include ../../../support/cross-compile.mk
 
 stage:: build/armv7.built
 	( cd ${STAGING_DIR}/usr/lib ; \
-     [ -e libglib-2.0.so ] || ln -s libglib-2.0.so.0.1400.4 libglib-2.0.so; \
-     [ -e libgmodule-2.0.so ] || ln -s libgmodule-2.0.so.0.1400.4 libgmodule-2.0.so; \
-     [ -e libgobject-2.0.so ] || ln -s libgobject-2.0.so.0.1400.4 libgobject-2.0.so; \
-     [ -e libgthread-2.0.so ] || ln -s libgthread-2.0.so.0.1400.4 libgthread-2.0.so )
+     [ -e libglib-2.0.so ] || ln -s libglib-2.0.so.0.1600.6 libglib-2.0.so; \
+     [ -e libgmodule-2.0.so ] || ln -s libgmodule-2.0.so.0.1600.6 libgmodule-2.0.so; \
+     [ -e libgobject-2.0.so ] || ln -s libgobject-2.0.so.0.1600.6 libgobject-2.0.so; \
+     [ -e libgthread-2.0.so ] || ln -s libgthread-2.0.so.0.1600.6 libgthread-2.0.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
@@ -35,13 +35,13 @@ build/%.built: build/.unpacked
 	CFLAGS="-O3 -march=armv7-a -mtune=cortex-a8 -mcpu=cortex-a8 -mfloat-abi=softfp -mfpu=neon -ftree-vectorize -I/usr/local/include" \
 	LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" \
 		${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src; ${SB2} make install-pkgconfigDATA install-configexecincludeDATA ) #this used to be 'install-exec-local', don't see equiv
-	( cd build/src/glib ; ${SB2} make )
-	( cd build/src/glib ; ${SB2} make install-glibincludeHEADERS \
+	( cd build/src; ${SB2} $(MAKE) install-pkgconfigDATA install-configexecincludeDATA ) #this used to be 'install-exec-local', don't see equiv
+	( cd build/src/glib ; ${SB2} $(MAKE) )
+	( cd build/src/glib ; ${SB2} $(MAKE) install-glibincludeHEADERS \
 		install-glibsubincludeHEADERS )
-	( cd build/src/gmodule ; ${SB2} make install-glibincludeHEADERS )
-	( cd build/src/gobject ; ${SB2} make install-libgobjectincludeHEADERS )
-	( cd build/src ; ${SB2} make install )
+	( cd build/src/gmodule ; ${SB2} $(MAKE) install-glibincludeHEADERS )
+	( cd build/src/gobject ; ${SB2} $(MAKE) install-libgobjectincludeHEADERS )
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

@@ -29,14 +29,14 @@ build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} aclocal -I m4 )
 	( cd build/src ; ${SB2} autoheader )
 	( cd build/src ; ${SB2} autoconf )
-	( cd build/src ; ${SB2} libtoolize --automake )
-	( cd build/src ; ${SB2} automake --add-missing --copy --gnu )
+	( cd build/src ; ${SB2} libtoolize --auto$(MAKE) )
+	( cd build/src ; ${SB2} auto$(MAKE) --add-missing --copy --gnu )
 	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} make install-pkgconfigDATA )
-	( cd build/src/src ; ${SB2} make install-pulseincludeHEADERS )
+	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	( cd build/src/src ; ${SB2} $(MAKE) install-pulseincludeHEADERS )
 	touch $@
 
 clobber::

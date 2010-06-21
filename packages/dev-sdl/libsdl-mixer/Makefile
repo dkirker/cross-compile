@@ -30,7 +30,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" ./configure )
-	( cd build/src ; ${SB2} make install-hdrs )
+	( cd build/src ; ${SB2} $(MAKE) install-hdrs )
 	touch $@
 
 clobber::

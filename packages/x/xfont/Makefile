@@ -3,7 +3,8 @@ VERSION = 1.4.1
 
 DEPENDS = common/zlib \
 		  x/xtrans \
-		  x/libfontenc
+		  x/libfontenc \
+			common/freetype
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
 
@@ -35,8 +36,8 @@ build/%.built: build/.unpacked
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

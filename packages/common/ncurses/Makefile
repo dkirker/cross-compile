@@ -32,7 +32,7 @@ stage:: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src/include ; ${SB2} make install )
+	( cd build/src/include ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

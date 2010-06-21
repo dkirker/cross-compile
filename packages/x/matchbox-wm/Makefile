@@ -2,7 +2,9 @@ NAME = matchbox-window-manager
 VERSION = 1.2
 
 DEPENDS = x/matchbox-common \
-		  x/libmatchbox 
+		  x/libmatchbox \
+			x/libXext
+
 
 SRC_BZ2 = http://matchbox-project.org/sources/${NAME}/${VERSION}/${NAME}-${VERSION}.tar.bz2
 
@@ -33,8 +35,8 @@ build/%.built: build/.unpacked
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)	
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install)
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::

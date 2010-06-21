@@ -35,15 +35,15 @@ build: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} \
-	LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" \
+	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 		--without-libtiff \
 		--without-libjpeg \
 		--disable-cups \
 	)	
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install)
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::

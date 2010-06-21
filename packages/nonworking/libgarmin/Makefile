@@ -28,7 +28,7 @@ build/%.built: build/.unpacked
 		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
 		${SB2} ./autosh.sh &&\
  	        ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

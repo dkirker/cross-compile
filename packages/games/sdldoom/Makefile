@@ -26,7 +26,7 @@ build: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --with-sdl-prefix=/usr/local )
-	( cd build/src ; ${SB2} make)
+	( cd build/src ; ${SB2} $(MAKE))
 	touch $@
 
 clobber::

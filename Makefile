@@ -29,15 +29,11 @@ rootfs: rootfs/armv7/.unpacked
 # stage: toolchain rootfs staging-armv7 staging-armv6 staging-i686
 stage: toolchain rootfs staging-armv7
 
+include support/build.mk
+
 .PHONY: staging-%
-staging-%: staging/mapping-%
-	for f in `find packages -mindepth 2 -maxdepth 2 -type d -print` ; do \
-	  if expr "$$f" : "packages/nonworking/.*" > /dev/null ; then \
-	    true ; \
-	  elif [ -e $$f/Makefile ]; then \
-	    ${MAKE} -C $$f ARCH=$* stage || exit ; \
-	  fi; \
-	done
+staging-%: toolchain rootfs staging/mapping-% $(dep_files)
+	$(MAKE) -C . ARCH=$* INC_DEPS=1 buildall
 
 .PRECIOUS: staging/mapping-%
 staging/mapping-%:
@@ -109,11 +105,4 @@ clobber: clobber-armv7 clobber-armv6 clobber-i686
 
 .PHONY: clobber-%
 clobber-%:
-	for f in `find packages -mindepth 2 -maxdepth 2 -type d -print` ; do \
-	  if expr "$$f" : "packages/nonworking/.*" > /dev/null ; then \
-	    true ; \
-	  elif [ -e $$f/Makefile ] ; then \
-	    ${MAKE} -C $$f ARCH=$* clobber || exit ; \
-	  fi; \
-	done
-
+	$(MAKE) -C . ARCH=$* INC_DEPS=1 clobberall
