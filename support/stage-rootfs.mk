@@ -1,6 +1,6 @@
 LIBS = $(shell grep /usr/lib ${IPKG_FILES_LIST})
 
-stage:: $(foreach LIB,${LIBS},${STAGING_DIR}${LIB})
+stage-local:: $(foreach LIB,${LIBS},${STAGING_DIR}${LIB})
 ifeq (${LIBS},)
 	$(error "No libraries found in ${IPKG_FILES_LIST}")
 endif
