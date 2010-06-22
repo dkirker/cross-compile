@@ -1,15 +1,15 @@
 NAME = libsndfile1
 VERSION = 1.0.17
-DEPENDS = alsa-lib
+DEPENDS = media/alsa-lib
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/libsndfile-${VERSION}.tar.gz
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked: ${DL_DIR}/libsndfile-${VERSION}.tar.gz
+build/.unpacked: ${DL_DIR}/libsndfile1-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
 	tar -C build -z -x -f $<
@@ -20,11 +20,11 @@ build/.unpacked: ${DL_DIR}/libsndfile-${VERSION}.tar.gz
 #	tar -zxOf ${DL_DIR}/libsndfile-${VERSION}-patches.tgz | patch -d build/src -p1
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/stage-rootfs.mk
+include ../../../support/stage-rootfs.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage:: build/armv7.built
 	( cd ${STAGING_DIR}/usr/lib ; \
