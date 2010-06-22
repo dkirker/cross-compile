@@ -21,7 +21,7 @@ include ../../../support/staging.mk
 
 include ../../../support/stage-rootfs.mk
 
-stage::
+stage-local::
 	cp -pP ${ROOTFS_DIR}/usr/lib/libpng12.so* ${STAGING_DIR}/usr/lib
 	( cd ${STAGING_DIR}/usr/lib ; \
 	  [ -e ${NAME}.so ] || ln -f -s ${NAME}.so.3.42.0 ${NAME}.so )
@@ -30,7 +30,7 @@ stage::
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@

@@ -25,7 +25,7 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/armv7.built
 	( cd ${STAGING_DIR}/usr/lib ; \
 	  [ -e libdbus-1.so ] || ln -f -s libdbus-1.so.3.4.0 libdbus-1.so )
 

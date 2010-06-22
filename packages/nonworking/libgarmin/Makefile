@@ -18,7 +18,7 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/armv7.built
 #	( cd ${STAGING_DIR}/usr/lib ; \
 #     [ -e libgarmin.so ] || ln -s libgarmin.so.1.0.17 libgarmin.so )
 

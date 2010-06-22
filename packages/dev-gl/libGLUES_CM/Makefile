@@ -20,7 +20,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
 
 include ../../../support/staging.mk
 
-stage:: build/armv7.built
+stage-local:: build/armv7.built
 	install -d ${STAGING_DIR}/usr/include
 	install -d ${STAGING_DIR}/usr/lib
 	rm -f ${STAGING_DIR}/usr/include/glues.h

@@ -26,7 +26,7 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/armv7.built
 
 
 build/.aclocal:

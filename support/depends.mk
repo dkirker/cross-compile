@@ -17,7 +17,7 @@ PKG_PATH = $(PKG_CAT)/$(PKG_NAME)
 #clobber_common/bison:
 .depends.inc: Makefile
 	@echo 'build_$(PKG_PATH): $(addprefix build_,$(DEPENDS))' > $@
-	@echo '	$$(MAKE) -C packages/$(PKG_PATH) stage ARCH=$$(ARCH) ALREADY_BUILT_DEPS=1' >> $@
+	@echo '	$$(MAKE) -C packages/$(PKG_PATH) stage-local ARCH=$$(ARCH) ALREADY_BUILT_DEPS=1' >> $@
 	@echo >> $@
 	@echo 'clobber_$(PKG_PATH): ' >> $@
 	@echo '	$$(MAKE) -C packages/$(PKG_PATH) clobber ARCH=$$(ARCH)' >> $@
