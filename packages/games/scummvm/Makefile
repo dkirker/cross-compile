@@ -1,6 +1,8 @@
 NAME = scummvm
 VERSION = 1.0.0
 
+DEPENDS = dev-sdl/libsdl
+
 SRC_BZ2 = http://sourceforge.net/projects/scummvm/files/scummvm/1.0.0/scummvm-1.0.0.tar.bz2/download
 
 include ../../../support/download.mk
