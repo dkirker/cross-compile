@@ -1,6 +1,8 @@
 NAME = ioquake3
 VERSION = 1.36
 
+DEPENDS = dev-sdl/libsdl
+
 SRC_GIT = git://git.webos-internals.org/games/ioquake3.git
 
 include ../../../support/download.mk

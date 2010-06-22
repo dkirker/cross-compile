@@ -1,6 +1,8 @@
 NAME = sdldoom
 VERSION = 1.10
 
+DEPENDS = dev-sdl/libsdl
+
 SRC_TGZ = http://www.libsdl.org/projects/doom/src/sdldoom-1.10.tar.gz
 
 include ../../../support/download.mk
