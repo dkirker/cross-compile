@@ -57,7 +57,7 @@ clobber::
 # developer specific, for ipk build only, runs outside staging builds
 fishinstall: build/.fishinstall build/.fishdatainstall
 
-build/.fishinstall: build/armv7.built 
+build/.fishinstall: build/${ARCH}.built 
 	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 

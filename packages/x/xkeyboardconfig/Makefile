@@ -22,7 +22,7 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/armv7.built
+build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \

@@ -32,7 +32,7 @@ stage-local:: build/${ARCH}.built
 
 include ../../../support/cross-compile.mk
 
-build: build/armv7.built
+build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
