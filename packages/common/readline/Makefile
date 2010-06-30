@@ -25,7 +25,7 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage-local:: build/armv7.built
+stage-local:: build/${ARCH}.built
 	( cd ${STAGING_DIR}/usr/lib ; \
 	  [ -e libreadline.so ] || ln -f -s libreadline.so.4.3 libreadline.so )
 

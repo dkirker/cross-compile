@@ -18,7 +18,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	tar -C build/src -xf ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	touch $@
 
-stage-local:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@

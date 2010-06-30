@@ -23,7 +23,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	curl ${PATCH} | zcat | patch -d build/src -p0
 	touch $@
 
-stage-local:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@

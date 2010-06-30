@@ -23,7 +23,7 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage-local:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 
 build/.configured:

@@ -21,7 +21,7 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage-local:: build/armv7.built
+stage-local:: build/${ARCH}.built
 	cp -pPr ${ROOTFS_DIR}/usr/lib/libpulse* ${STAGING_DIR}/usr/lib
 
 build/%.built: build/.unpacked

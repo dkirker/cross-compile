@@ -25,7 +25,7 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage-local:: build/armv7.built
+stage-local:: build/${ARCH}.built
 	( cd ${STAGING_DIR}/usr/lib ; \
 	  [ -e libncurses.so ] || ln -f -s libncurses.so.5.4 libncurses.so )
 

@@ -26,7 +26,7 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage-local:: build/armv7.built
+stage-local:: build/${ARCH}.built
 	( cd ${STAGING_DIR}/usr/lib ; \
      [ -e libsndfile.so ] || ln -s libsndfile.so.1.0.17 libsndfile.so )
 
