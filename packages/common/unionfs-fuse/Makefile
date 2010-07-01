@@ -22,9 +22,11 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src/src ; ${SB2}	CC=gcc LDFLAGS="\"-L/usr/local/lib -Wl,-rpath,/usr/local/lib\"" $(MAKE) )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$*/src ; ${SB2}	CC=gcc LDFLAGS="\"-L/usr/local/lib -Wl,-rpath,/usr/local/lib\"" $(MAKE) )
 	( ${SB2} install -d /usr/local/bin )
-	( ${SB2} install -m 644 build/src/src/unionfs /usr/local/bin/unionfs )
+	( ${SB2} install -m 644 build/$*/src/unionfs /usr/local/bin/unionfs )
 	touch $@
 
 clobber::

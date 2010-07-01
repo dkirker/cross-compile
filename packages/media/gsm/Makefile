@@ -24,8 +24,10 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
 	${SB2} rm -f /usr/local/lib/libgsm.a /usr/local/include/gsm.h
-	( cd build/src ; ${SB2} $(MAKE) INSTALL_ROOT=/usr/local GSM_INSTALL_INC=/usr/local/include gsminstall)
+	( cd build/$* ; ${SB2} $(MAKE) INSTALL_ROOT=/usr/local GSM_INSTALL_INC=/usr/local/include gsminstall)
 	touch $@
 
 clobber::

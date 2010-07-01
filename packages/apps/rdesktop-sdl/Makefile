@@ -26,7 +26,9 @@ stage-local: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} $(MAKE) CC=gcc )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} $(MAKE) CC=gcc )
 	touch $@
 
 clobber::

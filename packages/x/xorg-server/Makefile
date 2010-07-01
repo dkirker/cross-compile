@@ -26,6 +26,7 @@ DEPENDS = \
 	x/libxcb               \
 	x/pixman               \
 	dev-gl/gles-headers                       \
+	common/adrenogfx			  \
 	common/tisgxgfx                           \
 	common/libpdl                             \
 	common/libsqlite
@@ -62,9 +63,9 @@ build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( rm -rf build/obj )
-	( mkdir -p build/obj )
-	( cd build/obj ; ${SB2} \
+	( rm -rf build/$* )
+	( mkdir -p build/$* )
+	( cd build/$* ; ${SB2} \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	../src/configure \
 		--prefix=${APP_DIR} \
@@ -81,7 +82,7 @@ build/%.built: build/.unpacked
 		--disable-xvfb \
 		--disable-dri \
 	)
-	( cd build/obj ; ${SB2} $(MAKE))
+	( cd build/$* ; ${SB2} $(MAKE))
 	touch $@
 
 clobber::

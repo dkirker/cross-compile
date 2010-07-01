@@ -27,16 +27,18 @@ build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} \
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} --sysconfdir=/usr/local/share \
 		--host=i386 --build=arm --with-arch=arm \
 	)	
 	#XXX the libtool which ships with fontconfig generates wierd errors
 	# Using the one from scratchbox works fine right now
-	( cd build/src ; ${SB2} cp \`which libtool\` .)
-	( cd build/src ; ${SB2} $(MAKE))
-	( cd build/src ; ${SB2} $(MAKE) install)
+	( cd build/$* ; ${SB2} cp \`which libtool\` .)
+	( cd build/$* ; ${SB2} $(MAKE))
+	( cd build/$* ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::

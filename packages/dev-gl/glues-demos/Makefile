@@ -1,6 +1,6 @@
 NAME = libGLUES_CM
 VERSION = 51
-DEPENDS = dev-gl/libGLUES_CM common/tisgxgfx
+DEPENDS = dev-gl/libGLUES_CM common/tisgxgfx common/adrenogfx
 
 SRC_SVN_REV = http://glues.googlecode.com/svn/trunk/glues
 
@@ -28,7 +28,10 @@ build: stage
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src/sdltests ; ${SB2} $(MAKE) )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	[ "${ARCH}" == "armv6" ] && ( cd build/$*/sdltests ; sed -i "s/-lGLES_CM/-lGLES_CM -legl13/" Makefile )
+	( cd build/$*/sdltests ; ${SB2} $(MAKE) )
 	touch $@
 
 clobber::

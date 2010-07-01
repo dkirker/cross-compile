@@ -26,7 +26,9 @@ build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src/src ; ${SB2} $(MAKE) )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$*/src ; ${SB2} $(MAKE) )
 	touch $@
 
 clobber::

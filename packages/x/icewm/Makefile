@@ -37,7 +37,9 @@ build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} \
 	LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 	 ./configure \
 		--prefix=${INSTALL_PREFIX} \
@@ -45,9 +47,9 @@ build/%.built: build/.unpacked
 		--with-xpm=${INSTALL_PREFIX} \
 	)	
 	#XXX Replace O2 with O0 to work around compiler bug
-	( cd build/src ; sed --in-place -e 's/-g -O2/-g1 -O0/g' src/Makefile)
-	( cd build/src ; ${SB2} $(MAKE))
-	( cd build/src ; ${SB2} $(MAKE) install)
+	( cd build/$* ; sed --in-place -e 's/-g -O2/-g1 -O0/g' src/Makefile)
+	( cd build/$* ; ${SB2} $(MAKE))
+	( cd build/$* ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::

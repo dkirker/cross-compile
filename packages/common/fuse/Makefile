@@ -26,9 +26,11 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2}	./configure --prefix=${INSTALL_PREFIX} --disable-kernel-module --disable-util )
-	( cd build/src ; ${SB2} $(MAKE) )
-	( cd build/src ; ${SB2} $(MAKE) install-data )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2}	./configure --prefix=${INSTALL_PREFIX} --disable-kernel-module --disable-util )
+	( cd build/$* ; ${SB2} $(MAKE) )
+	( cd build/$* ; ${SB2} $(MAKE) install-data )
 	touch $@
 
 clobber::

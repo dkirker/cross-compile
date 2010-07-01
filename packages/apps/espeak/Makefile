@@ -29,7 +29,7 @@ include ../../../support/cross-compile.mk
 stage-local:: build/${ARCH}.built
 
 
-build/.aclocal:
+build/%.aclocal:
 	rm -f $@
 	touch $@
 
@@ -39,24 +39,27 @@ build/.patched:
 #	)
 	touch $@
 
-build/.configured: build/.aclocal
+build/%.configured: build/${ARCH}.aclocal
 	rm -f $@
 	touch $@
 
 
-build/%.built: build/.unpacked build/.patched build/.configured
-	( cd build/src/src ; ${SB2} $(MAKE) PREFIX=${APP_DIR} \
+build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
+	rm -f $@
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$*/src ; ${SB2} $(MAKE) PREFIX=${APP_DIR} \
 		AUDIO="" \
 		CXXFLAGS="-O2" all)
 	( ${SB2} mkdir -p build/${APP_DIR}/bin build/${APP_DIR}/lib build/${APP_DIR}/share )
-	( ${SB2} cp -dR build/src/src/espeak build/${APP_DIR}/bin/ )
-	( ${SB2} cp -dR build/src/src/libespeak.so.1* build/${APP_DIR}/lib/libespeak.so.1 )
+	( ${SB2} cp -dR build/$*/src/espeak build/${APP_DIR}/bin/ )
+	( ${SB2} cp -dR build/$*/src/libespeak.so.1* build/${APP_DIR}/lib/libespeak.so.1 )
 	( ${SB2} cp -dR espeak-data build/${APP_DIR}/share/ )
 	( ${SB2} cp -dR files/* build/${APP_DIR}/ )
 	touch $@
 
 clean:
-	( cd build/src/src ; ${SB2} $(MAKE) clean )
+	( cd build/${ARCH}/src ; ${SB2} $(MAKE) clean )
 
 
 clobber::

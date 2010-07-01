@@ -24,11 +24,13 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
 		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
 		${SB2} ./autosh.sh &&\
  	        ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} $(MAKE) install )
+	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

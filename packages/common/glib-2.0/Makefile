@@ -41,17 +41,19 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*/
+	( cd build/$* ; \
 	CFLAGS=${GLIB_CFLAGS} \
 	LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" \
 		${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src; ${SB2} $(MAKE) install-pkgconfigDATA install-configexecincludeDATA ) #this used to be 'install-exec-local', don't see equiv
-	( cd build/src/glib ; ${SB2} $(MAKE) )
-	( cd build/src/glib ; ${SB2} $(MAKE) install-glibincludeHEADERS \
+	( cd build/$*; ${SB2} $(MAKE) install-pkgconfigDATA install-configexecincludeDATA ) #this used to be 'install-exec-local', don't see equiv
+	( cd build/$*/glib ; ${SB2} $(MAKE) )
+	( cd build/$*/glib ; ${SB2} $(MAKE) install-glibincludeHEADERS \
 		install-glibsubincludeHEADERS )
-	( cd build/src/gmodule ; ${SB2} $(MAKE) install-glibincludeHEADERS )
-	( cd build/src/gobject ; ${SB2} $(MAKE) install-libgobjectincludeHEADERS )
-	( cd build/src ; ${SB2} $(MAKE) install )
+	( cd build/$*/gmodule ; ${SB2} $(MAKE) install-glibincludeHEADERS )
+	( cd build/$*/gobject ; ${SB2} $(MAKE) install-libgobjectincludeHEADERS )
+	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

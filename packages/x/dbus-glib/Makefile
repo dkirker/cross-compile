@@ -27,15 +27,17 @@ build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
 	cp dbus-bus-introspect.xml build/src/tools
-	( cd build/src ; ${SB2} \
+	( cd build/$* ; ${SB2} \
 	LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 		--disable-tests \
 	)	
-	( cd build/src ; ${SB2} $(MAKE))
-	( cd build/src ; ${SB2} $(MAKE) install)
+	( cd build/$* ; ${SB2} $(MAKE))
+	( cd build/$* ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::
