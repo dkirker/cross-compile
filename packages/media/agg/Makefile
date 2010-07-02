@@ -4,7 +4,7 @@ DEPENDS =
 
 SRC_TGZ = http://www.antigrain.com/agg-2.5.tar.gz
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -16,11 +16,9 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/stage-rootfs.mk
-
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage-local:: build/armv7.built
 
