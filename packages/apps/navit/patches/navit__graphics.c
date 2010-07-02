@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics.c b/navit/navit/graphics.c
-index 227c995..990dd21 100644
+index b4decbb..1205057 100644
 --- a/navit/navit/graphics.c
 +++ b/navit/navit/graphics.c
 @@ -1237,7 +1237,7 @@ graphics_draw_polyline_as_polygon(struct graphics *gra, struct graphics_gc *gc,
