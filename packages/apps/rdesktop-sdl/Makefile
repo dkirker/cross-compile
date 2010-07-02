@@ -4,7 +4,7 @@ DEPENDS = libsdl
 
 SRC_TGZ = http://www.soulsphere.org/hacks/rdesktop-sdl/rdesktop-1.1.0-sdl.tar.gz
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -18,13 +18,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 		build/src/Makefile
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-stage-local::
+include ../../../support/cross-compile.mk
 
-include ../../support/cross-compile.mk
-
-build: build/armv7.built
+stage-local: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
