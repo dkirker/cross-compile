@@ -46,12 +46,12 @@ include ../../../support/cross-compile.mk
 stage-local:: build/armv7.built
 
 
-build/.aclocal:
+build/.aclocal: build/.patched
 	rm -f $@
 	( cd build/src ; ${SB2} ./autogen.sh )
 	touch $@
 
-build/.patched:
+build/.patched: build/.unpacked
 	$(foreach patchfile, $(shell ls patches), \
 		patch -p0 build/src/`echo ${patchfile} | sed 's#__#/#g'` < patches/$(patchfile); \
 	)
