@@ -2,7 +2,7 @@ NAME    = libpdl
 VERSION = 1.4.5.465
 DEPENDS = 
 HEADERS = build/opt/PalmPDK/include/PDL*
-LIBS    = build/opt/PalmPDK/device/lib/libpdl.so
+LIBRARIES = build/opt/PalmPDK/device/lib/libpdl.so
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -23,7 +23,7 @@ stage-local:: build/armv7.built
 
 build/%.built: build/.unpacked
 	${SB2} cp ${HEADERS} /usr/local/include/
-	${SB2} cp ${LIBS} /usr/local/lib/
+	${SB2} cp ${LIBRARIES} /usr/local/lib/
 	touch $@
 
 clobber::
