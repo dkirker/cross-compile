@@ -1,5 +1,5 @@
 #
-# How to $(MAKE) localization work (maybe):
+# How to make localization work (maybe):
 #
 # (WARNING, this involves changes to the root-partition of your device!! You need to be very careful!)
 # 
@@ -7,8 +7,8 @@
 # This path is hardcoded. I don't know how to generate one, but for me the following works:
 #
 # - create dir /media/cryptofs/apps/usr/lib/locale/
-# - $(MAKE) / writable, goto /usr/lib
-# - create symlink to /media/cryptofs/apps/usr/lib/locale/, $(MAKE) / read-only again
+# - make / writable, goto /usr/lib
+# - create symlink to /media/cryptofs/apps/usr/lib/locale/, make / read-only again
 # - copy the locale-archive of your developer machine to /media/cryptofs/apps/usr/lib/locale/
 #
 # You need to adjust the LANG-variable in navit.sh
