@@ -34,6 +34,9 @@ build/%.built: build/.unpacked
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
+	#The first build step requires Python. We're going to use the host's python to avoid problems.
+	#Note that this could break in future versions.
+	( cd build/$* ; ./Parser/asdl_c.py -h ./Include ./Parser/Python.asdl )
 	( cd build/$* ; ${SB2} $(MAKE))
 	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
