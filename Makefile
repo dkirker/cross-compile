@@ -1,5 +1,3 @@
-DOCTORPRE  = webosdoctorp100ueu-wr-1.4.5.jar
-DOCTORPIXI = webosdoctorp121ewweu-wr-1.4.5.jar
 SB2ROOT = $(shell dirname `which sb2`)/..
 
 ifeq ($(shell uname -s),Darwin)
@@ -19,7 +17,8 @@ all: toolchain rootfs stage
 setup: toolchain rootfs staging/mapping-armv7 staging/mapping-armv6 staging/mapping-i686
 
 .PHONY: toolchain
-toolchain: toolchain/arm-2007q3/.unpacked toolchain/i686-unknown-linux-gnu/.unpacked
+toolchain: toolchain/arm-2007q3/.unpacked toolchain/i686-unknown-linux-gnu/.unpacked \
+	   toolchain/sdk-1.4.5/.unpacked
 
 .PHONY: rootfs
 # rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked rootfs/i686/.unpacked
@@ -56,9 +55,11 @@ rootfs/armv6/.unpacked: doctors/webosdoctorp121ewweu-wr-1.4.5.jar
 	${FAKEROOT} scripts/unpack-doctor-rootfs $< rootfs/armv6
 	touch $@
 
-rootfs/i686/.unpacked: doctors/palm-sdk_1.3.5-svn234138-sdk117-pho368_i386.deb
+rootfs/i686/.unpacked: doctors/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb
 	rm -rf rootfs/i686
 	mkdir -p rootfs/i686
+#	%%% Need to do something here %%%
+	false
 	touch $@
 
 toolchain/arm-2007q3/.unpacked: downloads/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
@@ -70,6 +71,16 @@ toolchain/i686-unknown-linux-gnu/.unpacked: downloads/i686-unknown-linux-gnu-1.4
 	mkdir -p toolchain
 	tar -C toolchain -x -f $<
 	touch $@
+
+toolchain/sdk-1.4.5/.unpacked: doctors/Palm_webOS_SDK.1.4.5.465.dmg
+	${MAKE} -C packages/host/dmg2img stage-local
+	mkdir -p toolchain/sdk-1.4.5
+	packages/host/dmg2img/build/src/dmg2img -p 4 \
+		-i doctors/Palm_webOS_SDK.1.4.5.465.dmg \
+		-o toolchain/sdk-1.4.5/Palm_webOS_SDK.1.4.5.465.img
+	dd if=toolchain/sdk-1.4.5/Palm_webOS_SDK.1.4.5.465.img \
+	   of=toolchain/sdk-1.4.5/Palm_webOS_SDK.1.4.5.465.hfs bs=1k skip=1
+#	touch $@
 
 downloads/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
 	mkdir -p downloads
@@ -87,13 +98,13 @@ doctors/webosdoctorp121ewweu-wr-1.4.5.jar:
 	mkdir -p doctors
 	wget -O $@ http://palm.cdnetworks.net/rom/pixiplus/px145r0d06302010/wrep145rod/webosdoctorp121ewweu-wr.jar
 
-doctors/palm-sdk_1.3.5-svn234138-sdk117-pho368_i386.deb:
+doctors/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb:
 	mkdir -p doctors
-	wget -O $@ --no-check-certificate https://cdn.downloads.palm.com/sdkdownloads/1.3.5.368/sdkBinaries/palm-sdk_1.3.5-svn234138-sdk117-pho368_i386.deb
+	wget -O $@ http://cdn.downloads.palm.com/sdkdownloads/1.4.5.465/sdkBinaries/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb
 
-doctors/PalmPDK.pkg.tar.gz:
+doctors/Palm_webOS_SDK.1.4.5.465.dmg:
 	mkdir -p doctors
-	echo "Download the MacOSX PDK, mount it, run tar zcvf PalmPDK.pkg.tar.gz PalmPDK.pkg and copy the resulting file into doctors"
+	wget -O $@ http://cdn.downloads.palm.com/sdkdownloads/1.4.5.465/sdkBinaries/Palm_webOS_SDK.1.4.5.465.dmg
 
 .PHONY: clean
 clean:
