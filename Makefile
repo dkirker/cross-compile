@@ -18,7 +18,7 @@ setup: toolchain rootfs staging/mapping-armv7 staging/mapping-armv6 staging/mapp
 
 .PHONY: toolchain
 toolchain: toolchain/arm-2007q3/.unpacked toolchain/i686-unknown-linux-gnu/.unpacked \
-	   toolchain/sdk-1.4.5/.unpacked
+	   doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
 
 .PHONY: rootfs
 # rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked rootfs/i686/.unpacked
@@ -72,15 +72,18 @@ toolchain/i686-unknown-linux-gnu/.unpacked: downloads/i686-unknown-linux-gnu-1.4
 	tar -C toolchain -x -f $<
 	touch $@
 
-toolchain/sdk-1.4.5/.unpacked: doctors/Palm_webOS_SDK.1.4.5.465.dmg
+doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg: doctors/Palm_webOS_SDK.1.4.5.465.dmg
 	${MAKE} -C packages/host/dmg2img stage-local
-	mkdir -p toolchain/sdk-1.4.5
+	mkdir -p toolchain/sdk/mnt
 	packages/host/dmg2img/build/src/dmg2img -p 4 \
 		-i doctors/Palm_webOS_SDK.1.4.5.465.dmg \
-		-o toolchain/sdk-1.4.5/Palm_webOS_SDK.1.4.5.465.img
-	dd if=toolchain/sdk-1.4.5/Palm_webOS_SDK.1.4.5.465.img \
-	   of=toolchain/sdk-1.4.5/Palm_webOS_SDK.1.4.5.465.hfs bs=1k skip=1
-#	touch $@
+		-o toolchain/sdk/Palm_webOS_SDK.1.4.5.465.hfs
+	sudo mount -t hfsplus -o loop \
+		toolchain/sdk/Palm_webOS_SDK.1.4.5.465.hfs \
+		toolchain/sdk/mnt
+	cp toolchain/sdk/mnt/Palm_webOS_SDK-Mac-1.4.5.465.pkg $@
+	sudo umount toolchain/sdk/mnt
+	rm -rf toolchain/sdk
 
 downloads/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
 	mkdir -p downloads
