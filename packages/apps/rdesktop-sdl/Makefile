@@ -1,6 +1,6 @@
 NAME = rdesktop-sdl
 VERSION = 1.1.0
-DEPENDS = libsdl
+DEPENDS = dev-sdl/libsdl
 
 SRC_TGZ = http://www.soulsphere.org/hacks/rdesktop-sdl/rdesktop-1.1.0-sdl.tar.gz
 
