@@ -1,5 +1,5 @@
-DOCTORPRE  = webosdoctorp100ewwsprint-1.4.1.1.jar
-DOCTORPIXI = webosdoctorp200ewwsprint-1.4.1.1.jar
+DOCTORPRE  = webosdoctorp100ueu-wr-1.4.5.jar
+DOCTORPIXI = webosdoctorp121ewweu-wr-1.4.5.jar
 SB2ROOT = $(shell dirname `which sb2`)/..
 
 ifeq ($(shell uname -s),Darwin)
@@ -44,13 +44,13 @@ staging/mapping-%:
 	" \
 		$(SB2ROOT)/share/scratchbox2/lua_scripts/pathmaps/simple/00_default.lua > $@
 
-rootfs/armv7/.unpacked: doctors/webosdoctorp100ewwsprint-1.4.1.1.jar
+rootfs/armv7/.unpacked: doctors/webosdoctorp100ueu-wr-1.4.5.jar
 	rm -rf rootfs/armv7
 	mkdir -p rootfs/armv7
 	${FAKEROOT} scripts/unpack-doctor-rootfs $< rootfs/armv7
 	touch $@
 
-rootfs/armv6/.unpacked: doctors/webosdoctorp200ewwsprint-1.4.1.1.jar
+rootfs/armv6/.unpacked: doctors/webosdoctorp121ewweu-wr-1.4.5.jar
 	rm -rf rootfs/armv6
 	mkdir -p rootfs/armv6
 	${FAKEROOT} scripts/unpack-doctor-rootfs $< rootfs/armv6
@@ -79,13 +79,13 @@ downloads/i686-unknown-linux-gnu-1.4.1.tar.gz:
 	mkdir -p downloads
 	wget -O $@ http://sources.nslu2-linux.org/sources/i686-unknown-linux-gnu-1.4.1.tar.gz
 
-doctors/webosdoctorp100ewwsprint-1.4.1.1.jar:
+doctors/webosdoctorp100ueu-wr-1.4.5.jar:
 	mkdir -p doctors
-	wget -O $@ http://palm.cdnetworks.net/rom/pre/p1411r0d03312010/sr1ntp1411rod/webosdoctorp100ewwsprint.jar
+	wget -O $@ http://palm.cdnetworks.net/rom/pre/p145r0d06302010/eudep145rod/webosdoctorp100ueu-wr.jar
 
-doctors/webosdoctorp200ewwsprint-1.4.1.1.jar:
+doctors/webosdoctorp121ewweu-wr-1.4.5.jar:
 	mkdir -p doctors
-	wget -O $@ http://palm.cdnetworks.net/rom/pixi/px1411r0d03312010/sr1ntp1411rod/webosdoctorp200ewwsprint.jar
+	wget -O $@ http://palm.cdnetworks.net/rom/pixiplus/px145r0d06302010/wrep145rod/webosdoctorp121ewweu-wr.jar
 
 doctors/palm-sdk_1.3.5-svn234138-sdk117-pho368_i386.deb:
 	mkdir -p doctors
