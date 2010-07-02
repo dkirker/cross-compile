@@ -29,7 +29,7 @@ build/%.built: build/.unpacked
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
 	( cd build/$* ; ${SB2} \
-	./autogen.sh \
+		./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
 	( cd build/$* ; ${SB2} $(MAKE))

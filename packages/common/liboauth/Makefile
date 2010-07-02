@@ -1,6 +1,6 @@
 NAME = liboauth
 VERSION = 0.8.8
-DEPENDS = common/zlib common/openssl common/curl
+DEPENDS = common/zlib common/openssl common/libcurl
 
 SRC_TGZ = http://liboauth.sourceforge.net/pool/liboauth-0.8.8.tar.gz
 
@@ -28,7 +28,7 @@ build/%.built: build/.unpacked
 	cp -R build/src/* build/$*
 	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
-		./configure --disable-curl --prefix=${INSTALL_PREFIX} )
+		./configure --prefix=${INSTALL_PREFIX} )
 	( cd build/$* ; ${SB2} $(MAKE) )
 	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@

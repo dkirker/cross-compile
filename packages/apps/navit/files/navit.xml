@@ -63,7 +63,7 @@
 		<!-- <speech type="cmdline" data="flite -t '%s'"/> -->
 
 		<mapset enabled="yes">
-			<map type="binfile" enabled="yes" data="/media/internal/MapsNavit/*.bin"/>
+			<map type="binfile" enabled="yes" data="$NAVIT_USER_DATADIR/maps/*.bin"/>
 		</mapset>
 		
 		<!-- A very simple OSD ... -->

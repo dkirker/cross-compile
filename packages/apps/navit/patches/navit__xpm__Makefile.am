@@ -1,5 +1,5 @@
 diff --git a/navit/navit/xpm/Makefile.am b/navit/navit/xpm/Makefile.am
-index b6f94b7..b70a062 100644
+index db34f81..0846675 100644
 --- a/navit/navit/xpm/Makefile.am
 +++ b/navit/navit/xpm/Makefile.am
 @@ -1,61 +1,61 @@
@@ -82,7 +82,7 @@ index b6f94b7..b70a062 100644
 +xpms += gc_webcam.xpm
 +xpms += gc_question.xpm
 +xpms += gc_stages.xpm
-+xpms += heliport.xpm
++#xpms += heliport.xpm
 +xpms += highway_exit.xpm
 +xpms += hunting_stand.xpm
 +xpms += justice.xpm
@@ -120,7 +120,7 @@ index b6f94b7..b70a062 100644
  
  svgs  = gui_about.svg
  svgs += gui_actions.svg
-@@ -187,6 +187,8 @@ flag_svgs += country_TZ.svgz country_UA.svgz country_UG.svgz country_UM.svgz cou
+@@ -190,6 +190,8 @@ flag_svgs += country_TZ.svgz country_UA.svgz country_UG.svgz country_UM.svgz cou
  flag_svgs += country_VA.svgz country_VC.svgz country_VE.svgz country_VG.svgz country_VI.svgz country_VN.svgz country_VU.svgz
  flag_svgs += country_WF.svgz country_WS.svgz country_YE.svgz country_YT.svgz country_ZA.svgz country_ZM.svgz country_ZW.svgz
  
@@ -129,7 +129,7 @@ index b6f94b7..b70a062 100644
  if USE_SVG
    xpm_DATA += $(svgs) $(nav_svgs) $(flag_svgs)
  endif
-@@ -196,8 +198,10 @@ if USE_SVG2PNG
+@@ -199,8 +201,10 @@ if USE_SVG2PNG
  	SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir) $(srcdir)/navit_svg2png "@SVG2PNG@" "$@"
  %.png: $(srcdir)/*.svg
  	SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir) $(srcdir)/navit_svg2png "@SVG2PNG@" "$@"
@@ -141,7 +141,7 @@ index b6f94b7..b70a062 100644
  xsize = $(word 1,$(subst x, ,$(scale)))
  ysize = $(word $(words $(scale)),$(subst x, ,$(scale)))
  comma =,
-@@ -215,8 +219,11 @@ if USE_SVG2PNG_SCALES_NAV
+@@ -218,8 +222,11 @@ if USE_SVG2PNG_SCALES_NAV
  pngs += $(foreach scale, $(subst $(comma), ,@SVG2PNG_SCALES_NAV@), $(addsuffix _$(xsize)_$(ysize).png,$(basename $(nav_svgs))))
  endif
  xpm_DATA += $(pngs)

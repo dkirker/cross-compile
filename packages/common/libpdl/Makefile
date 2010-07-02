@@ -1,6 +1,6 @@
 NAME    = libpdl
 VERSION = 1.4.5.465
-DEPENDS = 
+DEPENDS = common/luna-prefs common/libcurl
 HEADERS = build/opt/PalmPDK/include/PDL*
 LIBRARIES = build/opt/PalmPDK/device/lib/libpdl.so
 

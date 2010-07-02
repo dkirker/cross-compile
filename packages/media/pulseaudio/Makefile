@@ -1,6 +1,6 @@
 NAME = pulseaudio
 VERSION = 0.9.14
-DEPENDS = media/libsndfile media/libspeex common/liboil common/dbus-lib
+DEPENDS = media/libsndfile media/libspeex common/liboil common/dbus-lib common/gdbm
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tgz
 
@@ -28,11 +28,11 @@ build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	( cd build/$* ; ${SB2} aclocal -I m4 -I ${STAGING_DIR}/usr/share/aclocal )
-	( cd build/$* ; ${SB2} autoheader )
-	( cd build/$* ; ${SB2} autoconf )
-	( cd build/$* ; ${SB2} libtoolize --auto$(MAKE) )
-	( cd build/$* ; ${SB2} auto$(MAKE) --add-missing --copy --gnu )
+	#( cd build/$* ; ${SB2} aclocal -I m4 -I ${STAGING_DIR}/usr/share/aclocal )
+	#( cd build/$* ; ${SB2} autoheader )
+	#( cd build/$* ; ${SB2} autoconf )
+	#( cd build/$* ; ${SB2} libtoolize --auto$(MAKE) )
+	#( cd build/$* ; ${SB2} auto$(MAKE) --add-missing --copy --gnu )
 	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \

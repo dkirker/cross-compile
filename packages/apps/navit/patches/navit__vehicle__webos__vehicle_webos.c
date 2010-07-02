@@ -1,9 +1,9 @@
 diff --git a/navit/navit/vehicle/webos/vehicle_webos.c b/navit/navit/vehicle/webos/vehicle_webos.c
 new file mode 100644
-index 0000000..82b4cb6
+index 0000000..1cf41f8
 --- /dev/null
 +++ b/navit/navit/vehicle/webos/vehicle_webos.c
-@@ -0,0 +1,258 @@
+@@ -0,0 +1,259 @@
 +/**
 + * Navit, a modular navigation system.
 + * Copyright (C) 2005-2008 Navit Team
@@ -28,6 +28,7 @@ index 0000000..82b4cb6
 +#include <glib.h>
 +#include <math.h>
 +#include <errno.h>
++#include <time.h>
 +#include <PDL.h>
 +#include "debug.h"
 +#include "callback.h"

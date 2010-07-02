@@ -1,5 +1,5 @@
 diff --git a/navit/navit/gui/internal/gui_internal.c b/navit/navit/gui/internal/gui_internal.c
-index a0a9049..0ed3bd3 100644
+index f0b051e..b2daf0a 100644
 --- a/navit/navit/gui/internal/gui_internal.c
 +++ b/navit/navit/gui/internal/gui_internal.c
 @@ -3171,10 +3171,17 @@ gui_internal_keyboard_key_data(struct gui_priv *this, struct widget *wkbd, char
@@ -20,7 +20,7 @@ index a0a9049..0ed3bd3 100644
  	return wk;
  }
  
-@@ -6247,7 +6254,11 @@ static struct gui_priv * gui_internal_new(struct navit *nav, struct gui_methods
+@@ -6250,7 +6257,11 @@ static struct gui_priv * gui_internal_new(struct navit *nav, struct gui_methods
  	      this->text_foreground_color=*attr->u.color;
  	else
  	      this->text_foreground_color=COLOR_WHITE;

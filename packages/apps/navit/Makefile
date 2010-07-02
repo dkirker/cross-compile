@@ -21,7 +21,7 @@ VERSION = 0.2.0
 DEPENDS = media/jpeg media/libpng12 common/freetype common/fontconfig dev-sdl/libsdl dev-sdl/libsdl-image common/libpdl common/libgarmin
 SVN_URL = http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
-REVISION= 3323
+REVISION= 3471
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -70,6 +70,7 @@ build/%.configured: build/${ARCH}.aclocal
 		--disable-binding-python --enable-avoid-float \
 		--enable-avoid-unaligned --enable-debug \
 		--disable-binding-dbus \
+		--enable-speech-speech-dispatcher \
 		--enable-vehicle-webos \
 		--enable-svg2png-scaling="32,48" \
 		--enable-svg2png-scaling-flag="32" \
@@ -88,6 +89,7 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	( cd build/$*/navit/xpm/ ; $(MAKE) )
 	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} make DESTDIR=`cd .. ; pwd` install )
 	${SB2} mkdir -p build/${APP_DIR}/dist_files/
+	( ${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/armv7/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/${APP_DIR}/pdl-helper )
 	${SB2} cp files/appinfo.json build/${APP_DIR}/appinfo.json
 	${SB2} cp files/Icon.png build/${APP_DIR}/Icon.png
 	${SB2} cp files/navit.sh build/${APP_DIR}/navit.sh
