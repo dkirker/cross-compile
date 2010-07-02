@@ -17,7 +17,9 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-build:: build/host.built
+include ../../../support/staging.mk
+
+stage-local:: build/host.built
 
 build/host.built: build/.unpacked
 	rm -f $@
