@@ -30,7 +30,7 @@ build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	[ "${ARCH}" == "armv6" ] && ( cd build/$*/sdltests ; sed -i "s/-lGLES_CM/-lGLES_CM -legl13/" Makefile )
+	[ "${ARCH}" != "armv6" ] || ( cd build/$*/sdltests ; sed -i "s/-lGLES_CM/-lGLES_CM -legl13/" Makefile )
 	( cd build/$*/sdltests ; ${SB2} $(MAKE) )
 	touch $@
 

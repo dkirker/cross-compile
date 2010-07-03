@@ -82,7 +82,7 @@ build/%.built: build/.unpacked
 		--disable-xvfb \
 		--disable-dri \
 	)
-	[ "${ARCH}" == "armv6" ] && ( cd build/$*/hw/kdrive/sdl ; sed -i "s/^LIBS = /LIBS = -legl13 /" Makefile )
+	[ "${ARCH}" != "armv6" ] || ( cd build/$*/hw/kdrive/sdl ; sed -i "s/^LIBS = /LIBS = -legl13 /" Makefile )
 	( cd build/$* ; ${SB2} $(MAKE))
 	touch $@
 
