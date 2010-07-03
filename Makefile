@@ -26,7 +26,7 @@ rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked
 
 .PHONY: stage
 # stage: toolchain rootfs staging-armv7 staging-armv6 staging-i686
-stage: toolchain rootfs staging-armv7
+stage: toolchain rootfs staging-armv7 staging-armv6
 
 include support/build.mk
 
