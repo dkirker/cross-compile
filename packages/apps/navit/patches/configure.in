@@ -1,5 +1,5 @@
 diff --git a/navit/configure.in b/navit/configure.in
-index 2bf173a..a3e7f8f 100644
+index e469df3..702fe73 100644
 --- a/navit/configure.in
 +++ b/navit/configure.in
 @@ -79,6 +79,7 @@ vehicle_iphone=no; vehicle_iphone_reason=default

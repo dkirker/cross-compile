@@ -1,0 +1,12 @@
+diff --git a/src/server/speechd.c b/src/server/speechd.c
+index 3f95d8a..d06b54f 100644
+--- a/src/server/speechd.c
++++ b/src/server/speechd.c
+@@ -794,6 +794,7 @@ make_local_socket (const char *filename)
+   if (bind (sock, (struct sockaddr *) &name, size) < 0){
+     FATAL("Can't bind local socket");
+   }
++  chmod (filename, 00777);
+ 
+   if (listen(sock, 50) == -1){
+     MSG(2,"ERRNO:%s", strerror(errno));

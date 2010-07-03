@@ -1,0 +1,12 @@
+#!/bin/sh
+
+APP_DIR=$(dirname $0)
+if [ "x$APP_DIR" == "x." ]
+then
+	APP_DIR=$(pwd)
+fi
+
+export LD_LIBRARY_PATH=$APP_DIR/lib:$LD_LIBRARY_PATH
+export SPEECHD_SOCKET=/tmp/speechd-sock
+
+exec $APP_DIR/bin/$(basename $0) "$@"

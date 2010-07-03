@@ -1,6 +1,6 @@
 NAME = elementary
 VERSION = 0.6.0.063
-DEPENDS = edje e_dbus efreet
+DEPENDS = dev-e/edje dev-e/e_dbus dev-e/efreet
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/TMP/st/${NAME}
 
@@ -20,21 +20,23 @@ update: build/.unpacked
 			rm -f ../*.built; \
 		fi )
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./autogen.sh --prefix=${INSTALL_PREFIX} \
 		--disable-static --disable-doc )
-	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
+	( cd build/$* ; ${SB2} cp `which libtool` . )
+	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

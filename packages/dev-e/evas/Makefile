@@ -1,6 +1,6 @@
 NAME = evas
 VERSION = 0.9.9.063
-DEPENDS = media/jpeg media/libpng12 common/freetype common/fontconfig dev-sdl/libsdl dev-e/eina dev-e/eet dev-gl/gles-headers
+DEPENDS = media/jpeg media/libpng12 common/freetype common/fontconfig dev-sdl/libsdl dev-e/eina dev-e/eet dev-gl/gles-headers common/libxml2
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
@@ -12,7 +12,11 @@ build/.unpacked:
 	svn checkout -q --non-interactive ${SVN_URL} build/src
 	touch $@
 
-update: build/.unpacked
+build/.patched: build/.unpacked
+	(cd build/src && patch -p0 < ../../context_resize_argument.patch)
+	touch $@
+
+update: build/.patched
 	( cd build/src ; \
 		if [ -n "`svn status -u | egrep -v '^Status' | egrep -v '^\?'`" ]; then \
 			svn update --non-interactive; \
@@ -23,11 +27,13 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/$(ARCH).built
 
-build/%.built: build/.unpacked
+build/%.built: build/.patched
 	rm -f $@
-	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./autogen.sh --prefix=${INSTALL_PREFIX} \
@@ -36,8 +42,8 @@ build/%.built: build/.unpacked
 		--enable-gl-sdl --enable-gl-flavor-gles \
 		--enable-gles-variety-sgx --disable-doc \
 		--disable-fribidi --disable-image-loader-svg )
-	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/$* ; ${SB2} cp `which libtool` . )
+	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

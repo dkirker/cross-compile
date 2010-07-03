@@ -1,15 +1,19 @@
 #!/bin/sh
 
-eval $(./pdl-helper)
-
 APP_DIR=$(dirname $0)
+if [ "x$APP_DIR" == "x." ]
+then
+	APP_DIR=$(pwd)
+fi
+
+eval $($APP_DIR/pdl-helper)
+
 export NAVIT_USER_DATADIR=$PDL_DataFilePath
-export LD_LIBRARY_PATH=$APP_DIR/lib
+export LD_LIBRARY_PATH=$APP_DIR/lib:/media/internal/.local/lib
 
 unset LC_ALL
 export LANG=${PDL_Language}.UTF-8
-export ESPEAK_VOICE=${LANG%%_*}
-export ESPEAK_SINK=pnavigation
+export SPEECHD_SOCKET=/tmp/speechd-sock
 
 export NAVIT_LOGFILE=$NAVIT_USER_DATADIR/navit.log
 #delete log if it is more the 300kb
