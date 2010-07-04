@@ -68,6 +68,7 @@ build/.configured: build/.aclocal
 		--disable-binding-python --enable-avoid-float \
 		--enable-avoid-unaligned --enable-debug \
 		--disable-binding-dbus \
+		--enable-speech-speech-dispatcher \
 		--enable-vehicle-webos \
 		--enable-svg2png-scaling="32,48" \
 		--enable-svg2png-scaling-flag="32" \
@@ -85,6 +86,7 @@ build/%.built: build/.unpacked build/.patched build/.configured
 	( cd build/src/navit/xpm/ ; $(MAKE) )
 	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make DESTDIR=`cd .. ; pwd` install )
 	${SB2} mkdir -p build/${APP_DIR}/dist_files/
+	( ${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/armv7/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/${APP_DIR}/pdl-helper )
 	${SB2} cp files/appinfo.json build/${APP_DIR}/appinfo.json
 	${SB2} cp files/Icon.png build/${APP_DIR}/Icon.png
 	${SB2} cp files/navit.sh build/${APP_DIR}/navit.sh
