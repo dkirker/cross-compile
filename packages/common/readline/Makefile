@@ -1,6 +1,6 @@
 NAME = readline
 VERSION = 4.3
-DEPENDS = 
+DEPENDS = common/ncurses
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tar.gz
 
@@ -25,14 +25,14 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 	( cd ${STAGING_DIR}/usr/lib ; \
 	  [ -e libreadline.so ] || ln -f -s libreadline.so.4.3 libreadline.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} make install-headers )
+	( cd build/src ; ${SB2} $(MAKE) install-headers )
 	touch $@
 
 clobber::

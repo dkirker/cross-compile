@@ -16,7 +16,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 include ../../support/staging.mk
 
-stage::
+stage-local::
 
 include ../../support/cross-compile.mk
 
@@ -25,7 +25,7 @@ build: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure ac_cv_header_linux_joystick_h=no )
-	( cd build/src ; ${SB2} make)
+	( cd build/src ; ${SB2} $(MAKE))
 	touch $@
 
 clobber::

@@ -23,7 +23,7 @@ include ../../../support/staging.mk
 
 include ../../../support/stage-rootfs.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@

@@ -1,6 +1,8 @@
 NAME = Python
 VERSION = 2.5.5
 
+DEPENDS = common/readline common/ncurses common/openssl common/libsqlite common/zlib
+
 SRC_BZ2 = http://www.python.org/ftp/python/${VERSION}/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
@@ -17,7 +19,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/staging.mk
 
-stage:: build
+stage-local:: build
 
 include ../../../support/cross-compile.mk
 
@@ -26,11 +28,12 @@ build: build/armv7.built
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} \
+	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=/usr/local/lib\" \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

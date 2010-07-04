@@ -1,6 +1,8 @@
 NAME = ioquake3
 VERSION = 1.36
 
+DEPENDS = dev-sdl/libsdl
+
 SRC_GIT = git://git.webos-internals.org/games/ioquake3.git
 
 include ../../../support/download.mk
@@ -16,7 +18,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 include ../../../support/staging.mk
 
-stage::
+stage-local:: build
 
 include ../../../support/cross-compile.mk
 
@@ -24,7 +26,7 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src/src ; ${SB2} make )
+	( cd build/src/src ; ${SB2} $(MAKE) )
 	touch $@
 
 clobber::

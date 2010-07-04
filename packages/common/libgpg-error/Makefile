@@ -22,12 +22,12 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/src/src ; ${SB2} make install-includeHEADERS install-binSCRIPTS )
+	( cd build/src/src ; ${SB2} $(MAKE) install-includeHEADERS install-binSCRIPTS )
 	touch $@
 
 clobber::

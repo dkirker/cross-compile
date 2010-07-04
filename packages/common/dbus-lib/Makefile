@@ -25,7 +25,7 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 	( cd ${STAGING_DIR}/usr/lib ; \
 	  [ -e libdbus-1.so ] || ln -f -s libdbus-1.so.3.4.0 libdbus-1.so )
 
@@ -35,8 +35,8 @@ build/%.built: build/.unpacked
 		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
 		./configure --disable-static --prefix=${INSTALL_PREFIX} \
 		--with-xml-expat )
-	( cd build/src ; ${SB2} make install-pkgconfigDATA )
-	( cd build/src/dbus ; ${SB2} make install-dbusincludeHEADERS \
+	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	( cd build/src/dbus ; ${SB2} $(MAKE) install-dbusincludeHEADERS \
 		install-dbusarchincludeHEADERS )
 	touch $@
 

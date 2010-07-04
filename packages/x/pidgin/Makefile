@@ -21,7 +21,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/staging.mk
 
-stage:: build
+stage-local:: build
 
 include ../../../support/cross-compile.mk
 
@@ -48,8 +48,8 @@ build/%.built: build/.unpacked
 		--disable-perl \
 		--disable-tcl \
 	)	
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install)
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::

@@ -54,7 +54,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 include ../../../support/staging.mk
 
-stage:: build
+stage-local:: build
 
 include ../../../support/cross-compile.mk
 
@@ -81,7 +81,7 @@ build/%.built: build/.unpacked
 		--disable-xvfb \
 		--disable-dri \
 	)
-	( cd build/obj ; ${SB2} make)
+	( cd build/obj ; ${SB2} $(MAKE))
 	touch $@
 
 clobber::

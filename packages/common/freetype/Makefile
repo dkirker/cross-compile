@@ -1,6 +1,8 @@
 NAME = freetype
 VERSION = 2.3.6
 
+DEPENDS = common/glib-2.0
+
 SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
@@ -24,12 +26,12 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure )
-	( cd build/src ; ${SB2} make )
+	( cd build/src ; ${SB2} ./configure GNUMAKE=$(MAKE) )
+	( cd build/src ; ${SB2} $(MAKE) )
 	( ${SB2} install -m 777 -d /usr/local/include/freetype )
 	( ${SB2} install -m 777 -d /usr/local/include/freetype/config )
 	( ${SB2} install -m 777 -d /usr/local/include/freetype/internal )

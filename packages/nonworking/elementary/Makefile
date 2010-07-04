@@ -24,7 +24,7 @@ include ../../support/staging.mk
 
 include ../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
@@ -34,7 +34,7 @@ build/%.built: build/.unpacked
 		./autogen.sh --prefix=${INSTALL_PREFIX} \
 		--disable-static --disable-doc )
 	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 
 clobber::

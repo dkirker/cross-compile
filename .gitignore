@@ -4,3 +4,5 @@ downloads
 rootfs
 staging
 toolchain
+.depends.inc
+

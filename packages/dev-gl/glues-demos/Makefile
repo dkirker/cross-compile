@@ -20,7 +20,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
 
 include ../../../support/staging.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 include ../../../support/cross-compile.mk
 
@@ -28,7 +28,7 @@ build: stage
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src/sdltests ; ${SB2} make )
+	( cd build/src/sdltests ; ${SB2} $(MAKE) )
 	touch $@
 
 clobber::

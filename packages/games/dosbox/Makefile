@@ -1,6 +1,8 @@
 NAME = dosbox
 VERSION = 0.73
 
+DEPENDS = dev-sdl/libsdl
+
 SRC_BZ2 = http://prdownloads.sourceforge.net/dosbox/dosbox-0.73.tar.gz?download
 
 include ../../../support/download.mk
@@ -13,11 +15,12 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	mkdir -p build
 	tar -C build -z -x -f $<
 	mv build/${NAME}-${VERSION} build/src
+	( cd build/src ; cat ../../*patch | patch -p1 )
 	touch $@
 
 include ../../../support/staging.mk
 
-stage::
+stage-local:: build
 
 include ../../../support/cross-compile.mk
 
@@ -25,10 +28,9 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; cat ../../*patch | patch -p1 )
 	( cd build/src ; ${SB2} ./configure --with-sdl-prefix=/usr/local \
 		--prefix=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.dosbox )
-	( cd build/src ; ${SB2} make)
+	( cd build/src ; ${SB2} $(MAKE))
 	touch $@
 
 clobber::

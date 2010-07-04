@@ -23,11 +23,12 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	curl ${PATCH} | zcat | patch -d build/src -p0
 	touch $@
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( ${SB2} install -m 644 build/src/json.h /usr/local/include/json.h )
+	${SB2} install -d ${INSTALL_PREFIX}/include
+	( ${SB2} install -m 644 build/src/json.h ${INSTALL_PREFIX}/include/json.h )
 	touch $@
 
 clobber::

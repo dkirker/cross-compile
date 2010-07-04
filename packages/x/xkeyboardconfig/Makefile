@@ -1,6 +1,8 @@
 NAME = xkeyboard-config
 VERSION = 1.7-2
 
+DEPENDS=x/xkbcomp
+
 SRC_GIT=git://git.webos-internals.org/x11/xkeyboard-config.git
 
 include ../../../support/download.mk
@@ -16,7 +18,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 include ../../../support/staging.mk
 
-stage:: build
+stage-local:: build
 
 include ../../../support/cross-compile.mk
 
@@ -27,8 +29,8 @@ build/%.built: build/.unpacked
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} \
 	)
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

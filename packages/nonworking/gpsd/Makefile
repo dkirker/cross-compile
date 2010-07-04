@@ -26,7 +26,7 @@ include ../../support/stage-rootfs.mk
 
 include ../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
@@ -37,7 +37,7 @@ build/%.built: build/.unpacked
 	( cd build/src ; /usr/bin/python2.5 jsongen.py --ais --target=parser >ais_json.i )
 	( cd build/src ; /usr/bin/python2.5 maskaudit.py -c >maskdump.c )
 	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

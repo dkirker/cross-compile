@@ -22,15 +22,15 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
 		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
 		./configure --prefix=${INSTALL_PREFIX} --disable-static )
-	( cd build/src ; ${SB2} make install-pkgconfigDATA )
-	( cd build/src/include ; ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	( cd build/src/include ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

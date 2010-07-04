@@ -22,13 +22,13 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2}	./configure --prefix=${INSTALL_PREFIX} --disable-kernel-module --disable-util )
-	( cd build/src ; ${SB2} make )
-	( cd build/src ; ${SB2} make install-data )
+	( cd build/src ; ${SB2} $(MAKE) )
+	( cd build/src ; ${SB2} $(MAKE) install-data )
 	touch $@
 
 clobber::

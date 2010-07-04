@@ -23,7 +23,7 @@ include ../../support/staging.mk
 
 include ../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
@@ -32,7 +32,7 @@ build/%.built: build/.unpacked
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./autogen.sh --disable-static --prefix=${INSTALL_PREFIX} --disable-doc )
 	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 
 clobber::

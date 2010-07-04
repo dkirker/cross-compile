@@ -22,16 +22,17 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
+	${SB2} install -d ${INSTALL_PREFIX}/include
 	( cd build/src ; ${SB2} /usr/bin/install -c -m 644 lib/expat.h \
 		lib/expat_external.h ${INSTALL_PREFIX}/include )
 	touch $@
 
-stage::
+stage-local::
 	cp -pP ${ROOTFS_DIR}/usr/lib/libexpat.so* ${STAGING_DIR}/usr/lib
 	( cd ${STAGING_DIR}/usr/lib ; \
 	  [ -e lib${NAME}.so ] || ln -f -s lib${NAME}.so.0 lib${NAME}.so )

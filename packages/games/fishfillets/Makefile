@@ -25,24 +25,24 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
-build/.patched:
+build/.patched: build/.unpacked
 	cp -r modified-${VERSION}/* build/src/src/
 	touch $@
 
-build/.configured:
+build/.configured: build/.patched
 	rm -f $@
 	( cd build/src ; ${SB2} LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" \
 	./configure --prefix=${APP_DIR} --datadir=${APP_DIR}/data --disable-sdltest --disable-dependency-tracking --with-sdl-prefix=/usr/local )
 	touch $@
 
-build/%.built: build/.unpacked build/.configured build/.patched
+build/%.built: build/.configured
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	touch $@
 
 clean:
-	( cd build/src/${NAME} ; ${SB2} make clean )
+	( cd build/src/${NAME} ; ${SB2} $(MAKE) clean )
 
 
 clobber::
@@ -58,7 +58,7 @@ clobber::
 fishinstall: build/.fishinstall build/.fishdatainstall
 
 build/.fishinstall: build/armv7.built 
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 
 build/.fishdatadownload:

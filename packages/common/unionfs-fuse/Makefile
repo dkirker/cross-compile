@@ -18,11 +18,12 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src/src ; ${SB2}	CC=gcc LDFLAGS="\"-L/usr/local/lib -Wl,-rpath,/usr/local/lib\"" make )
+	( cd build/src/src ; ${SB2}	CC=gcc LDFLAGS="\"-L/usr/local/lib -Wl,-rpath,/usr/local/lib\"" $(MAKE) )
+	( ${SB2} install -d /usr/local/bin )
 	( ${SB2} install -m 644 build/src/src/unionfs /usr/local/bin/unionfs )
 	touch $@
 

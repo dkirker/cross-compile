@@ -27,7 +27,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 include ../../../support/staging.mk
 
-stage:: build
+stage-local:: build
 
 include ../../../support/cross-compile.mk
 
@@ -41,8 +41,8 @@ build/%.built: build/.unpacked
 		--prefix=${INSTALL_PREFIX} \
 		--enable-88-color \
 	)	
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install)
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::

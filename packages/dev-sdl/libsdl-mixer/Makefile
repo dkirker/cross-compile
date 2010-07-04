@@ -1,6 +1,6 @@
 NAME = libsdl-mixer
 VERSION = 1.2
-DEPENDS = dev-sdl/libsdl media/libavformat media/libavutil media/libavcodec media/amrnb media/amrwb
+DEPENDS = dev-sdl/libsdl media/libavformat media/libavutil media/libavcodec media/opencore-amr
 
 SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/${NAME}-${VERSION}.tgz
 
@@ -25,12 +25,12 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" ./configure )
-	( cd build/src ; ${SB2} make install-hdrs )
+	( cd build/src ; ${SB2} $(MAKE) install-hdrs )
 	touch $@
 
 clobber::

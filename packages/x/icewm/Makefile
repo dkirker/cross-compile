@@ -29,7 +29,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 include ../../../support/staging.mk
 
-stage:: build
+stage-local:: build
 
 include ../../../support/cross-compile.mk
 
@@ -46,8 +46,8 @@ build/%.built: build/.unpacked
 	)	
 	#XXX Replace O2 with O0 to work around compiler bug
 	( cd build/src ; sed --in-place -e 's/-g -O2/-g1 -O0/g' src/Makefile)
-	( cd build/src ; ${SB2} make)
-	( cd build/src ; ${SB2} make install)
+	( cd build/src ; ${SB2} $(MAKE))
+	( cd build/src ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::

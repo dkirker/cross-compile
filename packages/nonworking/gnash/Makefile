@@ -1,10 +1,10 @@
 NAME    = gnash
 VERSION = 0.8.7
-DEPENDS = jpeg libpng12 freetype fontconfig libsdl agg ffmpeg
+DEPENDS = media/jpeg media/libpng12 media/freetype media/fontconfig dev-sdl/libsdl media/agg media/ffmpeg
 SRC_TGZ = http://ftp.gnu.org/pub/gnu/gnash/0.8.7/gnash-0.8.7.tar.gz
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.gnash
 
-include ../../support/download.mk
+include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -19,11 +19,11 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}-src.tar.gz
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 
 build/.configured:
@@ -37,11 +37,11 @@ build/.configured:
 
 build/%.built: build/.unpacked build/.configured
 	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 
 clean:
-	( cd build/src/${NAME} ; ${SB2} make clean )
+	( cd build/src/${NAME} ; ${SB2} $(MAKE) clean )
 
 
 clobber::

@@ -1,6 +1,8 @@
 NAME = scummvm
 VERSION = 1.0.0
 
+DEPENDS = dev-sdl/libsdl
+
 SRC_BZ2 = http://sourceforge.net/projects/scummvm/files/scummvm/1.0.0/scummvm-1.0.0.tar.bz2/download
 
 include ../../../support/download.mk
@@ -17,7 +19,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/staging.mk
 
-stage::
+stage-local:: build
 
 include ../../../support/cross-compile.mk
 
@@ -29,7 +31,7 @@ build/%.built: build/.unpacked
 		--prefix=/media/cryptofs/apps/usr/palm/applications/org.webosinternals.scummvm \
 		--enable-plugins --default-dynamic --disable-all-engines \
 		--enable-scumm --enable-scumm_7_8 --enable-sky --enable-queen )
-	( cd build/src ; ${SB2} make)
+	( cd build/src ; ${SB2} $(MAKE))
 	touch $@
 
 clobber::

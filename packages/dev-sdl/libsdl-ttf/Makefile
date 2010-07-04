@@ -25,13 +25,13 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./autogen.sh )
 	( cd build/src ; ${SB2} ./configure --with-sdl-prefix=/usr/local )
-	( cd build/src ; ${SB2} make install-data )
+	( cd build/src ; ${SB2} $(MAKE) install-data )
 	touch $@
 
 clobber::

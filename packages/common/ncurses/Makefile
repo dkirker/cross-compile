@@ -25,14 +25,14 @@ include ../../../support/stage-rootfs.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/${ARCH}.built
 	( cd ${STAGING_DIR}/usr/lib ; \
 	  [ -e libncurses.so ] || ln -f -s libncurses.so.5.4 libncurses.so )
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src/include ; ${SB2} make install )
+	( cd build/src/include ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::
