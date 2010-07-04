@@ -26,7 +26,7 @@ include ../../../support/cross-compile.mk
 stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
-	rm -f $@
+	rm -rf $@ build/$*
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
 	( cd build/$* ; ${SB2} /usr/bin/autoconf; \
