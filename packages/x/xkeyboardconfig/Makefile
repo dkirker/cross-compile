@@ -26,7 +26,7 @@ build: build/armv7.built
 
 build/%.built: build/.unpacked
 	( cd build/src ; ${SB2} \
-	./autogen.sh \
+		./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
 	( cd build/src ; ${SB2} $(MAKE))
