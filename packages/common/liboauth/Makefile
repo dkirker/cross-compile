@@ -26,7 +26,7 @@ build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
-		./configure --disable-curl --prefix=${INSTALL_PREFIX} )
+		./configure --prefix=${INSTALL_PREFIX} )
 	( cd build/src ; ${SB2} $(MAKE) )
 	( cd build/src ; ${SB2} $(MAKE) install )
 	touch $@
