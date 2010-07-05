@@ -1,6 +1,6 @@
 NAME = liboauth
 VERSION = 0.8.8
-DEPENDS = common/zlib common/openssl common/curl
+DEPENDS = common/zlib common/openssl common/libcurl
 
 SRC_TGZ = http://liboauth.sourceforge.net/pool/liboauth-0.8.8.tar.gz
 
