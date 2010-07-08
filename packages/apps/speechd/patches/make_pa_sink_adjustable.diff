@@ -1,0 +1,120 @@
+diff --git a/intl/fdset.h b/intl/fdset.h
+index 8b337dc..69c92dd 100644
+--- a/intl/fdset.h
++++ b/intl/fdset.h
+@@ -128,6 +128,7 @@ typedef struct{
+     char* audio_alsa_device;
+     char* audio_nas_server;
+     char* audio_pulse_server;
++    char* audio_pulse_sink;
+     int audio_pulse_min_length;
+     int log_level;
+ 
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 666b92a..413ea2b 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -10,7 +10,7 @@ python/*.py python/speechd/*.py python/Makefile.in python/speechd_config/*.py \
+ python/speechd_config/spd-conf python/speechd_config/test.wav \
+ python/speechd_config/speechd.desktop
+ 
+-SUBDIRS=server audio c modules tests python
+-DIST_SUBDIRS=server audio c modules tests python
++SUBDIRS=server audio c modules tests
++DIST_SUBDIRS=server audio c modules tests
+ 
+ 
+diff --git a/src/audio/pulse.c b/src/audio/pulse.c
+index 2208e14..4077030 100644
+--- a/src/audio/pulse.c
++++ b/src/audio/pulse.c
+@@ -82,6 +82,7 @@ int pulse_open (AudioID * id, void **pars)
+ {
+     id->pa_simple = NULL;
+     id->pa_server = (char *)pars[0];
++    id->pa_sink   = (char *)pars[2];
+ 
+     id->pa_current_rate = -1;
+     id->pa_current_bps = -1;
+@@ -149,7 +150,7 @@ int pulse_play (AudioID * id, AudioTrack track)
+         buffAttr.minreq = (uint32_t)-1;
+         buffAttr.fragsize = (uint32_t)-1;
+ 	/* Open new connection */
+-        if(!(id->pa_simple = pa_simple_new(id->pa_server, "speech-dispatcher", PA_STREAM_PLAYBACK, NULL, "playback", &ss, NULL, &buffAttr, &error))) {
++        if(!(id->pa_simple = pa_simple_new(id->pa_server, "speech-dispatcher", PA_STREAM_PLAYBACK, id->pa_sink, "playback", &ss, NULL, &buffAttr, &error))) {
+             fprintf(stderr, __FILE__": pa_simple_new() failed: %s\n", pa_strerror(error));
+             return 1;
+         }
+diff --git a/src/audio/spd_audio.h b/src/audio/spd_audio.h
+index d47fc89..55050ba 100644
+--- a/src/audio/spd_audio.h
++++ b/src/audio/spd_audio.h
+@@ -96,6 +96,7 @@ typedef struct{
+ #ifdef WITH_PULSE
+     pa_simple *pa_simple;
+     char *pa_server;
++    char *pa_sink;
+     int pa_min_audio_length;
+     volatile int pa_stop_playback;
+     int pa_current_rate;  // Sample rate for currently PA connection
+diff --git a/src/modules/module_utils.c b/src/modules/module_utils.c
+index 6ebaaae..b6f6585 100644
+--- a/src/modules/module_utils.c
++++ b/src/modules/module_utils.c
+@@ -327,6 +327,7 @@ do_audio(void)
+ 	    else SET_AUDIO_STR(audio_alsa_device)
+ 	    else SET_AUDIO_STR(audio_nas_server)
+             else SET_AUDIO_STR(audio_pulse_server)
++            else SET_AUDIO_STR(audio_pulse_sink)
+ 	    else SET_AUDIO_NUM(audio_pulse_min_length, 1)
+             else err=2;             /* Unknown parameter */
+         }
+@@ -1180,6 +1181,7 @@ module_audio_init_spd(char **status_info)
+ 		DBG("Using PulseAudio output method");
+ 		module_audio_pars[0] = (void *) audio_settings.audio_pulse_server;
+ 		module_audio_pars[1] = (void *) audio_settings.audio_pulse_min_length;
++		module_audio_pars[20] = (void *) audio_settings.audio_pulse_sink;
+ 		module_audio_id = spd_audio_open(AUDIO_PULSE, (void**) module_audio_pars, &error);
+ 		if (module_audio_id){
+ 		    module_audio_output_method = AUDIO_PULSE;
+diff --git a/src/modules/module_utils.h b/src/modules/module_utils.h
+index 2062509..c895b2a 100644
+--- a/src/modules/module_utils.h
++++ b/src/modules/module_utils.h
+@@ -52,6 +52,7 @@ typedef struct{
+   char* audio_alsa_device;
+   char* audio_nas_server;
+   char* audio_pulse_server;
++  char* audio_pulse_sink;
+   int audio_pulse_min_length;
+ }SPDAudioSettings;
+ 
+diff --git a/src/server/config.c b/src/server/config.c
+index c2cb0de..92d8ebf 100644
+--- a/src/server/config.c
++++ b/src/server/config.c
+@@ -176,6 +176,7 @@ GLOBAL_FDSET_OPTION_CB_STR(AudioOSSDevice, audio_oss_device)
+ GLOBAL_FDSET_OPTION_CB_STR(AudioALSADevice, audio_alsa_device)
+ GLOBAL_FDSET_OPTION_CB_STR(AudioNASServer, audio_nas_server)
+ GLOBAL_FDSET_OPTION_CB_STR(AudioPulseServer, audio_pulse_server)
++GLOBAL_FDSET_OPTION_CB_STR(AudioPulseSink, audio_pulse_sink)
+ GLOBAL_FDSET_OPTION_CB_INT(AudioPulseMinLength, audio_pulse_min_length, 1, "")
+ 
+ GLOBAL_FDSET_OPTION_CB_INT(DefaultRate, rate, (val>=-100)&&(val<=+100), "Rate out of range.")
+@@ -420,6 +421,7 @@ load_config_options(int *num_options)
+     ADD_CONFIG_OPTION(AudioALSADevice, ARG_STR);
+     ADD_CONFIG_OPTION(AudioNASServer, ARG_STR);
+     ADD_CONFIG_OPTION(AudioPulseServer, ARG_STR);
++    ADD_CONFIG_OPTION(AudioPulseSink, ARG_STR);
+     ADD_CONFIG_OPTION(AudioPulseMinLength, ARG_INT);
+ 
+     ADD_CONFIG_OPTION(BeginClient, ARG_STR);
+@@ -460,6 +462,7 @@ load_default_global_set_options()
+     GlobalFDSet.audio_alsa_device = strdup("default");
+     GlobalFDSet.audio_nas_server = strdup("tcp/localhost:5450");
+     GlobalFDSet.audio_pulse_server = strdup("default");
++    GlobalFDSet.audio_pulse_sink = strdup("pdefaultapp");
+     GlobalFDSet.audio_pulse_min_length = 100;
+ 
+     SpeechdOptions.max_history_messages = 10000;
+

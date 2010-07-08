@@ -1,0 +1,13 @@
+#!/bin/sh
+
+APP_DIR=$(dirname $0)
+if [ "x$APP_DIR" == "x." ]
+then
+	APP_DIR=$(pwd)
+fi
+
+export LD_LIBRARY_PATH=$APP_DIR/lib:$LD_LIBRARY_PATH
+export LANG=en_US.UTF-8
+
+cd $APP_DIR
+exec $APP_DIR/bin/speech-dispatcher $@ 

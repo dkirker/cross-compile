@@ -1,0 +1,10 @@
+description "Speech Dispatcher"
+
+start on stopped finish
+
+script
+	exec /media/cryptofs/apps/usr/palm/applications/org.webosinternals.speechd/speech-dispatcher -s
+end script
+
+respawn
+
