@@ -38,6 +38,7 @@ build/%.built: build/.unpacked
 		--with-xml-expat )
 	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
 	( cd build/src/src ; ${SB2} $(MAKE) install-includeHEADERS )
+	${SB2} cp build/src/src/sndfile.h ${INSTALL_PREFIX}/include
 	touch $@
 
 clobber::
