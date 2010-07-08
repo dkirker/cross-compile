@@ -1,6 +1,6 @@
 NAME = speechd
 VERSION = 0.7
-DEPENDS = common/libdotconf media/libsndfile
+DEPENDS = common/libdotconf media/libsndfile media/pulseaudio
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.${NAME}
 
 SPD_SRC_GIT = git://git.freebsoft.org/git/speechd
