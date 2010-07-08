@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index e8c85de..32697d3 100644
+index e8c85de..5e58cae 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -34,6 +34,11 @@
@@ -8,7 +8,7 @@ index e8c85de..32697d3 100644
  
 +#ifdef USE_WEBOS
 +# include <PDL.h>
-+# define USE_WEBOS_ACCELEROMETER
++//# define USE_WEBOS_ACCELEROMETER
 +#endif
 +
  #define RASTER
