@@ -1,0 +1,13 @@
+Index: src/lib/elm_config.c
+===================================================================
+--- src/lib/elm_config.c	(revision 50137)
++++ src/lib/elm_config.c	(working copy)
+@@ -339,7 +339,7 @@
+ 
+    // config load fail - defaults
+    _elm_config = ELM_NEW(Elm_Config);
+-   _elm_config->engine = ELM_SOFTWARE_X11;
++   _elm_config->engine = ELM_SOFTWARE_SDL;
+    _elm_config->thumbscroll_enable = 1;
+    _elm_config->thumbscroll_threshhold = 24;
+    _elm_config->thumbscroll_momentum_threshhold = 100.0;

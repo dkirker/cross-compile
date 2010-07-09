@@ -1,8 +1,8 @@
-NAME = elementary
-VERSION = 0.6.0.063
-DEPENDS = edje e_dbus efreet
+NAME = edje
+VERSION = 0.9.9.063
+DEPENDS = dev-lang/lua dev-e/ecore dev-e/embryo
 
-SVN_URL = http://svn.enlightenment.org/svn/e/trunk/TMP/st/${NAME}
+SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -10,7 +10,6 @@ unpack: build/.unpacked
 build/.unpacked:
 	mkdir -p build/src
 	svn checkout -q --non-interactive ${SVN_URL} build/src
-	patch -d build/src -p0 < ${NAME}-webos-patch
 	touch $@
 
 update: build/.unpacked
@@ -20,9 +19,9 @@ update: build/.unpacked
 			rm -f ../*.built; \
 		fi )
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage-local:: build/${ARCH}.built
 
@@ -32,7 +31,8 @@ build/%.built: build/.unpacked
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./autogen.sh --prefix=${INSTALL_PREFIX} \
-		--disable-static --disable-doc )
+		--disable-static --enable-fixed-point \
+		--disable-doc )
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@

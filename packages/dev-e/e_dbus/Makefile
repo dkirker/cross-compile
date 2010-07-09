@@ -1,6 +1,6 @@
 NAME = e_dbus
 VERSION = 0.5.0.063
-DEPENDS = dbus-lib ecore
+DEPENDS = common/dbus-lib dev-e/ecore
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
@@ -19,9 +19,9 @@ update: build/.unpacked
 			rm -f ../*.built; \
 		fi )
 
-include ../../support/staging.mk
+include ../../../support/staging.mk
 
-include ../../support/cross-compile.mk
+include ../../../support/cross-compile.mk
 
 stage-local:: build/${ARCH}.built
 
