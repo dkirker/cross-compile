@@ -20,7 +20,7 @@ stage-local:: build/${ARCH}.built
 build/.downloaded: ${DL_DIR}/${ESP_ZIP_FILE}
 
 ${DL_DIR}/${ESP_ZIP_FILE}:
-	wget -O ${DL_DIR}/${ESP_ZIP_FILE} ${ESP_SRC_ZIP}
+	cp files/${ESP_ZIP_FILE} ${DL_DIR}/
 
 build/.unpacked: build/.downloaded
 	rm -f $@
