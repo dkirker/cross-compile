@@ -6,7 +6,7 @@ APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.${NAME}
 SPD_SRC_GIT = git://git.freebsoft.org/git/speechd
 
 ESP_ZIP_FILE = espeak-1.43.54.zip
-ESP_SRC_ZIP = http://git.webos-internals.org/?p=preware/cross-compile.git;a=blob_plain;f=packages/apps/speechd/files/${ESP_ZIP_FILE}
+#ESP_SRC_ZIP = http://espeak.sourceforge.net/test/${ESP_ZIP_FILE}
 
 .PHONY: unpack
 unpack: build/.unpacked
@@ -28,7 +28,7 @@ build/.unpacked: build/.downloaded
 	mkdir build
 	( cd build ; git clone -n ${SPD_SRC_GIT} src ; cd src ; git checkout ${VERSION} )
 	mkdir build/espeak
-	( cd build/espeak; unzip ../../${DL_DIR}/${ESP_ZIP_FILE} )
+	( cd build/espeak; unzip ../../files/${ESP_ZIP_FILE} )
 	mv build/espeak/*/* build/espeak/
 	touch $@
 
