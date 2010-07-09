@@ -12,7 +12,11 @@ build/.unpacked:
 	svn checkout -q --non-interactive ${SVN_URL} build/src
 	touch $@
 
-update: build/.unpacked
+build/.patched: build/.unpacked
+	(cd build/src && patch -p0 < ../../context_resize_argument.patch)
+	touch $@
+
+update: build/.patched
 	( cd build/src ; \
 		if [ -n "`svn status -u | egrep -v '^Status' | egrep -v '^\?'`" ]; then \
 			svn update --non-interactive; \
@@ -25,7 +29,7 @@ include ../../../support/cross-compile.mk
 
 stage-local:: build/$(ARCH).built
 
-build/%.built: build/.unpacked
+build/%.built: build/.patched
 	rm -f $@
 	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
