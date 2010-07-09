@@ -34,7 +34,7 @@ build/%.built: build/.unpacked
 		--disable-static --enable-fixed-point \
 		--disable-doc )
 	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

@@ -5,7 +5,7 @@ APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.${NAME}
 
 SPD_SRC_GIT = git://git.freebsoft.org/git/speechd
 
-ESP_ZIP_FILE = espeak-1.43.51.zip
+ESP_ZIP_FILE = espeak-1.43.54.zip
 ESP_SRC_ZIP = http://espeak.sourceforge.net/test/${ESP_ZIP_FILE}
 
 .PHONY: unpack

@@ -32,7 +32,7 @@ build/%.built: build/.unpacked
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./autogen.sh --disable-static	--prefix=${INSTALL_PREFIX} )
 	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} make && ${SB2} make install )
+	( cd build/src ; ${SB2} $(MAKE) && ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::
