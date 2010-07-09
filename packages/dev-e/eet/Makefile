@@ -1,6 +1,6 @@
-NAME = efreet
-VERSION = 0.5.0.063
-DEPENDS = dev-e/ecore
+NAME = eet
+VERSION = 1.2.3
+DEPENDS = common/zlib media/jpeg common/libgcrypt common/openssl dev-e/eina
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
@@ -23,14 +23,15 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/$(ARCH).built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
-		./autogen.sh --disable-static --prefix=${INSTALL_PREFIX} --disable-doc )
+		./autogen.sh --disable-static --disable-gnutls \
+		--prefix=${INSTALL_PREFIX} --disable-doc )
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@

@@ -1,6 +1,6 @@
-NAME = eina
+NAME = evas
 VERSION = 0.9.9.063
-DEPENDS = 
+DEPENDS = media/jpeg media/libpng12 common/freetype common/fontconfig dev-sdl/libsdl dev-e/eina dev-e/eet dev-gl/gles-headers common/libxml2
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
@@ -23,15 +23,19 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/$(ARCH).built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
-		./autogen.sh --disable-static	--prefix=${INSTALL_PREFIX} \
-		--disable-doc )
+		./autogen.sh --prefix=${INSTALL_PREFIX} \
+		--disable-static --enable-buffer \
+		--enable-software-sdl --enable-fb \
+		--enable-gl-sdl --enable-gl-flavor-gles \
+		--enable-gles-variety-sgx --disable-doc \
+		--disable-fribidi --disable-image-loader-svg )
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@

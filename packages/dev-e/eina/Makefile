@@ -1,6 +1,6 @@
-NAME = ecore
+NAME = eina
 VERSION = 0.9.9.063
-DEPENDS = dev-sdl/libsdl common/openssl common/gnutls common/fontconfig common/curl common/glib-2.0 dev-e/evas
+DEPENDS = 
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
@@ -9,7 +9,7 @@ unpack: build/.unpacked
 
 build/.unpacked:
 	mkdir -p build/src
-	svn checkout --non-interactive ${SVN_URL} build/src
+	svn checkout -q --non-interactive ${SVN_URL} build/src
 	touch $@
 
 update: build/.unpacked
@@ -23,17 +23,14 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/$(ARCH).built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
-		./autogen.sh --prefix=${INSTALL_PREFIX} \
-		--disable-static --enable-ecore-sdl \
-		--enable-ecore-evas-software-sdl \
-		--enable-ecore-fb --enable-ecore-evas-fb \
+		./autogen.sh --disable-static	--prefix=${INSTALL_PREFIX} \
 		--disable-doc )
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )

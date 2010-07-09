@@ -1,6 +1,5 @@
-NAME = eet
-VERSION = 1.2.3
-DEPENDS = common/zlib media/jpeg common/libgcrypt common/openssl dev-e/eina
+NAME = expedite
+DEPENDS = dev-e/evas
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
@@ -10,6 +9,7 @@ unpack: build/.unpacked
 build/.unpacked:
 	mkdir -p build/src
 	svn checkout -q --non-interactive ${SVN_URL} build/src
+	patch -d build/src -p0 < ${NAME}-webos-patch
 	touch $@
 
 update: build/.unpacked
@@ -23,18 +23,18 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage:: build/armv7.built
+stage-local:: build/$(ARCH).built
 
 build/%.built: build/.unpacked
 	rm -f $@
 	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
-		./autogen.sh --disable-static --disable-gnutls \
-		--prefix=${INSTALL_PREFIX} --disable-doc )
+		./autogen.sh --disable-static	--prefix=${INSTALL_PREFIX} )
 	( cd build/src ; ${SB2} cp `which libtool` . )
 	( cd build/src ; ${SB2} make && ${SB2} make install )
 	touch $@
 
 clobber::
 	rm -rf build
+
