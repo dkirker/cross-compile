@@ -27,15 +27,6 @@ date >> $NAVIT_LOGFILE
 
 test -d $NAVIT_USER_DATADIR || mkdir -p $NAVIT_USER_DATADIR
 
-# Migrate data to new directories
-if test -d /media/internal/.app-storage/file_.media.cryptofs.apps.usr.palm.applications.org.webosinternals.navit_0 
-then
-	mv /media/internal/.app-storage/file_.media.cryptofs.apps.usr.palm.applications.org.webosinternals.navit_0/* $NAVIT_USER_DATADIR
-	mv /media/internal/MapsNavit $NAVIT_USER_DATADIR/maps
-	sed -i -re "s/\/media\/internal\/MapsNavit/\$NAVIT_USER_DATADIR\/maps/"  $NAVIT_USER_DATADIR/navit.xml
-	rmdir /media/internal/.app-storage/file_.media.cryptofs.apps.usr.palm.applications.org.webosinternals.navit_0
-fi
-
 test -e $NAVIT_USER_DATADIR/navit.xml || cp $APP_DIR/dist_files/navit*.xml $NAVIT_USER_DATADIR/                                                                 
 pgrep "^navit$" || exec $APP_DIR/bin/navit -c $NAVIT_USER_DATADIR/navit.xml
 
