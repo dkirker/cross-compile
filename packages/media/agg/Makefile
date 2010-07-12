@@ -24,11 +24,13 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} $(MAKE) )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} $(MAKE) )
 	 # Automatic staging doesn't work for agg
-	cp -pP build/src/src/libagg.a ${STAGING_DIR}/usr/lib/
+	cp -pP build/$*/src/libagg.a ${STAGING_DIR}/usr/lib/
 	mkdir -p ${STAGING_DIR}/usr/include/agg2
-	cp -prP build/src/include/* ${STAGING_DIR}/usr/include/agg2
+	cp -prP build/$*/include/* ${STAGING_DIR}/usr/include/agg2
 
 	touch $@
 

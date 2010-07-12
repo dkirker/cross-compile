@@ -30,25 +30,27 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure GNUMAKE=$(MAKE) )
-	( cd build/src ; ${SB2} $(MAKE) )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} ./configure GNUMAKE=$(MAKE) )
+	( cd build/$* ; ${SB2} $(MAKE) )
 	( ${SB2} install -m 777 -d /usr/local/include/freetype )
 	( ${SB2} install -m 777 -d /usr/local/include/freetype/config )
 	( ${SB2} install -m 777 -d /usr/local/include/freetype/internal )
 	( ${SB2} install -m 777 -d /usr/local/include/freetype/internal/services )
-	( ${SB2} install -m 644 build/src/include/freetype/*.h \
+	( ${SB2} install -m 644 build/$*/include/freetype/*.h \
 		/usr/local/include/freetype/ )
-	( ${SB2} install -m 644 build/src/include/freetype/config/*.h \
+	( ${SB2} install -m 644 build/$*/include/freetype/config/*.h \
 		/usr/local/include/freetype/config/ )
-	( ${SB2} install -m 644 build/src/include/freetype/internal/*.h \
+	( ${SB2} install -m 644 build/$*/include/freetype/internal/*.h \
 		/usr/local/include/freetype/internal/ )
-	( ${SB2} install -m 644 build/src/include/freetype/internal/services/*.h \
+	( ${SB2} install -m 644 build/$*/include/freetype/internal/services/*.h \
 		/usr/local/include/freetype/internal/services/ )
-	( ${SB2} install -m 644 build/src/include/ft2build.h /usr/local/include/ )
+	( ${SB2} install -m 644 build/$*/include/ft2build.h /usr/local/include/ )
 	( ${SB2} mkdir -p /usr/local/lib/pkgconfig )
-	( ${SB2} install -m 644 build/src/builds/unix/freetype2.pc /usr/local/lib/pkgconfig/ )
+	( ${SB2} install -m 644 build/$*/builds/unix/freetype2.pc /usr/local/lib/pkgconfig/ )
 	( ${SB2} mkdir -p /usr/local/bin )
-	( ${SB2} install -m 755 build/src/builds/unix/freetype-config /usr/local/bin/ )
+	( ${SB2} install -m 755 build/$*/builds/unix/freetype-config /usr/local/bin/ )
 	touch $@
 
 include ../../../support/stage-rootfs.mk

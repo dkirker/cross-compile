@@ -41,38 +41,38 @@ build/.patched: build/.unpacked
 
 build/%.built: build/.unpacked build/.patched
 	rm -f $@
-	( cd build/espeak/src ; ${SB2} $(MAKE) PREFIX=${APP_DIR} AUDIO="" all )
+	mkdir -p build/$*
+	cp -R build/src/* build/$* #Really guys? A package within a package?
+	mkdir -p build/espeak/$*
+	cp -R build/espeak/src/* build/espeak/$*
+	( cd build/espeak/$* ; ${SB2} $(MAKE) PREFIX=${APP_DIR} AUDIO="" all )
 	${SB2} mkdir -p ${INSTALL_PREFIX}/include/espeak
-	${SB2} cp -dR build/espeak/src/libespeak.so* build/espeak/src/libespeak.a ${INSTALL_PREFIX}/lib/
-	${SB2} cp -dR build/espeak/src/speak_lib.h ${INSTALL_PREFIX}/include/espeak/
-	mkdir -p build/${APP_DIR}/bin build/${APP_DIR}/lib build/${APP_DIR}/share
-	cp build/espeak/src/speak build/${APP_DIR}/bin/
-	cp build/espeak/src/espeak build/${APP_DIR}/bin/
-	cp build/espeak/src/libespeak.so.1.* build/${APP_DIR}/lib/libespeak.so.1
-	cp -dR build/espeak/espeak-data build/${APP_DIR}/share/
-
-	( cd build/src ; ${SB2} ./build.sh )
-	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
+	${SB2} cp -dR build/espeak/$*/libespeak.so* build/espeak/$*/libespeak.a ${INSTALL_PREFIX}/lib/
+	${SB2} cp -dR build/espeak/$*/speak_lib.h ${INSTALL_PREFIX}/include/espeak/
+	mkdir -p build/$*/${APP_DIR}/bin build/$*/${APP_DIR}/lib build/$*/${APP_DIR}/share
+	cp build/espeak/$*/speak build/$*/${APP_DIR}/bin/
+	cp build/espeak/$*/espeak build/$*/${APP_DIR}/bin/
+	cp build/espeak/$*/libespeak.so.1.* build/$*/${APP_DIR}/lib/libespeak.so.1
+	cp -dR build/espeak/espeak-data build/$*/${APP_DIR}/share/
+	( cd build/$* ; ${SB2} ./build.sh )
+	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./configure --prefix=${APP_DIR} )
-	( cd build/src ; ${SB2} $(MAKE) )
-	( cd build/src ; ${SB2} $(MAKE) DESTDIR=`cd .. ; pwd` install )
-	${SB2} cp -dR build/src/src/c/api/libspeechd.h ${INSTALL_PREFIX}/include/
-	${SB2} cp -dR build/src/src/c/api/.libs/*.so* ${INSTALL_PREFIX}/lib/
-
-	${SB2} cp ${INSTALL_PREFIX}/lib/libdotconf.so.0 build/${APP_DIR}/lib/libdotconf.so.0
-	mv build/${APP_DIR}/lib/libspeechd.so.2.* build/${APP_DIR}/lib/libspeechd.so.2
-	mv build/${APP_DIR}/lib/speech-dispatcher/libsdaudio.so.2.* \
-		build/${APP_DIR}/lib/speech-dispatcher/libsdaudio.so.2
-	rm -f build/${APP_DIR}/lib/libspeechd.so
-	rm -f build/${APP_DIR}/lib/libspeechd.*a
-	rm -r build/${APP_DIR}/include
-
-	cp files/{speech-dispatcher,spd-say} build/${APP_DIR}
-	cp files/speechd.conf build/${APP_DIR}/etc/speech-dispatcher/
-	cp files/espeak-generic.conf build/${APP_DIR}/etc/speech-dispatcher/modules/
-
+	( cd build/$* ; ${SB2} $(MAKE) )
+	( cd build/$* ; ${SB2} $(MAKE) DESTDIR=`pwd` install )
+	${SB2} cp -dR build/$*/src/c/api/libspeechd.h ${INSTALL_PREFIX}/include/
+	${SB2} cp -dR build/$*/src/c/api/.libs/*.so* ${INSTALL_PREFIX}/lib/
+	${SB2} cp ${INSTALL_PREFIX}/lib/libdotconf.so.0 build/$*/${APP_DIR}/lib/libdotconf.so.0
+	mv build/$*/${APP_DIR}/lib/libspeechd.so.2.* build/$*/${APP_DIR}/lib/libspeechd.so.2
+	mv build/$*/${APP_DIR}/lib/speech-dispatcher/libsdaudio.so.2.* \
+		build/$*/${APP_DIR}/lib/speech-dispatcher/libsdaudio.so.2
+	rm -f build/$*/${APP_DIR}/lib/libspeechd.so
+	rm -f build/$*/${APP_DIR}/lib/libspeechd.*a
+	rm -r build/$*/${APP_DIR}/include
+	cp files/{speech-dispatcher,spd-say} build/$*/${APP_DIR}
+	cp files/speechd.conf build/$*/${APP_DIR}/etc/speech-dispatcher/
+	cp files/espeak-generic.conf build/$*/${APP_DIR}/etc/speech-dispatcher/modules/
 	touch $@
 
 clobber::

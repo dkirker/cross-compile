@@ -26,8 +26,10 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/src/src ; ${SB2} $(MAKE) install-includeHEADERS install-binSCRIPTS )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
+	( cd build/$*/src ; ${SB2} $(MAKE) install-includeHEADERS install-binSCRIPTS )
 	touch $@
 
 clobber::

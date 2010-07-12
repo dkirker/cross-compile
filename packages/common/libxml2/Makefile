@@ -26,9 +26,11 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
-	( cd build/src/include ; ${SB2} $(MAKE) install )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
+	( cd build/$* ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	( cd build/$*/include ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

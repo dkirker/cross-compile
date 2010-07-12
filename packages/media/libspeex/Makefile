@@ -26,11 +26,13 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
 		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
 		./configure --prefix=${INSTALL_PREFIX} --disable-static )
-	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
-	( cd build/src/include ; ${SB2} $(MAKE) install )
+	( cd build/$* ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	( cd build/$*/include ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

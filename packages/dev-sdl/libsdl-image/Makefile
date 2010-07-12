@@ -29,8 +29,10 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} PATH=/usr/local/bin:${PATH} ./configure )
-	( cd build/src ; ${SB2} $(MAKE) install-data )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} PATH=/usr/local/bin:${PATH} ./configure )
+	( cd build/$* ; ${SB2} $(MAKE) install-data )
 	touch $@
 
 clobber::

@@ -31,7 +31,9 @@ stage-local:: build/$(ARCH).built
 
 build/%.built: build/.patched
 	rm -f $@
-	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./autogen.sh --prefix=${INSTALL_PREFIX} \
@@ -40,8 +42,8 @@ build/%.built: build/.patched
 		--enable-gl-sdl --enable-gl-flavor-gles \
 		--enable-gles-variety-sgx --disable-doc \
 		--disable-fribidi --disable-image-loader-svg )
-	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src ; ${SB2} $(MAKE) && ${SB2} $(MAKE) install )
+	( cd build/$* ; ${SB2} cp `which libtool` . )
+	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

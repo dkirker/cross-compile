@@ -34,7 +34,7 @@ build/.unpacked:
 	touch $@
 
 update: build/.unpacked
-	( cd build/src ; \
+	( cd build/$* ; \
 		if [ -n "`svn status -u | egrep -v '^Status' | egrep -v '^\?'`" ]; then \
 			svn update -r ${REVISION} --non-interactive; \
 			rm -f ../*.built ../.configure ../.aclocal; \
@@ -47,9 +47,12 @@ include ../../../support/cross-compile.mk
 stage-local:: build/${ARCH}.built
 
 
-build/.aclocal: build/.patched
+build/%.aclocal: build/.patched
 	rm -f $@
-	( cd build/src ; ${SB2} ./autogen.sh )
+	rm -rf build/$*
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} ./autogen.sh )
 	touch $@
 
 build/.patched: build/.unpacked
@@ -59,9 +62,9 @@ build/.patched: build/.unpacked
 	)
 	touch $@
 
-build/.configured: build/.aclocal
+build/%.configured: build/${ARCH}.aclocal
 	rm -f $@
-	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
+	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./configure --prefix=${APP_DIR} \
@@ -83,27 +86,28 @@ build/.configured: build/.aclocal
 
 # I call $(MAKE) in xpm/ without sb2 here, it doesn't work inside sb2
 # and creates images anyway
-build/%.built: build/.unpacked build/.patched build/.configured
-	( cd build/src ; ${SB2} cp `which libtool` . )
-	( cd build/src/navit/xpm/ ; $(MAKE) )
-	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make DESTDIR=`cd .. ; pwd` install )
-	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/armv7/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/${APP_DIR}/pdl-helper
-	${SB2} mkdir -p build/${APP_DIR}/dist_files/
-	${SB2} cp ${INSTALL_PREFIX}/lib/libspeechd.so.2 build/${APP_DIR}/lib/
-	${SB2} cp files/appinfo.json build/${APP_DIR}/appinfo.json
-	${SB2} cp files/Icon.png build/${APP_DIR}/Icon.png
-	${SB2} cp files/navit.sh build/${APP_DIR}/navit.sh
-	${SB2} cp files/navit*.xml build/${APP_DIR}/dist_files/
-	${SB2} cp files/osd_*.png build/${APP_DIR}/share/navit/xpm/
-	${SB2} cp -f files/poi_png/*.png build/${APP_DIR}/share/navit/xpm/
-	${SB2} mkdir -p build/${APP_DIR}/share/navit/xpm/skin/
-	${SB2} cp files/skin/*.png build/${APP_DIR}/share/navit/xpm/skin/
-	${SB2} mkdir -p build/${APP_DIR}/share/navit/xpm/PreNav/
-	${SB2} cp files/PreNav/*.png build/${APP_DIR}/share/navit/xpm/PreNav/
+build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
+	rm -f $@
+	( cd build/$* ; ${SB2} cp `which libtool` . )
+	( cd build/$*/navit/xpm/ ; $(MAKE) )
+	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} make DESTDIR=`pwd` install )
+	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/armv7/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
+	${SB2} mkdir -p build/$*/${APP_DIR}/dist_files/
+	${SB2} cp ${INSTALL_PREFIX}/lib/libspeechd.so.2 build/$*/${APP_DIR}/lib/
+	${SB2} cp files/appinfo.json build/$*/${APP_DIR}/appinfo.json
+	${SB2} cp files/Icon.png build/$*/${APP_DIR}/Icon.png
+	${SB2} cp files/navit.sh build/$*/${APP_DIR}/navit.sh
+	${SB2} cp files/navit*.xml build/$*/${APP_DIR}/dist_files/
+	${SB2} cp files/osd_*.png build/$*/${APP_DIR}/share/navit/xpm/
+	${SB2} cp -f files/poi_png/*.png build/$*/${APP_DIR}/share/navit/xpm/
+	${SB2} mkdir -p build/$*/${APP_DIR}/share/navit/xpm/skin/
+	${SB2} cp files/skin/*.png build/$*/${APP_DIR}/share/navit/xpm/skin/
+	${SB2} mkdir -p build/$*/${APP_DIR}/share/navit/xpm/PreNav/
+	${SB2} cp files/PreNav/*.png build/$*/${APP_DIR}/share/navit/xpm/PreNav/
 	touch $@
 
 clean:
-	( cd build/src ; ${SB2} $(MAKE) clean )
+	( cd build/${ARCH} ; ${SB2} $(MAKE) clean )
 
 
 clobber::

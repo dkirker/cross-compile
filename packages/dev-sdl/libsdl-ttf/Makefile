@@ -29,9 +29,11 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./autogen.sh )
-	( cd build/src ; ${SB2} ./configure --with-sdl-prefix=/usr/local )
-	( cd build/src ; ${SB2} $(MAKE) install-data )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} ./autogen.sh )
+	( cd build/$* ; ${SB2} ./configure --with-sdl-prefix=/usr/local )
+	( cd build/$* ; ${SB2} $(MAKE) install-data )
 	touch $@
 
 clobber::
