@@ -26,7 +26,9 @@ rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked
 
 .PHONY: stage
 # stage: toolchain rootfs staging-armv7 staging-armv6 staging-i686
-stage: toolchain rootfs staging-armv7 staging-armv6
+stage: toolchain rootfs
+	$(MAKE) -C . staging-armv6
+	$(MAKE) -C . staging-armv7
 
 include support/build.mk
 
