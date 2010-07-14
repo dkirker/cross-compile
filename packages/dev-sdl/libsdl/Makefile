@@ -31,8 +31,10 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure )
-	( cd build/src ; ${SB2} $(MAKE) install-bin install-hdrs install-data )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} ./configure )
+	( cd build/$* ; ${SB2} $(MAKE) install-bin install-hdrs install-data )
 	touch $@
 
 clobber::

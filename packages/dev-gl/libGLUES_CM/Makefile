@@ -24,19 +24,21 @@ stage-local:: build/${ARCH}.built
 	install -d ${STAGING_DIR}/usr/include
 	install -d ${STAGING_DIR}/usr/lib
 	rm -f ${STAGING_DIR}/usr/include/glues.h
-	install -m 644 build/src/source/glues.h ${STAGING_DIR}/usr/include/
+	install -m 644 build/${ARCH}/source/glues.h ${STAGING_DIR}/usr/include/
 	rm -f ${STAGING_DIR}/usr/include/glu.h
 	ln -f -s glues.h ${STAGING_DIR}/usr/include/glu.h
 	rm -f ${STAGING_DIR}/usr/lib/libGLUES_CM.so
-	install -m 755 build/src/source/libGLUES_CM.so ${STAGING_DIR}/usr/lib/
+	install -m 755 build/${ARCH}/source/libGLUES_CM.so ${STAGING_DIR}/usr/lib/
 
 include ../../../support/cross-compile.mk
 
-build: build/armv7.built
+build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src/source ; ${SB2} $(MAKE) )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$*/source ; ${SB2} $(MAKE) )
 	touch $@
 
 clobber::

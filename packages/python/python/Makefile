@@ -23,17 +23,22 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/armv7.built
+build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=/usr/local/lib\" \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
-	( cd build/src ; ${SB2} $(MAKE))
-	( cd build/src ; ${SB2} $(MAKE) install )
+	#The first build step requires Python. We're going to use the host's python to avoid problems.
+	#Note that this could break in future versions.
+	( cd build/$* ; ./Parser/asdl_c.py -h ./Include ./Parser/Python.asdl )
+	( cd build/$* ; ${SB2} $(MAKE))
+	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

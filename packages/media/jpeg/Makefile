@@ -31,9 +31,11 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} ./configure )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} ./configure )
 	mkdir -p ${STAGING_DIR}/usr/include
-	( cd build/src ; ${SB2} $(MAKE) DESTDIR= install-headers )
+	( cd build/$* ; ${SB2} $(MAKE) DESTDIR= install-headers )
 	touch $@
 
 clobber::

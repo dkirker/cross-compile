@@ -26,18 +26,20 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/armv7.built
+build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} \
 	CFLAGS=\"-I/usr/local/include\" \
 	LDFLAGS=\"-L/usr/local/lib\" \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
-	( cd build/src ; ${SB2} $(MAKE))
-	( cd build/src ; ${SB2} $(MAKE) install )
+	( cd build/$* ; ${SB2} $(MAKE))
+	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

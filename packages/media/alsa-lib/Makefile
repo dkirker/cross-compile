@@ -26,18 +26,20 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} aclocal )
-	( cd build/src ; ${SB2} autoheader )
-	( cd build/src ; ${SB2} autoconf )
-	( cd build/src ; ${SB2} libtoolize --auto$(MAKE) )
-	( cd build/src ; ${SB2} auto$(MAKE) --add-missing --copy --gnu )
-	( cd build/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} aclocal )
+	( cd build/$* ; ${SB2} autoheader )
+	( cd build/$* ; ${SB2} autoconf )
+	( cd build/$* ; ${SB2} libtoolize --auto$(MAKE) )
+	( cd build/$* ; ${SB2} auto$(MAKE) --add-missing --copy --gnu )
+	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./configure --disable-python --prefix=${INSTALL_PREFIX} )
-	#( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
-	#( cd build/src/src ; ${SB2} $(MAKE) install-pulseincludeHEADERS )
-	( cd build/src ; ${SB2} $(MAKE) install )
+	#( cd build/$* ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	#( cd build/$*/src ; ${SB2} $(MAKE) install-pulseincludeHEADERS )
+	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

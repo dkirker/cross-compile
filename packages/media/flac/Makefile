@@ -24,11 +24,13 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} LDFLAGS=\"-L${INSTALL_PREFIX}/lib -Wl,-rpath=${INSTALL_PREFIX}/lib\" ./configure \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} LDFLAGS=\"-L${INSTALL_PREFIX}/lib -Wl,-rpath=${INSTALL_PREFIX}/lib\" ./configure \
 		--prefix=${INSTALL_PREFIX} \
 		--disable-xmms-plugin \
     )
-	( cd build/src ; ${SB2} $(MAKE) && ${SB2} make install )
+	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
 
 clobber::

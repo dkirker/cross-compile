@@ -24,8 +24,10 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2}	./configure --prefix=${INSTALL_PREFIX} --enable-swscale --enable-gpl )
-	( cd build/src; ${SB2} $(MAKE) install )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2}	./configure --prefix=${INSTALL_PREFIX} --enable-swscale --enable-gpl )
+	( cd build/$*; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

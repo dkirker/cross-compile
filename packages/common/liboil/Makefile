@@ -26,12 +26,14 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; \
 		LDFLAGS="-Wl,-rpath,/usr/local/lib -L/usr/local/lib" ${SB2} \
 		./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
-	( cd build/src/liboil ; ${SB2} $(MAKE) install-pkgincludeHEADERS )
-	( cd build/src ; ${SB2} $(MAKE) install )
+	( cd build/$* ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	( cd build/$*/liboil ; ${SB2} $(MAKE) install-pkgincludeHEADERS )
+	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

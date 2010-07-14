@@ -24,9 +24,11 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} CC="gcc" ./configure )
-	( cd build/src ; ${SB2} CC="gcc" $(MAKE) )
-	( cd build/src ; ${SB2} $(MAKE) install )
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} CC="gcc" ./configure )
+	( cd build/$* ; ${SB2} CC="gcc" $(MAKE) )
+	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

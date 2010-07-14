@@ -31,12 +31,14 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
 		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
 		./configure --disable-static --prefix=${INSTALL_PREFIX} \
 		--with-xml-expat )
-	( cd build/src ; ${SB2} $(MAKE) install-pkgconfigDATA )
-	( cd build/src/dbus ; ${SB2} $(MAKE) install-dbusincludeHEADERS \
+	( cd build/$* ; ${SB2} $(MAKE) install-pkgconfigDATA )
+	( cd build/$*/dbus ; ${SB2} $(MAKE) install-dbusincludeHEADERS \
 		install-dbusarchincludeHEADERS )
 	touch $@
 

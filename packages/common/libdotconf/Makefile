@@ -23,17 +23,19 @@ stage-local:: build/armv7.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} aclocal )
-	( cd build/src ; ${SB2} autoheader )
-	( cd build/src ; ${SB2} autoconf )
-	( cd build/src ; ${SB2} libtoolize --auto$(MAKE) )
-	( cd build/src ; ${SB2} auto$(MAKE) --add-missing --copy --gnu )
-	( cd build/src ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} aclocal )
+	( cd build/$* ; ${SB2} autoheader )
+	( cd build/$* ; ${SB2} autoconf )
+	( cd build/$* ; ${SB2} libtoolize --auto$(MAKE) )
+	( cd build/$* ; ${SB2} auto$(MAKE) --add-missing --copy --gnu )
+	( cd build/$* ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
 		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
  	        ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
-	( cd build/src ; ${SB2} $(MAKE) install )
-	mkdir -p build/media/internal/.local/lib
-	cp build/src/src/.libs/libdotconf.so.0 build/media/internal/.local/lib/
+	( cd build/$* ; ${SB2} $(MAKE) install )
+	mkdir -p build/$*/media/internal/.local/lib
+	cp build/$*/src/.libs/libdotconf.so.0 build/$*/media/internal/.local/lib/
 	touch $@
 
 clobber::

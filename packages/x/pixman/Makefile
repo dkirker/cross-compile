@@ -23,18 +23,21 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/armv7.built
+build: build/${ARCH}.built
 
 #The sed line might be "needed" due to incompatible libtool on my machine...
 build/%.built: build/.unpacked
-	( cd build/src ; ${SB2} \
+	rm -f $@
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} \
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} \
 		--disable-arm-neon \
 		--disable-gtk \
 	)
-	( cd build/src ; ${SB2} $(MAKE))
-	( cd build/src ; ${SB2} $(MAKE) install )
+	( cd build/$* ; ${SB2} $(MAKE))
+	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

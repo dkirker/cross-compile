@@ -30,11 +30,13 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/armv7.built
+build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	( cd build/src ; ${SB2} \
+	mkdir -p build/$*
+	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
@@ -42,8 +44,8 @@ build/%.built: build/.unpacked
 		--without-libjpeg \
 		--disable-cups \
 	)	
-	( cd build/src ; ${SB2} $(MAKE))
-	( cd build/src ; ${SB2} $(MAKE) install)
+	( cd build/$* ; ${SB2} $(MAKE))
+	( cd build/$* ; ${SB2} $(MAKE) install)
 	touch $@
 
 clobber::
