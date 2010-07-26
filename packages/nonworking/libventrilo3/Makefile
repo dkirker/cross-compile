@@ -1,51 +1,50 @@
-NAME    = libventrilo
-#DEPENDS = gsm
-SVN_URL = http://svn.mangler.org/mangler/trunk
-REVISION= 1026
+NAME = libventrilo3
+VERSION = 1026
+DEPENDS = media/gsm
+
+DL_DIR = ../../../downloads
+SRC_SVN_REV = http://svn.mangler.org/mangler/trunk
+
+download: ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
+
+${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz:
+	rm -f $@
+	rm -rf build
+	mkdir -p build/trunk
+	( cd build ; svn checkout -r ${VERSION} --depth files ${SRC_SVN_REV} )
+	( cd build/trunk ; svn checkout -r ${VERSION} ${SRC_SVN_REV}/libventrilo3 )
+	( cd build/trunk ; svn checkout -r ${VERSION} ${SRC_SVN_REV}/m4 )
+	mkdir -p ${DL_DIR}
+	tar -C build/`basename ${SRC_SVN_REV}` -zcf $@ .
 
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked:
-	mkdir -p build
-	svn checkout -r ${REVISION} -q --non-interactive --depth files ${SVN_URL} build/src
-	svn checkout -r ${REVISION} -q --non-interactive ${SVN_URL}/libventrilo3 build/src/libventrilo3
-	svn checkout -r ${REVISION} -q --non-interactive ${SVN_URL}/m4 build/src/m4
+build/.unpacked: ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
+	rm -rf build
+	mkdir -p build/src
+	tar -C build/src -xf ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
 	touch $@
-
-update: build/.unpacked
-	( cd build/src/libventrilo3 ; \
-		if [ -n "`svn status -u | egrep -v '^Status' | egrep -v '^\?'`" ]; then \
-			svn update -r ${REVISION} --non-interactive; \
-			rm -f ../*.built ../.configure ../.aclocal; \
-		fi )
-	( cd build/src/m4 ; \
-		if [ -n "`svn status -u | egrep -v '^Status' | egrep -v '^\?'`" ]; then \
-			svn update -r ${REVISION} --non-interactive; \
-			rm -f ../*.built ../.configure ../.aclocal; \
-		fi )
 
 build/.patched:
 	patch -p0 build/src/configure.ac < patches/configure.ac.patch
 	patch -p0 build/src/Makefile.am < patches/Makefile.am.patch
+	autoreconf build/src
 	touch $@
 
 include ../../../support/staging.mk
 
-include ../../../support/cross-compile.mk
-
 stage-local:: build/${ARCH}.built
 
-build/%.configured: build/.unpacked build/.patched
-	rm -f $@
-	autoreconf build/src
-	cd build/src/ ; ${SB2} env LDFLAGS="-L/usr/local/lib" ./configure --disable-glibtest
-	touch $@
+include ../../../support/cross-compile.mk
 
-build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
+build: stage
+
+build/%.built: build/.unpacked build/.patched
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} env LDFLAGS="-L/usr/local/lib" ./configure --disable-glibtest )
 	( cd build/$*/libventrilo3 ; ${SB2} $(MAKE) )
 	( cd build/$*/libventrilo3 ; ${SB2} $(MAKE) install )
 	touch $@
