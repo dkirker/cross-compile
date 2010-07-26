@@ -15,6 +15,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mkdir -p build
 	tar -C build -z -x -f $<
 	mv build/${NAME}-${VERSION} build/src
+	cp dbus-bus-introspect.xml build/src/tools
 	touch $@
 
 include ../../../support/staging.mk
@@ -29,7 +30,6 @@ build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	cp dbus-bus-introspect.xml build/src/tools
 	( cd build/$* ; ${SB2} \
 	LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" \
 	./configure \
