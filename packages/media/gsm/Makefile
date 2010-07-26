@@ -14,6 +14,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mkdir -p build
 	tar -C build -x -f $<
 	mv build/${NAME}-1.0-pl12 build/src
+	patch build/src/Makefile Makefile.diff
 	touch $@
 
 include ../../../support/staging.mk
