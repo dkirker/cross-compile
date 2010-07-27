@@ -1,6 +1,6 @@
 NAME = libventrilo3
 VERSION = 1026
-DEPENDS = media/gsm
+DEPENDS = media/gsm media/libspeex
 
 DL_DIR = ../../../downloads
 SRC_SVN_REV = http://svn.mangler.org/mangler/trunk
