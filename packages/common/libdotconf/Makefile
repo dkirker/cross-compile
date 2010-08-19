@@ -1,16 +1,17 @@
 NAME = libdotconf
 VERSION = 1.3
-SRC_GIT = git://git.opentts.org/dotconf.git
+SRC_TGZ = http://files.opentts.org/dotconf/dotconf-${VERSION}.tar.gz
 
 include ../../../support/download.mk
 
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked:
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
-	mkdir build
-	( cd build ; git clone -n ${SRC_GIT} src ; cd src ; git checkout v${VERSION} )
+	mkdir -p build
+	tar -C build -z -x -f $<
+	mv build/dotconf-${VERSION} build/src
 	touch $@
 
 include ../../../support/staging.mk
