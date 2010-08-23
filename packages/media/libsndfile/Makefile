@@ -22,9 +22,9 @@ build/.unpacked: ${DL_DIR}/libsndfile1-${VERSION}.tar.gz
 	touch $@
 
 build/.patched: build/.unpacked
-      	rm -f $@
-       	( cd build/src && patch -p0 -i../../acinclude.patch )
-       	touch $@
+	rm -f $@
+	( cd build/src && patch -p0 -i../../acinclude.patch )
+	touch $@
 
 include ../../../support/staging.mk
 
