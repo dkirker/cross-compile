@@ -1,27 +1,10 @@
-#
-# How to make localization work (maybe):
-#
-# (WARNING, this involves changes to the root-partition of your device!! You need to be very careful!)
-# 
-# The C-lib expects a locale-archive in /usr/lib/locale/locale-archive.
-# This path is hardcoded. I don't know how to generate one, but for me the following works:
-#
-# - create dir /media/cryptofs/apps/usr/lib/locale/
-# - make / writable, goto /usr/lib
-# - create symlink to /media/cryptofs/apps/usr/lib/locale/, make / read-only again
-# - copy the locale-archive of your developer machine to /media/cryptofs/apps/usr/lib/locale/
-#
-# You need to adjust the LANG-variable in navit.sh
-#
-# Good luck ...
-#
 
 NAME    = navit
 VERSION = 0.2.0
 DEPENDS = media/jpeg media/libpng12 common/freetype common/fontconfig dev-sdl/libsdl dev-sdl/libsdl-image common/libpdl common/libgarmin common/locale apps/speechd
 SVN_URL = http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
-REVISION= 3490
+REVISION= 3536
 
 .PHONY: unpack
 unpack: build/.unpacked
