@@ -6,8 +6,9 @@ SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/libsndfile-${VERSION}.ta
 
 include ../../../support/download.mk
 
-.PHONY: unpack
+.PHONY: unpack patch
 unpack: build/.unpacked
+patch: build/.patched
 
 build/.unpacked: ${DL_DIR}/libsndfile1-${VERSION}.tar.gz
 	rm -rf build
@@ -20,6 +21,11 @@ build/.unpacked: ${DL_DIR}/libsndfile1-${VERSION}.tar.gz
 	tar -zxOf ${DL_DIR}/libsndfile-${VERSION}-patches.tgz | patch -d build/src -p1
 	touch $@
 
+build/.patched: build/.unpacked
+      	rm -f $@
+       	( cd build/src && patch -p0 -i../../acinclude.patch )
+       	touch $@
+
 include ../../../support/staging.mk
 
 include ../../../support/stage-rootfs.mk
@@ -30,7 +36,7 @@ stage-local:: build/${ARCH}.built
 	( cd ${STAGING_DIR}/usr/lib ; \
      [ -e libsndfile.so ] || ln -s libsndfile.so.1.0.17 libsndfile.so )
 
-build/%.built: build/.unpacked
+build/%.built: build/.unpacked build/.patched
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
