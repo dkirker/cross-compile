@@ -93,7 +93,6 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} make DESTDIR=`pwd` install )
 	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/armv7/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
 	${SB2} mkdir -p build/$*/${APP_DIR}/dist_files/
-	${SB2} cp ${INSTALL_PREFIX}/lib/libspeechd.so.2 build/$*/${APP_DIR}/lib/
 	${SB2} cp files/appinfo.json build/$*/${APP_DIR}/appinfo.json
 	${SB2} cp files/Icon.png build/$*/${APP_DIR}/Icon.png
 	${SB2} cp files/navit.sh build/$*/${APP_DIR}/navit.sh
