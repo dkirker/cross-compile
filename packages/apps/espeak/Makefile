@@ -18,9 +18,9 @@ unpack: build/.unpacked
 package: build/.package
 
 build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.zip
-	rm -rf build
 	mkdir -p build
 	unzip -o -d build $<
+	rm -rf build/src
 	mv build/espeak-${VERSION}-source build/src
 	touch $@
 
