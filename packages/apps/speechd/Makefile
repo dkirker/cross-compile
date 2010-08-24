@@ -11,11 +11,7 @@ ESP_ZIP_FILE = espeak-1.43.54.zip
 .PHONY: unpack
 unpack: build/.unpacked
 
-include ../../../support/staging.mk
 include ../../../support/cross-compile.mk
-include ../../../support/download.mk
-
-stage-local:: build/${ARCH}.built
 
 build/.downloaded: ${DL_DIR}/${ESP_ZIP_FILE}
 
@@ -24,10 +20,10 @@ ${DL_DIR}/${ESP_ZIP_FILE}:
 
 build/.unpacked: build/.downloaded
 	rm -f $@
-	rm -rf build
-	mkdir build
+	rm -rf build/src
+	rm -rf build/espeak
+	mkdir -p build/espeak
 	( cd build ; git clone -n ${SPD_SRC_GIT} src ; cd src ; git checkout ${VERSION} )
-	mkdir build/espeak
 	( cd build/espeak; unzip ../../files/${ESP_ZIP_FILE} )
 	mv build/espeak/*/* build/espeak/
 	touch $@
@@ -38,6 +34,12 @@ build/.patched: build/.unpacked
 		patch -d build/src -p1 < patches/$(patchfile); \
 	)
 	touch $@
+
+include ../../../support/staging.mk
+
+include ../../../support/download.mk
+
+stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked build/.patched
 	rm -f $@
