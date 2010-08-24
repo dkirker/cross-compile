@@ -47,6 +47,7 @@ build/.package: build/armv7.built build/armv6.built
 	mkdir -p build/package/armv6
 	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
 	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
+	touch $@
 
 clean:
 	( cd build/${ARCH}/src ; ${SB2} $(MAKE) clean )
