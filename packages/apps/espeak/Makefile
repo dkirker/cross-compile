@@ -37,8 +37,10 @@ build/%.built: build/.unpacked
 	( ${SB2} cp -dR files/* build/$*/${APP_DIR}/ )
 	touch $@
 
-build/.package: build/armv7.built build/armv6.built
+build/.package:
 	rm -f $@
+	make stage ARCH=armv7
+	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp -R build/armv7/${APP_DIR}/share build/package/all
 	mkdir -p build/package/armv7

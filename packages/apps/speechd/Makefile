@@ -59,8 +59,10 @@ build/%.built: build/.unpacked build/.patched
 	cp files/espeak-generic.conf build/$*/${APP_DIR}/etc/speech-dispatcher/modules/
 	touch $@
 
-build/.package: build/armv7.built build/armv6.built
+build/.package:
 	rm -f $@
+	make stage ARCH=armv7
+	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp    build/armv7/${APP_DIR}/spd-say build/package/all
 	cp    build/armv7/${APP_DIR}/speech-dispatcher build/package/all
@@ -72,7 +74,6 @@ build/.package: build/armv7.built build/armv6.built
 	mkdir -p build/package/armv6
 	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
 	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
-
 	# pull in the espeak-stuff
 	cp -R ${ESPEAK}/build/armv7/${APP_DIR}/share build/package/all
 	cp -R ${ESPEAK}/build/armv7/${APP_DIR}/bin build/package/armv7
