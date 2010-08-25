@@ -31,6 +31,7 @@ build/%.built: build/.unpacked
 	( cd build/$*/src ; ${SB2} $(MAKE) PREFIX=${APP_DIR} \
 		AUDIO="" all)
 	mkdir -p build/$*/${APP_DIR}/bin build/$*/${APP_DIR}/lib build/$*/${APP_DIR}/share
+	( ${SB2} cp -dR build/$*/src/speak build/$*/${APP_DIR}/bin/ )
 	( ${SB2} cp -dR build/$*/src/espeak build/$*/${APP_DIR}/bin/ )
 	( ${SB2} cp -dR build/$*/src/libespeak.so.1* build/$*/${APP_DIR}/lib/libespeak.so.1 )
 	( ${SB2} cp -dR build/src/espeak-data build/$*/${APP_DIR}/share/ )
