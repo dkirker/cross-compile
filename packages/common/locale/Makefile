@@ -3,7 +3,7 @@ VERSION = 1
 SRC = ../../../toolchain/arm-2007q3/arm-none-linux-gnueabi/libc/usr/lib/locale
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.locale
 LOCALES = cs_CZ.utf8 de_DE.utf8 en_CA.utf8 en_GB.utf8 en_US.utf8 es_MX.utf8 \
-	  es_US.utf8 fr_CA.utf8 fr_FR.utf8 he_IL.utf8 zh_CN.utf8
+	  es_US.utf8 fr_CA.utf8 fr_FR.utf8 he_IL.utf8 zh_CN.utf8 cs_CZ.utf8
 
 .PHONY: stage-local
 
@@ -19,6 +19,7 @@ build/%.built:
 	$(foreach locale, ${LOCALES}, \
 		cp -dR ${SRC}/$(locale) build/${APP_DIR}/; \
 	)
+	cp -dR ${SRC}/cs_CZ.utf8 build/${APP_DIR}/sk_SK.utf8; \
 	touch $@
 
 clean: clobber
