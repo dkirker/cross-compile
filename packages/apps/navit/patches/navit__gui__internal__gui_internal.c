@@ -1,5 +1,5 @@
 diff --git a/navit/navit/gui/internal/gui_internal.c b/navit/navit/gui/internal/gui_internal.c
-index 7c644e8..d6a1bff 100644
+index d2bd9e1..a40a25b 100644
 --- a/navit/navit/gui/internal/gui_internal.c
 +++ b/navit/navit/gui/internal/gui_internal.c
 @@ -3172,10 +3172,17 @@ gui_internal_keyboard_key_data(struct gui_priv *this, struct widget *wkbd, char
