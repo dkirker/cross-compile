@@ -56,7 +56,7 @@ build/%.configured: build/${ARCH}.aclocal
 			--enable-svg2png-scaling-nav="64" \
 			--disable-samplemap --disable-speech-espeak \
 			--disable-svg --with-svg2png-use-rsvg-convert \
-			--enable-cache-size=10485760 )
+			--enable-cache-size=20971520 )
 	touch $@
 
 
