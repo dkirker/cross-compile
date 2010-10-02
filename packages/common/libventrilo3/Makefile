@@ -1,29 +1,29 @@
 NAME = libventrilo3
-VERSION = 1026
+REVISION = 1026
 DEPENDS = media/gsm media/libspeex
 
 DL_DIR = ../../../downloads
 SRC_SVN_REV = http://svn.mangler.org/mangler/trunk
 
-download: ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
+download: ${DL_DIR}/${NAME}-svn-r${REVISION}.tar.gz
 
-${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz:
+${DL_DIR}/${NAME}-svn-r${REVISION}.tar.gz:
 	rm -f $@
 	rm -rf build
 	mkdir -p build/trunk
 	( cd build ; svn checkout -r ${VERSION} --depth files ${SRC_SVN_REV} )
-	( cd build/trunk ; svn checkout -r ${VERSION} ${SRC_SVN_REV}/libventrilo3 )
-	( cd build/trunk ; svn checkout -r ${VERSION} ${SRC_SVN_REV}/m4 )
+	( cd build/trunk ; svn checkout -r ${REVISION} ${SRC_SVN_REV}/libventrilo3 )
+	( cd build/trunk ; svn checkout -r ${REVISION} ${SRC_SVN_REV}/m4 )
 	mkdir -p ${DL_DIR}
 	tar -C build/`basename ${SRC_SVN_REV}` -zcf $@ .
 
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked: ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
+build/.unpacked: ${DL_DIR}/${NAME}-svn-r${REVISION}.tar.gz
 	rm -rf build
 	mkdir -p build/src
-	tar -C build/src -xf ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
+	tar -C build/src -xf ${DL_DIR}/${NAME}-svn-r${REVISION}.tar.gz
 	touch $@
 
 build/.patched:

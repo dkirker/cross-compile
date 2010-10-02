@@ -1,8 +1,8 @@
 NAME = gnutls
-VERSION = 2.2.5
+VERSION = 2.8.5
 DEPENDS = common/libgpg-error common/libgcrypt
 
-SRC_TGZ = http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.2.5.tar.bz2
+SRC_TGZ = http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.8.5.tar.bz2
 
 include ../../../support/download.mk
 
@@ -30,7 +30,7 @@ build/%.built: build/.unpacked
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
 	( cd build/$* ; ${SB2} ./configure --disable-static --prefix=${INSTALL_PREFIX} )
-	( cd build/$*/includes ; ${SB2} $(MAKE) install )
+	( cd build/$*/lib/includes ; ${SB2} $(MAKE) install )
 	( cd build/$*/lib ; ${SB2} $(MAKE) install-pkgconfigDATA )
 	( ${SB2} ln -f -s libgnutls.so.13.2.2 ${INSTALL_PREFIX}/lib/libgnutls.so )
 	touch $@

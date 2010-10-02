@@ -1,0 +1,11 @@
+diff -u gnutls-2.8.5/lib/gnutls.pc.in gnutls-2.8.5-new/lib/gnutls.pc.in
+--- gnutls-2.8.5/lib/gnutls.pc.in	2008-02-21 01:58:18.000000000 -0600
++++ gnutls-2.8.5-new/lib/gnutls.pc.in	2010-01-12 15:53:01.000000000 -0600
+@@ -20,6 +20,6 @@
+ Description: Transport Security Layer implementation for the GNU system
+ URL: http://www.gnu.org/software/gnutls/
+ Version: @VERSION@
+-Libs: -L${libdir} -lgnutls
++Libs: -L${libdir} -Wl,-rpath,${libdir} -lgnutls
+ Libs.private: @LIBGNUTLS_LIBS@ @LTLIBTASN1@
+ Cflags: -I${includedir}
