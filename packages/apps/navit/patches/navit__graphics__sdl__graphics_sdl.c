@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index 5937d67..fadaf1a 100644
+index 5937d67..84baa66 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -34,6 +34,11 @@
@@ -83,10 +83,10 @@ index 5937d67..fadaf1a 100644
 +};
 +
 +static int quit_event_loop=0; // quit the main event loop
-+static struct graphics_priv* the_graphics=NULL; 
++static struct graphics_priv* the_graphics=NULL;
 +static int the_graphics_count=0; // count how many graphics objects are created
 +static GPtrArray *idle_tasks=NULL;
-+#endif 
++#endif
  
  struct graphics_font_priv {
  #ifdef SDL_TTF
@@ -95,7 +95,7 @@ index 5937d67..fadaf1a 100644
          input_ts_exit(gr);
  #endif
 +#ifdef USE_WEBOS_ACCELEROMETER
-+    	SDL_JoystickClose(gr->accelerometer);
++	SDL_JoystickClose(gr->accelerometer);
 +#endif
 +#ifdef USE_WEBOS
 +        PDL_Quit();
@@ -119,7 +119,7 @@ index 5937d67..fadaf1a 100644
  
 +#ifdef USE_WEBOS_ACCELEROMETER
 +static void
-+sdl_accelerometer_handler(void* param) 
++sdl_accelerometer_handler(void* param)
 +{
 +    struct graphics_priv *gr = (struct graphics_priv *)param;
 +    int xAxis = SDL_JoystickGetAxis(gr->accelerometer, 0);
@@ -136,21 +136,21 @@ index 5937d67..fadaf1a 100644
 +
 +    if (new_orientation != gr->orientation)
 +    {
-+    	dbg(1,"x(%d) y(%d) z(%d) o(%d)\n",xAxis, yAxis, zAxis, new_orientation);
++	dbg(1,"x(%d) y(%d) z(%d) o(%d)\n",xAxis, yAxis, zAxis, new_orientation);
 +	gr->orientation = new_orientation;
-+    	
++
 +	SDL_Event event;
-+    	SDL_UserEvent userevent;
++	SDL_UserEvent userevent;
 +
-+    	userevent.type = SDL_USEREVENT;
-+    	userevent.code = SDL_USEREVENT_CODE_ROTATE;
-+    	userevent.data1 = NULL;
-+    	userevent.data2 = NULL;
++	userevent.type = SDL_USEREVENT;
++	userevent.code = SDL_USEREVENT_CODE_ROTATE;
++	userevent.data1 = NULL;
++	userevent.data2 = NULL;
 +
-+    	event.type = SDL_USEREVENT;
-+    	event.user = userevent;
++	event.type = SDL_USEREVENT;
++	event.user = userevent;
 +
-+    	SDL_PushEvent (&event);
++	SDL_PushEvent (&event);
 +    }
 +}
 +#endif
@@ -169,12 +169,12 @@ index 5937d67..fadaf1a 100644
 +
 +#ifdef USE_WEBOS
 +    if(data==NULL) {
-+    	if(the_graphics!=NULL) {
++	if(the_graphics!=NULL) {
 +	    gr = the_graphics;
-+	} 
++	}
 +	else {
 +	    dbg(0,"graphics_idle: graphics not set!\n");
-+    	    return FALSE;
++	    return FALSE;
 +	}
 +    }
 +#endif
@@ -201,21 +201,21 @@ index 5937d67..fadaf1a 100644
      {
 +#ifdef USE_WEBOS
 +	ret = 0;
-+	if(idle_tasks->len > 0) 
++	if(idle_tasks->len > 0)
 +	{
-+     	    while (!(ret = SDL_PollEvent(&ev)) && idle_tasks->len > 0)
++	    while (!(ret = SDL_PollEvent(&ev)) && idle_tasks->len > 0)
 +	    {
 +		if (idle_tasks_idx >= idle_tasks->len)
 +		    idle_tasks_idx = 0;
 +
 +		dbg(3,"idle_tasks_idx(%d)\n",idle_tasks_idx);
 +		task = (struct idle_task *)g_ptr_array_index(idle_tasks,idle_tasks_idx);
-+		
++
 +		if (idle_tasks_idx == 0)	// only execute tasks with lowest priority value
 +		    idle_tasks_cur_priority = task->priority;
 +		if (task->priority > idle_tasks_cur_priority)
 +		    idle_tasks_idx = 0;
-+		else 
++		else
 +		{
 +		    callback_call_0(task->cb);
 +		    idle_tasks_idx++;
@@ -356,24 +356,23 @@ index 5937d67..fadaf1a 100644
 +			    if ((key_mod & WEBOS_KEY_MOD_SHIFT_STICKY) != WEBOS_KEY_MOD_SHIFT_STICKY)
 +				key_mod &= ~(WEBOS_KEY_MOD_SHIFT_STICKY);
 +			    if ((key_mod & WEBOS_KEY_MOD_ORANGE_STICKY) != WEBOS_KEY_MOD_ORANGE_STICKY)
-+			    	key_mod &= ~(WEBOS_KEY_MOD_ORANGE_STICKY);
++				key_mod &= ~(WEBOS_KEY_MOD_ORANGE_STICKY);
 +			}
 +			else {
 +			    dbg(0,"Unknown key sym: %x\n", ev.key.keysym.sym);
 +			}
 +#else
 +			keybuf[0] = 0;
-+#endif			
++#endif
                          break;
                      }
                  }
-+			  
-+		dbg(2,"key mod: 0x%x\n", key_mod);
  
 -                keybuf[0] = key;
 -                keybuf[1] = '\0';
 -		callback_list_call_attr_1(gr->cbl, attr_keypress, (void *)keybuf);
--
++		dbg(2,"key mod: 0x%x\n", key_mod);
+ 
 +		if (keybuf[0]) {
 +		    dbg(2,"key: %s 0x%x\n", keybuf, keybuf);
 +		    callback_list_call_attr_1(gr->cbl, attr_keypress, (void *)keybuf);
@@ -401,17 +400,17 @@ index 5937d67..fadaf1a 100644
 +		SDL_UserEvent userevent = ev.user;
 +                if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_TIMER) 
 +		{
-+    		    struct callback *cb = (struct callback *)userevent.data1;
-+                    dbg(1, "SDL_USEREVENT timer received cb(%p)\n", cb);
++		    struct callback *cb = (struct callback *)userevent.data1;
++		    dbg(1, "SDL_USEREVENT timer received cb(%p)\n", cb);
 +		    callback_call_0(cb);
 +                }
-+ 		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_CALL_CALLBACK) 
++		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_CALL_CALLBACK) 
 +		{
-+    		    struct callback_list *cbl = (struct callback_list *)userevent.data1;
++		    struct callback_list *cbl = (struct callback_list *)userevent.data1;
 +                    dbg(1, "SDL_USEREVENT call_callback received cbl(%p)\n", cbl);
 +		    callback_list_call_0(cbl);
-+ 		}
-+       		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_IDLE_EVENT) 
++		}
++		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_IDLE_EVENT) 
 +                    dbg(1, "SDL_USEREVENT idle_event received\n");
 +#ifdef USE_WEBOS_ACCELEROMETER
 +		else if(userevent.type==SDL_USEREVENT && userevent.code==SDL_USEREVENT_CODE_ROTATE)
@@ -430,17 +429,17 @@ index 5937d67..fadaf1a 100644
 +		    }
 +                    if(gr->screen == NULL)
 +                    {
-+                    	navit_destroy(gr->nav);
++			navit_destroy(gr->nav);
 +                    }
 +                    else
 +                    {
-+		    	callback_list_call_attr_2(gr->cbl, attr_resize, (void *)gr->screen->w, (void *)gr->screen->h);
++			callback_list_call_attr_2(gr->cbl, attr_resize, (void *)gr->screen->w, (void *)gr->screen->h);
 +                    }
 +		}
 +#endif
-+                else 
++                else
 +                    dbg(1, "unknown SDL_USEREVENT\n");
-+                
++
 +		break;
 +            }
 +#endif
@@ -455,7 +454,7 @@ index 5937d67..fadaf1a 100644
 +    event_remove_timeout(accel_to);
 +    callback_destroy(accel_cb);
 +#endif
-+ 
++
      return TRUE;
  }
  
@@ -575,7 +574,7 @@ index 5937d67..fadaf1a 100644
 +#ifdef USE_WEBOS
 +/* ---------- SDL Eventhandling ---------- */
 +
-+static Uint32 
++static Uint32
 +sdl_timer_callback(Uint32 interval, void* param)
 +{
 +    struct event_timeout *timeout=(struct event_timeout*)param;
@@ -596,7 +595,7 @@ index 5937d67..fadaf1a 100644
 +    SDL_PushEvent (&event);
 +
 +    if (timeout->multi==0) {
-+    	g_free(timeout);
++	g_free(timeout);
 +	timeout = NULL;
 +	return 0; // cancel timer
 +    }
@@ -694,20 +693,20 @@ index 5937d67..fadaf1a 100644
 +
 +    if (idle_tasks->len < 2)
 +    {
-+    	SDL_Event event;
-+    	SDL_UserEvent userevent;
++	SDL_Event event;
++	SDL_UserEvent userevent;
 +
-+    	dbg(1,"poking eventloop because of new idle_events\n");
++	dbg(1,"poking eventloop because of new idle_events\n");
 +
-+    	userevent.type = SDL_USEREVENT;
-+    	userevent.code = SDL_USEREVENT_CODE_IDLE_EVENT;
-+    	userevent.data1 = NULL;
-+    	userevent.data2 = NULL;
++	userevent.type = SDL_USEREVENT;
++	userevent.code = SDL_USEREVENT_CODE_IDLE_EVENT;
++	userevent.data1 = NULL;
++	userevent.data2 = NULL;
 +
-+    	event.type = SDL_USEREVENT;
-+    	event.user = userevent;
++	event.type = SDL_USEREVENT;
++	event.user = userevent;
 +
-+    	SDL_PushEvent (&event);
++	SDL_PushEvent (&event);
 +    }
 +    else	// more than one entry => sort the list
 +	g_ptr_array_sort(idle_tasks, sdl_sort_idle_tasks);
@@ -775,6 +774,6 @@ index 5937d67..fadaf1a 100644
 +    plugin_register_graphics_type("sdl", graphics_sdl_new);
  }
  
-+/* 
++/*
 + * vim: sw=4 ts=8
 + * */
