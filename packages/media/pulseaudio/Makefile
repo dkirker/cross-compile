@@ -28,14 +28,15 @@ build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	#( cd build/$* ; ${SB2} aclocal -I m4 -I ${STAGING_DIR}/usr/share/aclocal )
-	#( cd build/$* ; ${SB2} autoheader )
-	#( cd build/$* ; ${SB2} autoconf )
-	#( cd build/$* ; ${SB2} libtoolize --auto$(MAKE) )
-	#( cd build/$* ; ${SB2} auto$(MAKE) --add-missing --copy --gnu )
+	# without that aclocal call some of the macros are not found -- Malte Schröder
+	( cd build/$* ; ${SB2} aclocal -I m4 -I ${STAGING_DIR}/usr/share/aclocal )
+	# don't know if the following 4 lines are necessary, taken from bootstrap.sh. Works for me -- Malte Schröder
+	( cd build/$* ; ${SB2} autoconf -Wall )
+	( cd build/$* ; ${SB2} autoheader )
+	( cd build/$* ; ${SB2} libtoolize --auto$(MAKE) )
+	( cd build/$* ; ${SB2} automake --copy --foreign --add-missing )
 	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
-		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
 		./configure --prefix=${INSTALL_PREFIX} )
 	( cd build/$* ; ${SB2} $(MAKE) install-pkgconfigDATA )
 	( cd build/$*/src ; ${SB2} $(MAKE) install-pulseincludeHEADERS )
