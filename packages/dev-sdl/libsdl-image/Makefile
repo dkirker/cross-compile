@@ -31,7 +31,8 @@ build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	( cd build/$* ; ${SB2} PATH=/usr/local/bin:${PATH} ./configure )
+	( cd build/$* ; ${SB2} ./autogen.sh)
+	( cd build/$* ; ${SB2} ./configure )
 	( cd build/$* ; ${SB2} $(MAKE) install-data )
 	touch $@
 
