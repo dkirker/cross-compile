@@ -65,9 +65,10 @@ on</text></img>
 
 
 <!-- TOP SPEED -->
-<osd enabled="yes" type="text" label="${tracking.item.route_speed}" x="13" y="31" w="94" h="47" background_color="#FF0000CC" align="0" font_size="300"/>
+<!-- <osd enabled="yes" type="text" label="${tracking.item.route_speed}" x="13" y="31" w="94" h="47" background_color="#FF0000CC" align="0" font_size="300"/>
 <osd enabled="yes" type="text" label="${vehicle.position_speed}" x="13" y="78" w="94" h="47" background_color="#000000CC" align="0" font_size="300"/>
-<osd enabled="yes" type="button" x="6" y="24" w="108" h="108" command="" src="PreNav/geschw.png" /> 
+<osd enabled="yes" type="button" x="6" y="24" w="108" h="108" command="" src="PreNav/geschw.png" />  -->
+<osd enabled="yes" type="speed_warner" w="50" h="50" x="6" y="24" font_size="350" speed_exceed_limit_offset="10" speed_exceed_limit_percent="10" announce_on="1" />
 
 <!-- menu right/top-right -->
 
