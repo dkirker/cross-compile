@@ -2,6 +2,7 @@ NAME = speechd
 VERSION = 0.7
 DEPENDS = common/locale common/libdotconf media/libsndfile media/pulseaudio apps/espeak
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.${NAME}
+APP_PREFIX= /var/usr
 SRC_TGZ = http://www.freebsoft.org/pub/projects/speechd/speech-dispatcher-${VERSION}.tar.gz
 ESPEAK = ../espeak
 
@@ -40,20 +41,22 @@ build/%.built: build/.unpacked build/.patched
 	( cd build/$*/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
-		./configure --prefix=${APP_DIR} )
+		./configure --prefix=${APP_PREFIX} )
 	( cd build/$*/src ; ${SB2} $(MAKE) )
 	( cd build/$*/src ; ${SB2} $(MAKE) DESTDIR=`pwd`/.. install )
 	${SB2} cp -dR build/$*/src/src/c/api/libspeechd.h ${INSTALL_PREFIX}/include/
 	${SB2} cp -dR build/$*/src/src/c/api/.libs/*.so* ${INSTALL_PREFIX}/lib/
+	mkdir -p build/$*/${APP_DIR}
+	cp -R build/$*/${APP_PREFIX}/* build/$*/${APP_DIR}
 	${SB2} cp ${INSTALL_PREFIX}/lib/libdotconf.so.0 build/$*/${APP_DIR}/lib/libdotconf.so.0
-	mv build/$*/${APP_DIR}/lib/libspeechd.so.2.* build/$*/${APP_DIR}/lib/libspeechd.so.2
-	mv build/$*/${APP_DIR}/lib/speech-dispatcher/libsdaudio.so.2.* \
+	mv build/$*/${APP_PREFIX}/lib/libspeechd.so.2.* build/$*/${APP_DIR}/lib/libspeechd.so.2
+	mv build/$*/${APP_PREFIX}/lib/speech-dispatcher/libsdaudio.so.2.* \
 		build/$*/${APP_DIR}/lib/speech-dispatcher/libsdaudio.so.2
-	rm -f build/$*/${APP_DIR}/lib/libspeechd.so
-	rm -f build/$*/${APP_DIR}/lib/libspeechd.*a
-	rm -f build/$*/${APP_DIR}/lib/speech-dispatcher/libsdaudio.so
-	rm -f build/$*/${APP_DIR}/lib/speech-dispatcher/libsdaudio.*a
-	rm -r build/$*/${APP_DIR}/include
+	rm -f build/$*/${APP_PREFIX}/lib/libspeechd.so
+	rm -f build/$*/${APP_PREFIX}/lib/libspeechd.*a
+	rm -f build/$*/${APP_PREFIX}/lib/speech-dispatcher/libsdaudio.so
+	rm -f build/$*/${APP_PREFIX}/lib/speech-dispatcher/libsdaudio.*a
+	rm -r build/$*/${APP_PREFIX}/include
 	cp files/{speech-dispatcher,spd-say} build/$*/${APP_DIR}
 	cp files/speechd.conf build/$*/${APP_DIR}/etc/speech-dispatcher/
 	cp files/espeak-generic.conf build/$*/${APP_DIR}/etc/speech-dispatcher/modules/
