@@ -13,7 +13,6 @@ build/.unpacked:
 	touch $@
 
 build/.patched: build/.unpacked
-	(cd build/src && patch -p0 < ../../context_resize_argument.patch)
 	touch $@
 
 update: build/.patched
