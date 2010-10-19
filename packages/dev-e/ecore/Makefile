@@ -28,7 +28,7 @@ stage-local:: build/$(ARCH).built
 build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
-	cp -R build/src/* build/$*
+	cp -fR build/src/* build/$*
 	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
@@ -36,6 +36,7 @@ build/%.built: build/.unpacked
 		--disable-static --enable-ecore-sdl \
 		--enable-ecore-evas-software-sdl \
 		--enable-ecore-fb --enable-ecore-evas-fb \
+		--disable-gnutls \
 		--disable-doc )
 	( cd build/$* ; ${SB2} cp `which libtool` . )
 	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} $(MAKE) install )
