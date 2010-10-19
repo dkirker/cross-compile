@@ -1,0 +1,13 @@
+Index: m4/evas_check_engine.m4
+===================================================================
+--- m4/evas_check_engine.m4	(revision 53631)
++++ m4/evas_check_engine.m4	(working copy)
+@@ -162,7 +162,7 @@
+    fi
+    AC_CHECK_HEADERS([EGL/egl.h X11/X.h X11/Xlib.h X11/extensions/Xrender.h], [have_egl="yes"])
+    if test "x${have_egl}" = "xyes" ; then
+-      AC_CHECK_LIB(GLESv2, glTexImage2D, [have_glesv2="yes"], , -lEGL ${x_libs} -lpthread -lm)
++      AC_CHECK_LIB(GLESv2, GL_FLOAT, [have_glesv2="yes"], , -lEGL ${x_libs} -lpthread -lm)
+       if test "x${have_glesv2}" = "xyes" ; then
+          evas_engine_[]$1[]_cflags="${x_cflags}"
+          evas_engine_[]$1[]_libs="${x_libs} -lGLESv2 -lpthread -lm -lEGL"

@@ -10,6 +10,7 @@ unpack: build/.unpacked
 build/.unpacked:
 	mkdir -p build/src
 	svn checkout -q --non-interactive ${SVN_URL} build/src
+	(cd build/src && patch -p0 < ../../evas_gles2_check.patch)
 	touch $@
 
 build/.patched: build/.unpacked
@@ -31,7 +32,7 @@ stage-local:: build/$(ARCH).built
 build/%.built: build/.patched
 	rm -f $@
 	mkdir -p build/$*
-	cp -R build/src/* build/$*
+	cp -fR build/src/* build/$*
 	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
