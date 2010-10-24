@@ -28,7 +28,7 @@ stage-local:: build/$(ARCH).built
 build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
-	cp -R build/src/* build/$*
+	cp -fR build/src/* build/$*
 	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \

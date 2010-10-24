@@ -33,13 +33,17 @@
 		[-][D]D.d[d]... [-][D][D]D.d[d]...
 		[-]0xX [-]0xX -->
 
-	<navit center="0x10b6f5 0x6c435d" zoom="64" tracking="1" orientation="-1" recent_dest="10" autozoom_active="0" pitch="20">
+	<navit center="0x10b6f5 0x6c435d" zoom="64" tracking="1" orientation="-1" recent_dest="10" autozoom_active="1" pitch="20">
 		<!-- Use one of gtk_drawing_area, qt_qpainter or sdl. -->
 		<graphics type="sdl"/>
 		<!-- for a debug log -->
 		<log enabled="no" type="textfile_debug" data="debug_%Y%m%d-%i.txt" flush_size="1000" flush_time="30"/>
 
-		<vehicle name="GPS" profilename="car" enabled="yes" follow="1" active="1" source="webos://"/>
+		<vehicle name="GPS" lag="20" profilename="car" enabled="yes" follow="1" active="1" source="webos://"/>
+                <!--( 17:18      Rikky ) hape: there is the parameter "lag" for vehicle, which projects                  
+                                         the car position the specified time ahead. however it does not                  
+                                         work very well, because it only uses gps data for the projection.               
+                                         lag="20" would project the car position 2seconds ahead -->   
 
 		<!--<vehicle name="Demo" profilename="car" enabled="yes" active="yes" source="demo://"/>-->
 

@@ -1,6 +1,6 @@
-NAME = edje
-VERSION = 0.9.9.063
-DEPENDS = common/gnutls dev-lang/lua dev-e/ecore dev-e/embryo
+NAME = e_dbus
+VERSION = 0.5.0.063
+DEPENDS = common/dbus-lib dev-e/ecore
 
 SVN_URL = http://svn.enlightenment.org/svn/e/trunk/${NAME}
 
@@ -28,13 +28,11 @@ stage-local:: build/${ARCH}.built
 build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
-	cp -fR build/src/* build/$*
+	cp -R build/src/* build/$*
 	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
-		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
+		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib\ -Wl,-rpath-link,${INSTALL_PREFIX}/lib" \
 		PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
-		./autogen.sh --prefix=${INSTALL_PREFIX} \
-		--disable-static --enable-fixed-point \
-		--disable-doc )
+		./autogen.sh --disable-static --prefix=${INSTALL_PREFIX} --disable-doc )
 	( cd build/$* ; ${SB2} cp `which libtool` . )
 	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} $(MAKE) install )
 	touch $@
