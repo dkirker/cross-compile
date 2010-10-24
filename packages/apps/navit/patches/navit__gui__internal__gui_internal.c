@@ -1,5 +1,5 @@
 diff --git a/navit/navit/gui/internal/gui_internal.c b/navit/navit/gui/internal/gui_internal.c
-index 78d6886..cbebfbe 100644
+index 8957e09..b83240c 100644
 --- a/navit/navit/gui/internal/gui_internal.c
 +++ b/navit/navit/gui/internal/gui_internal.c
 @@ -1575,6 +1575,7 @@ gui_internal_top_bar(struct gui_priv *this)
@@ -26,7 +26,7 @@ index 78d6886..cbebfbe 100644
  		wcn->foreground=foreground;
  		wcn->func=gui_internal_cmd_return;
  		wcn->data=wc;
-@@ -6487,7 +6490,9 @@ static struct gui_priv * gui_internal_new(struct navit *nav, struct gui_methods
+@@ -6488,7 +6491,9 @@ static struct gui_priv * gui_internal_new(struct navit *nav, struct gui_methods
  	      this->text_foreground_color=*attr->u.color;
  	else
  	      this->text_foreground_color=COLOR_WHITE;
