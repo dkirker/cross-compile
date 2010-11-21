@@ -78,7 +78,11 @@ on</text></img>
 
 <osd enabled="yes" type="toggle_announcer" x="-50"	y="68" w="50"	h="50" icon_src="$NAVIT_SHAREDIR/xpm/PreNav/%s.png" background_color="#00000088"/>
 
-<osd enabled="yes" type="button" command="zoom_to_route()" x="-50" y="118" w="50" h="50" src="PreNav/zoom_route.png"/>
+<!-- <osd enabled="yes" type="button" command="zoom_to_route()" x="-50" y="118" w="50" h="50" src="PreNav/zoom_route.png"/> -->
+<!-- <osd enabled="yes" type="button" command="pitch=0;vehicle.follow=0;autozoom_active=0;osd_configuration=2;zoom_to_route()" x="-50" y="118" w="50" h="50" src="PreNav/zoom_route.png"/> -->
+<!-- <osd enabled="yes" type="button" command="pitch=20;vehicle.follow=1;autozoom_active=1;osd_configuration=1" x="-100" y="118" w="50" h="50" src="PreNav/zoom_route.png"/> -->
+<osd enabled="yes" type="button" command="autozoom_active=pitch==0?1:0;follow=pitch==0?1:32000;pitch=pitch==0?20:0;zoom_to_route()" x="-50" y="118" w="50" h="50" src="PreNav/zoom_route.png"/>
+
 
 <osd enabled="yes" type="button" x="-50" y="168"  w="50" h="50" command="zoom_in()" src="PreNav/zoom_in.png"/>
 
