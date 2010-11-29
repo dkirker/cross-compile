@@ -1,5 +1,5 @@
 NAME = speechd
-VERSION = 0.7
+VERSION = 0.7.1
 DEPENDS = common/locale common/libdotconf media/libsndfile media/pulseaudio apps/espeak
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.${NAME}
 APP_PREFIX= /var/usr
