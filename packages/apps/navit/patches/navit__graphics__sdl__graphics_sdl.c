@@ -1,8 +1,8 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index 5937d67..b13668b 100644
+index 72fbaa4..43b6cb7 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
-@@ -34,6 +34,11 @@
+@@ -35,6 +35,11 @@
  #include <SDL/SDL.h>
  #include <math.h>
  
@@ -14,7 +14,7 @@ index 5937d67..b13668b 100644
  #define RASTER
  #undef SDL_SGE
  #undef SDL_GFX
-@@ -43,8 +48,13 @@
+@@ -44,8 +49,13 @@
  #define SDL_IMAGE
  #undef LINUX_TOUCHSCREEN
  
@@ -28,7 +28,7 @@ index 5937d67..b13668b 100644
  
  
  #undef DEBUG
-@@ -121,6 +131,12 @@ struct graphics_priv {
+@@ -122,6 +132,12 @@ struct graphics_priv {
      struct navit *nav;
      struct callback_list *cbl;
  
@@ -41,7 +41,7 @@ index 5937d67..b13668b 100644
  #ifdef LINUX_TOUCHSCREEN
      int ts_fd;
      int32_t ts_hit;
-@@ -141,6 +157,47 @@ struct graphics_priv {
+@@ -143,6 +159,47 @@ struct graphics_priv {
  
  static int dummy;
  
@@ -89,7 +89,7 @@ index 5937d67..b13668b 100644
  
  struct graphics_font_priv {
  #ifdef SDL_TTF
-@@ -193,6 +250,12 @@ graphics_destroy(struct graphics_priv *gr)
+@@ -195,6 +252,12 @@ graphics_destroy(struct graphics_priv *gr)
  #ifdef LINUX_TOUCHSCREEN
          input_ts_exit(gr);
  #endif
@@ -102,7 +102,7 @@ index 5937d67..b13668b 100644
          SDL_Quit();
      }
  
-@@ -1832,6 +1895,43 @@ static int input_ts_exit(struct graphics_priv *gr)
+@@ -1486,6 +1549,43 @@ static int input_ts_exit(struct graphics_priv *gr)
  }
  #endif
  
@@ -146,7 +146,7 @@ index 5937d67..b13668b 100644
  
  static gboolean graphics_sdl_idle(void *data)
  {
-@@ -1842,8 +1942,21 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1496,8 +1596,21 @@ static gboolean graphics_sdl_idle(void *data)
      struct input_event ie;
      ssize_t ss;
  #endif
@@ -170,7 +170,7 @@ index 5937d67..b13668b 100644
  
      /* generate the initial resize callback, so the gui knows W/H
  
-@@ -1945,14 +2058,56 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1599,14 +1712,56 @@ static gboolean graphics_sdl_idle(void *data)
      }
  #endif
  
@@ -227,7 +227,7 @@ index 5937d67..b13668b 100644
          switch(ev.type)
          {
              case SDL_MOUSEMOTION:
-@@ -1965,60 +2120,134 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1619,60 +1774,134 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_KEYDOWN:
              {
@@ -375,7 +375,7 @@ index 5937d67..b13668b 100644
                  break;
              }
  
-@@ -2063,6 +2292,9 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1717,6 +1946,9 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_QUIT:
              {
@@ -385,7 +385,7 @@ index 5937d67..b13668b 100644
                  navit_destroy(gr->nav);
                  break;
              }
-@@ -2083,6 +2315,55 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1737,6 +1969,55 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
  
@@ -441,7 +441,7 @@ index 5937d67..b13668b 100644
              default:
              {
  #ifdef DEBUG
-@@ -2093,6 +2374,11 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1747,6 +2028,11 @@ static gboolean graphics_sdl_idle(void *data)
          }
      }
  
@@ -453,7 +453,7 @@ index 5937d67..b13668b 100644
      return TRUE;
  }
  
-@@ -2108,9 +2394,18 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -1772,18 +2058,38 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      this->nav = nav;
      this->cbl = cbl;
  
@@ -472,21 +472,6 @@ index 5937d67..b13668b 100644
          g_free(this);
          return NULL;
      }
-@@ -2119,7 +2414,11 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
-     ret = TTF_Init();
-     if(ret < 0)
-     {
-+        dbg(0,"TTF_Init failed %d\n", ret);
-         g_free(this);
-+#ifdef USE_WEBOS
-+        PDL_Quit();
-+#endif
-         SDL_Quit();
-         return NULL;
-     }
-@@ -2127,11 +2426,22 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
-     FT_Init_FreeType( &this->library );
- #endif
  
 -    if (! event_request_system("glib","graphics_sdl_new"))
 +#ifdef USE_WEBOS
@@ -508,7 +493,7 @@ index 5937d67..b13668b 100644
  
      if ((attr=attr_search(attrs, NULL, attr_w)))
          w=attr->u.num;
-@@ -2150,18 +2460,30 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -1802,18 +2108,30 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
      this->screen = SDL_SetVideoMode(w, h, this->video_bpp, this->video_flags);
  
@@ -543,12 +528,9 @@ index 5937d67..b13668b 100644
  
      SDL_EnableUNICODE(1);
      SDL_WM_SetCaption("navit", NULL);
-@@ -2182,9 +2504,17 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
-     sge_Lock_ON();
- #endif
+@@ -1845,7 +2163,15 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
--	*meth=graphics_methods;
-+    *meth=graphics_methods;
+ 
  
 +#ifdef USE_WEBOS
 +    if(the_graphics!=NULL) {
@@ -562,7 +544,7 @@ index 5937d67..b13668b 100644
  
      this->overlay_enable = 1;
  
-@@ -2196,9 +2526,208 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -1857,9 +2183,208 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      return this;
  }
  

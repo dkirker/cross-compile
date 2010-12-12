@@ -1,5 +1,5 @@
 diff --git a/navit/navit/xpm/navit_svg2png b/navit/navit/xpm/navit_svg2png
-index 50cd5f2..dbefe91 100755
+index 16ecfb7..ba76d7a 100755
 --- a/navit/navit/xpm/navit_svg2png
 +++ b/navit/navit/xpm/navit_svg2png
 @@ -13,7 +13,7 @@ svgtopng()

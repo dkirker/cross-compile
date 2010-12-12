@@ -1,8 +1,8 @@
 diff --git a/navit/navit/graphics.c b/navit/navit/graphics.c
-index d6594ed..b4ff06b 100644
+index ba6eab5..82e489d 100644
 --- a/navit/navit/graphics.c
 +++ b/navit/navit/graphics.c
-@@ -1237,7 +1237,7 @@ graphics_draw_polyline_as_polygon(struct graphics *gra, struct graphics_gc *gc,
+@@ -1238,7 +1238,7 @@ graphics_draw_polyline_as_polygon(struct graphics *gra, struct graphics_gc *gc,
  			l=1;
  		if (wi*lscale > 10000)
  			lscale=10000/wi;
