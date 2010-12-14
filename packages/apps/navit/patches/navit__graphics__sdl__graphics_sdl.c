@@ -1,5 +1,5 @@
 diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
-index 72fbaa4..43b6cb7 100644
+index 550a2e1..c27ea6a 100644
 --- a/navit/navit/graphics/sdl/graphics_sdl.c
 +++ b/navit/navit/graphics/sdl/graphics_sdl.c
 @@ -35,6 +35,11 @@
@@ -102,7 +102,7 @@ index 72fbaa4..43b6cb7 100644
          SDL_Quit();
      }
  
-@@ -1486,6 +1549,43 @@ static int input_ts_exit(struct graphics_priv *gr)
+@@ -1493,6 +1556,43 @@ static int input_ts_exit(struct graphics_priv *gr)
  }
  #endif
  
@@ -146,7 +146,7 @@ index 72fbaa4..43b6cb7 100644
  
  static gboolean graphics_sdl_idle(void *data)
  {
-@@ -1496,8 +1596,21 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1503,8 +1603,21 @@ static gboolean graphics_sdl_idle(void *data)
      struct input_event ie;
      ssize_t ss;
  #endif
@@ -170,7 +170,7 @@ index 72fbaa4..43b6cb7 100644
  
      /* generate the initial resize callback, so the gui knows W/H
  
-@@ -1599,14 +1712,56 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1606,14 +1719,56 @@ static gboolean graphics_sdl_idle(void *data)
      }
  #endif
  
@@ -227,7 +227,7 @@ index 72fbaa4..43b6cb7 100644
          switch(ev.type)
          {
              case SDL_MOUSEMOTION:
-@@ -1619,60 +1774,134 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1626,60 +1781,134 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_KEYDOWN:
              {
@@ -375,7 +375,7 @@ index 72fbaa4..43b6cb7 100644
                  break;
              }
  
-@@ -1717,6 +1946,9 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1724,6 +1953,9 @@ static gboolean graphics_sdl_idle(void *data)
  
              case SDL_QUIT:
              {
@@ -385,7 +385,7 @@ index 72fbaa4..43b6cb7 100644
                  navit_destroy(gr->nav);
                  break;
              }
-@@ -1737,6 +1969,55 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1744,6 +1976,55 @@ static gboolean graphics_sdl_idle(void *data)
                  break;
              }
  
@@ -441,7 +441,7 @@ index 72fbaa4..43b6cb7 100644
              default:
              {
  #ifdef DEBUG
-@@ -1747,6 +2028,11 @@ static gboolean graphics_sdl_idle(void *data)
+@@ -1754,6 +2035,11 @@ static gboolean graphics_sdl_idle(void *data)
          }
      }
  
@@ -453,7 +453,7 @@ index 72fbaa4..43b6cb7 100644
      return TRUE;
  }
  
-@@ -1772,18 +2058,38 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -1779,18 +2065,38 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      this->nav = nav;
      this->cbl = cbl;
  
@@ -493,7 +493,7 @@ index 72fbaa4..43b6cb7 100644
  
      if ((attr=attr_search(attrs, NULL, attr_w)))
          w=attr->u.num;
-@@ -1802,18 +2108,30 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -1809,18 +2115,30 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
      this->screen = SDL_SetVideoMode(w, h, this->video_bpp, this->video_flags);
  
@@ -528,7 +528,7 @@ index 72fbaa4..43b6cb7 100644
  
      SDL_EnableUNICODE(1);
      SDL_WM_SetCaption("navit", NULL);
-@@ -1845,7 +2163,15 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -1852,7 +2170,15 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
  
  
  
@@ -544,7 +544,7 @@ index 72fbaa4..43b6cb7 100644
  
      this->overlay_enable = 1;
  
-@@ -1857,9 +2183,208 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
+@@ -1864,9 +2190,208 @@ graphics_sdl_new(struct navit *nav, struct graphics_methods *meth, struct attr *
      return this;
  }
  
