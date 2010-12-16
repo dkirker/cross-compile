@@ -1,0 +1,16 @@
+--- gui/drv_sdlfb.c.old	2010-12-16 01:28:11.000000000 -0600
++++ gui/drv_sdlfb.c	2010-12-16 01:28:33.000000000 -0600
+@@ -101,11 +101,12 @@
+ 
+ 	/* Initialize SDL's video subsystem. */
+ 	if (!initedSDL) {
+-		if (SDL_Init(0) == -1) {
++		if (SDL_Init(SDL_INIT_VIDEO) == -1) {
+ 			AG_SetError("SDL_Init() failed: %s", SDL_GetError());
+ 			return (-1);
+ 		}
+ 		initedSDL = 1;
++		initedSDLVideo = 1;
+ 	}
+ 	if (!SDL_WasInit(SDL_INIT_VIDEO)) {
+ 		if (SDL_InitSubSystem(SDL_INIT_VIDEO) != 0) {
