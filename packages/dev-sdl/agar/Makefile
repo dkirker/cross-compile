@@ -14,6 +14,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mkdir -p build
 	tar -C build -x -f $<
 	mv build/${NAME}-${VERSION} build/src
+	( cd build/src ; patch -p0 < ../../sdlinit.patch )
 	touch $@
 
 include ../../../support/staging.mk
@@ -26,7 +27,7 @@ build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	( cd build/$* ; ${SB2} CC="gcc" ./configure )
+	( cd build/$* ; ${SB2} CC="gcc" CFLAGS="-ggdb" ./configure --with-jpeg=no --with-png=no --with-sdl=yes )
 	( cd build/$* ; ${SB2} CC="gcc" $(MAKE) )
 	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
