@@ -1,6 +1,6 @@
 NAME    = espeak
-VERSION = 1.44.03
-SRC_ZIP = http://downloads.sourceforge.net/project/espeak/espeak/espeak-1.44/espeak-1.44.03-source.zip
+VERSION = 1.44.05
+SRC_ZIP = http://downloads.sourceforge.net/project/espeak/espeak/espeak-1.44/espeak-1.44.05-source.zip
 #SRC_SVN = http://espeak.svn.sourceforge.net/svnroot/espeak/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.speechd
 #REVISION= 252
