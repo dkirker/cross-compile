@@ -13,6 +13,12 @@ export LD_LIBRARY_PATH=$APP_DIR/lib:/media/internal/.widk/usr/lib
 
 unset LC_ALL
 export LANG=${PDL_Language}.UTF-8
+
+if [ -e $NAVIT_USER_DATADIR/lang-override ]
+then
+	export LANG=$(cat $NAVIT_USER_DATADIR/lang-override)
+fi
+
 export SPEECHD_SOCKET=/tmp/speechd-sock
 
 export NAVIT_LOGFILE=$NAVIT_USER_DATADIR/navit.log
