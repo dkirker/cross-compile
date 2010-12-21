@@ -57,7 +57,7 @@ build/%.built: build/.unpacked build/.patched
 	rm -f build/$*/${APP_PREFIX}/lib/speech-dispatcher/libsdaudio.so
 	rm -f build/$*/${APP_PREFIX}/lib/speech-dispatcher/libsdaudio.*a
 	rm -r build/$*/${APP_PREFIX}/include
-	cp files/{speech-dispatcher,spd-say} build/$*/${APP_DIR}
+	cp files/speech-dispatcher files/spd-say build/$*/${APP_DIR}
 	cp files/speechd.conf build/$*/${APP_DIR}/etc/speech-dispatcher/
 	cp files/espeak-generic.conf build/$*/${APP_DIR}/etc/speech-dispatcher/modules/
 	touch $@
