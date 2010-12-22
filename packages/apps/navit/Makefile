@@ -2,7 +2,11 @@ NAME    = navit
 DEPENDS = media/jpeg media/libpng12 common/glib-2.0 common/freetype common/fontconfig dev-sdl/libsdl dev-sdl/libsdl-image common/libpdl common/libgarmin common/locale apps/speechd
 SRC_SVN_REV = http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
+<<<<<<< HEAD
 VERSION = 3813
+=======
+VERSION = 3810
+>>>>>>> 861aa364c311c03bde28f09302a8c07458b3a2a0
 
 include ../../../support/download.mk
 
