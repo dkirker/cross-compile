@@ -2,7 +2,7 @@ NAME    = navit
 DEPENDS = media/jpeg media/libpng12 common/glib-2.0 common/freetype common/fontconfig dev-sdl/libsdl dev-sdl/libsdl-image common/libpdl common/libgarmin common/locale apps/speechd
 SRC_SVN_REV = http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
-VERSION = 3785
+VERSION = 3813
 
 include ../../../support/download.mk
 
@@ -34,7 +34,7 @@ build/%.aclocal: build/.patched
 build/.patched: build/.unpacked
 	rm -f $@
 	$(foreach patchfile, $(shell ls patches), \
-		patch -p0 build/src/`echo ${patchfile} | sed 's#__#/#g'` < patches/$(patchfile); \
+		patch -p2 -d build/src -i `pwd`/patches/$(patchfile); \
 	)
 	touch $@
 

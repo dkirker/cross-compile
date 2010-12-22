@@ -1,10 +1,21 @@
+From bd329790ed1a3844deeb6b6bd4db66b700484901 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
+Date: Tue, 21 Dec 2010 15:45:10 +0000
+Subject: [PATCH 2/2] apply speedcam-patch
+
+---
+ navit/navit/osd/core/osd_core.c |  691 ++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 690 insertions(+), 1 deletions(-)
+
 diff --git a/navit/navit/osd/core/osd_core.c b/navit/navit/osd/core/osd_core.c
-index 39aeccf..50afc56 100644
+index 39aeccf..c8917e0 100644
 --- a/navit/navit/osd/core/osd_core.c
 +++ b/navit/navit/osd/core/osd_core.c
-@@ -50,11 +50,19 @@
+@@ -49,12 +49,21 @@
+ #include "osd.h"
  #include "speech.h"
  #include "event.h"
++#include "mapset.h"
  
 +//prototypes
  struct odometer;
@@ -22,7 +33,7 @@ index 39aeccf..50afc56 100644
  
  struct compass {
  	struct osd_item osd_item;
-@@ -1239,6 +1247,615 @@ osd_nav_toggle_announcer_new(struct navit *nav, struct osd_methods *meth, struct
+@@ -1239,6 +1248,686 @@ osd_nav_toggle_announcer_new(struct navit *nav, struct osd_methods *meth, struct
  	return (struct osd_priv *) this;
  }
  
@@ -369,38 +380,110 @@ index 39aeccf..50afc56 100644
 +  if(0==ret_attr) {
 +    return;
 +  }
-+  struct quadtree_item qi;
-+  qi.longitude = position_attr.u.coord_geo->lng;
-+  qi.latitude = position_attr.u.coord_geo->lat;
-+  struct quadtree_item*qi_res = quadtree_find_nearest(this_->root_node,&qi);
-+  if(qi_res) {  //found nearest camera
++  transform_from_geo(projection_mg, position_attr.u.coord_geo, &curr_coord);
++
++  double dCurrDist = -1;
++  int dir_idx = -1;
++  int dir = -1;
++  int spd = -1;
++  int idx = -1;
++  double speed = -1;
++
++  if (this_->root_node) {
++    struct quadtree_item qi;
++    qi.longitude = position_attr.u.coord_geo->lng;
++    qi.latitude = position_attr.u.coord_geo->lat;
++    struct quadtree_item*qi_res = quadtree_find_nearest(this_->root_node,&qi);
 +    struct coord_geo coord_geo_cam;
-+    coord_geo_cam.lng = qi_res->longitude;
-+    coord_geo_cam.lat = qi_res->latitude;
-+    transform_from_geo(projection_mg, &coord_geo_cam, &cam_coord);
-+    transform_from_geo(projection_mg, position_attr.u.coord_geo, &curr_coord);
-+    double dCurrDist = transform_distance(projection_mg, &curr_coord, &cam_coord);
-+    ret_attr = vehicle_get_attr(curr_vehicle,attr_position_speed,&speed_attr, NULL);
-+    if(0==ret_attr) {
-+      return;
++    if(qi_res) {  //found nearest camera
++      coord_geo_cam.lng = qi_res->longitude;
++      coord_geo_cam.lat = qi_res->latitude;
++      transform_from_geo(projection_mg, &coord_geo_cam, &cam_coord);
++      dCurrDist = transform_distance(projection_mg, &curr_coord, &cam_coord);
++      idx = ((struct osd_speed_cam_entry*)qi_res->data)->cam_type;
++      if(idx>CAM_TRAFFIPAX) {
++        return;
++      }
++      dir_idx = ((struct osd_speed_cam_entry*)qi_res->data)->cam_dir;
++      dir = ((struct osd_speed_cam_entry*)qi_res->data)->direction;
++      spd = ((struct osd_speed_cam_entry*)qi_res->data)->speed_limit;
 +    }
-+    double speed = *speed_attr.u.numd;
-+    if(dCurrDist <= speed*750.0/130.0) {  //at speed 130 distance limit is 750m
-+      if(this_->announce_state==eNoWarn && this_->announce_on) {
-+        this_->announce_state=eWarningTold; //warning told
-+        navit_say(navit, _("Look out! Camera!"));
++  }
++  else if(navit_get_mapset(navit)) {
++
++  int dst=2000;
++  int dstsq=dst*dst;
++  struct map_selection sel;
++  struct map_rect *mr;
++  struct mapset_handle *msh;
++  struct map *map;
++  struct item *item;
++
++  sel.next=NULL;
++  sel.order=18;
++  sel.range.min=type_tec_common;
++  sel.range.max=type_tec_common;
++  sel.u.c_rect.lu.x=curr_coord.x-dst;
++  sel.u.c_rect.lu.y=curr_coord.y+dst;
++  sel.u.c_rect.rl.x=curr_coord.x+dst;
++  sel.u.c_rect.rl.y=curr_coord.y-dst;
++  
++  msh=mapset_open(navit_get_mapset(navit));
++  while ((map=mapset_next(msh, 1))) {
++    mr=map_rect_new(map, &sel);
++    if (!mr)
++      continue;
++    while ((item=map_rect_get_item(mr))) {
++      struct coord cn;
++      if (item->type == type_tec_common && item_coord_get(item, &cn, 1)) {
++        int dist=transform_distance_sq(&cn, &curr_coord);
++        if (dist < dstsq) {  
++          dstsq=dist;
++          dCurrDist = sqrt(dist);
++          cam_coord = cn;
++          struct attr tec_attr;
++          idx = -1;
++          if(item_attr_get(item,attr_tec_type,&tec_attr)) {
++            idx = tec_attr.u.num;
++          }
++          dir_idx = -1;
++          if(item_attr_get(item,attr_tec_dirtype,&tec_attr)) {
++            dir_idx = tec_attr.u.num;
++          }
++          dir= 0;
++          if(item_attr_get(item,attr_tec_direction,&tec_attr)) {
++            dir = tec_attr.u.num;
++          }
++          spd= 0;
++          if(item_attr_get(item,attr_maxspeed,&tec_attr)) {
++            spd = tec_attr.u.num;
++          }
++        }
 +      }
 +    }
-+    else {
-+      this_->announce_state=eNoWarn;
-+    }
-+  int idx = ((struct osd_speed_cam_entry*)qi_res->data)->cam_type;
-+  if(idx>CAM_TRAFFIPAX) {
++    map_rect_destroy(mr);
++  }
++  mapset_close(msh);
++
++    dCurrDist = transform_distance(projection_mg, &curr_coord, &cam_coord);
++
++  }
++
++  dCurrDist = transform_distance(projection_mg, &curr_coord, &cam_coord);
++  ret_attr = vehicle_get_attr(curr_vehicle,attr_position_speed,&speed_attr, NULL);
++  if(0==ret_attr) {
 +    return;
 +  }
-+  int dir_idx = ((struct osd_speed_cam_entry*)qi_res->data)->cam_dir;
-+  int dir = ((struct osd_speed_cam_entry*)qi_res->data)->direction;
-+  int spd = ((struct osd_speed_cam_entry*)qi_res->data)->speed_limit;
++  speed = *speed_attr.u.numd;
++  if(dCurrDist <= speed*750.0/130.0) {  //at speed 130 distance limit is 750m
++    if(this_->announce_state==eNoWarn && this_->announce_on) {
++      this_->announce_state=eWarningTold; //warning told
++      navit_say(navit, _("Look out! Camera!"));
++    }
++  }
++  else {
++    this_->announce_state=eNoWarn;
++  }
 +
 +  char buffer [64+1]="";
 +  char buffer2[64+1]="";
@@ -417,58 +500,56 @@ index 39aeccf..50afc56 100644
 +    str_replace(buffer2,buffer,"${direction}",dir_str);
 +    str_replace(buffer,buffer2,"${speed_limit}",spd_str);
 +
-+	graphics_get_text_bbox(this_->item.gr, this_->item.font, buffer, 0x10000, 0, bbox, 0);
-+	p.x=(this_->item.w-bbox[2].x)/2;
-+	p.y = this_->item.h-this_->item.h/10;
-+	struct graphics_gc *curr_color = this_->orange;
-+	struct attr attr_dir;
-+	//tolerance is +-20 degrees
-+	if(
-+	  dir_idx==CAMDIR_ONE && 
-+	  dCurrDist <= speed*750.0/130.0 && 
-+	  vehicle_get_attr(v, attr_position_direction, &attr_dir, NULL) && 
-+	  fabs(angle_diff(dir,*attr_dir.u.numd))<=20 ) {
-+	    curr_color = this_->red;
-+	}
-+	//tolerance is +-20 degrees in both directions
-+	else if(
-+	  dir_idx==CAMDIR_TWO && 
-+	  dCurrDist <= speed*750.0/130.0 && 
-+	  vehicle_get_attr(v, attr_position_direction, &attr_dir, NULL) && 
-+	  (fabs(angle_diff(dir,*attr_dir.u.numd))<=20 || fabs(angle_diff(dir+180,*attr_dir.u.numd))<=20 )) {
-+	    curr_color = this_->red;
-+	}
-+        else if(dCurrDist <= speed*750.0/130.0) { 
-+	    curr_color = this_->red;
-+        }
-+
-+	graphics_draw_text(this_->item.gr, curr_color, NULL, this_->item.font, buffer, &p, 0x10000, 0);
-+    }
++  graphics_get_text_bbox(this_->item.gr, this_->item.font, buffer, 0x10000, 0, bbox, 0);
++  p.x=(this_->item.w-bbox[2].x)/2;
++  p.y = this_->item.h-this_->item.h/10;
++  struct graphics_gc *curr_color = this_->orange;
++  struct attr attr_dir;
++  //tolerance is +-20 degrees
++  if(
++    dir_idx==CAMDIR_ONE && 
++    dCurrDist <= speed*750.0/130.0 && 
++    vehicle_get_attr(v, attr_position_direction, &attr_dir, NULL) && 
++    fabs(angle_diff(dir,*attr_dir.u.numd))<=20 ) {
++      curr_color = this_->red;
 +  }
++  //tolerance is +-20 degrees in both directions
++  else if(
++    dir_idx==CAMDIR_TWO && 
++    dCurrDist <= speed*750.0/130.0 && 
++    vehicle_get_attr(v, attr_position_direction, &attr_dir, NULL) && 
++    (fabs(angle_diff(dir,*attr_dir.u.numd))<=20 || fabs(angle_diff(dir+180,*attr_dir.u.numd))<=20 )) {
++      curr_color = this_->red;
++  }
++        else if(dCurrDist <= speed*750.0/130.0) { 
++      curr_color = this_->red;
++        }
++  graphics_draw_text(this_->item.gr, curr_color, NULL, this_->item.font, buffer, &p, 0x10000, 0);
++    }
 +  graphics_draw_mode(this_->item.gr, draw_mode_end);
 +}
 +
 +static void
 +osd_speed_cam_init(struct osd_speed_cam *this, struct navit *nav)
 +{
-+	osd_set_std_graphic(nav, &this->item, (struct osd_priv *)this);
++  osd_set_std_graphic(nav, &this->item, (struct osd_priv *)this);
 +
-+	this->red = graphics_gc_new(this->item.gr);
-+	graphics_gc_set_foreground(this->red, &(struct color) {0xffff,0x0000,0x0000,0xffff});
-+	graphics_gc_set_linewidth(this->red, this->width);
++  this->red = graphics_gc_new(this->item.gr);
++  graphics_gc_set_foreground(this->red, &(struct color) {0xffff,0x0000,0x0000,0xffff});
++  graphics_gc_set_linewidth(this->red, this->width);
 +
-+	this->orange = graphics_gc_new(this->item.gr);
-+	graphics_gc_set_foreground(this->orange, &this->idle_color);
-+	graphics_gc_set_linewidth(this->orange, this->width);
++  this->orange = graphics_gc_new(this->item.gr);
++  graphics_gc_set_foreground(this->orange, &this->idle_color);
++  graphics_gc_set_linewidth(this->orange, this->width);
 +
-+	this->white = graphics_gc_new(this->item.gr);
-+	graphics_gc_set_foreground(this->white, &this->item.text_color);
-+	graphics_gc_set_linewidth(this->white, this->width);
++  this->white = graphics_gc_new(this->item.gr);
++  graphics_gc_set_foreground(this->white, &this->item.text_color);
++  graphics_gc_set_linewidth(this->white, this->width);
 +
 +
-+	graphics_gc_set_linewidth(this->item.graphic_fg_white, this->width);
++  graphics_gc_set_linewidth(this->item.graphic_fg_white, this->width);
 +
-+	navit_add_callback(nav, callback_new_attr_1(callback_cast(osd_speed_cam_draw), attr_position_coord_geo, this));
++  navit_add_callback(nav, callback_new_attr_1(callback_cast(osd_speed_cam_draw), attr_position_coord_geo, this));
 +
 +}
 +
@@ -490,9 +571,9 @@ index 39aeccf..50afc56 100644
 +        fgets(line,127,fp);
 +
 +        while(fgets(line,127,fp)) {
-+	    if(!strcmp(line,"")) {
-+	    	continue;
-+	    }
++          if(!strcmp(line,"")) {
++          continue;
++        }
 +            line2 = g_strdup(line);
 +            /*count tokens*/
 +            int tok_cnt = 1;
@@ -575,9 +656,9 @@ index 39aeccf..50afc56 100644
 +            sc_entry->cam_dir     = atoi(dirtype_str);
 +            sc_entry->direction   = atoi(direction_str);
 +            item.data = sc_entry;
-+	    if(sc_entry->lon != 0) {
++            if(sc_entry->lon != 0) {
 +              quadtree_add(root_node,&item);
-+	    }
++            }
 +        }
 +        return root_node;
 +    }
@@ -591,29 +672,29 @@ index 39aeccf..50afc56 100644
 +static struct osd_priv *
 +osd_speed_cam_new(struct navit *nav, struct osd_methods *meth, struct attr **attrs)
 +{
-+	struct osd_speed_cam *this = g_new0(struct osd_speed_cam, 1);
-+	struct attr *attr;
-+	this->item.p.x = 120;
-+	this->item.p.y = 20;
-+	this->item.w = 60;
-+	this->item.h = 80;
-+	this->item.navit = nav;
-+	this->item.font_size = 200;
-+	this->item.meth.draw = osd_draw_cast(osd_speed_cam_draw);
++  struct osd_speed_cam *this = g_new0(struct osd_speed_cam, 1);
++  struct attr *attr;
++  this->item.p.x = 120;
++  this->item.p.y = 20;
++  this->item.w = 60;
++  this->item.h = 80;
++  this->item.navit = nav;
++  this->item.font_size = 200;
++  this->item.meth.draw = osd_draw_cast(osd_speed_cam_draw);
 +
-+	osd_set_std_attr(attrs, &this->item, 2);
-+	attr = attr_search(attrs, NULL, attr_width);
-+	this->width=attr ? attr->u.num : 2;
-+	attr = attr_search(attrs, NULL, attr_idle_color);
-+	this->idle_color=attr ? *attr->u.color : ((struct color) {0xffff,0xa5a5,0x0000,0xffff}); // text idle_color defaults to orange
++  osd_set_std_attr(attrs, &this->item, 2);
++  attr = attr_search(attrs, NULL, attr_width);
++  this->width=attr ? attr->u.num : 2;
++  attr = attr_search(attrs, NULL, attr_idle_color);
++  this->idle_color=attr ? *attr->u.color : ((struct color) {0xffff,0xa5a5,0x0000,0xffff}); // text idle_color defaults to orange
 +
-+	attr = attr_search(attrs, NULL, attr_label);
-+	//FIXME find some way to free text!!!!
-+	if (attr) {
-+		this->text = g_strdup(attr->u.str);
-+	}
-+	else
-+		this->text = NULL;
++  attr = attr_search(attrs, NULL, attr_label);
++  //FIXME find some way to free text!!!!
++  if (attr) {
++    this->text = g_strdup(attr->u.str);
++  }
++  else
++    this->text = NULL;
 +
 +  attr = attr_search(attrs, NULL, attr_path);
 +  char*fn;
@@ -624,6 +705,7 @@ index 39aeccf..50afc56 100644
 +    fn = g_strdup_printf("%s/speedcam.txt",navit_get_user_data_directory(TRUE));
 +  }
 +  this->root_node = osd_speed_cam_load(fn);
++
 +  attr = attr_search(attrs, NULL, attr_announce_on);
 +  if (attr) {
 +    this->announce_on = attr->u.num;
@@ -632,13 +714,13 @@ index 39aeccf..50afc56 100644
 +    this->announce_on = 1;    //announce by default
 +  }
 +
-+	navit_add_callback(nav, callback_new_attr_1(callback_cast(osd_speed_cam_init), attr_graphics_ready, this));
-+	return (struct osd_priv *) this;
++  navit_add_callback(nav, callback_new_attr_1(callback_cast(osd_speed_cam_init), attr_graphics_ready, this));
++  return (struct osd_priv *) this;
 +}
  struct osd_speed_warner {
  	struct osd_item item;
  	struct graphics_gc *red;
-@@ -1252,7 +1869,6 @@ struct osd_speed_warner {
+@@ -1252,7 +1941,6 @@ struct osd_speed_warner {
  	double speed_exceed_limit_offset;
  	double speed_exceed_limit_percent;
  	int announce_on;
@@ -646,7 +728,7 @@ index 39aeccf..50afc56 100644
  	enum eAnnounceState announce_state;
  	int bTextOnly;
  };
-@@ -2484,6 +3100,7 @@ plugin_init(void)
+@@ -2484,6 +3172,7 @@ plugin_init(void)
  	plugin_register_osd_type("button", osd_button_new);
      	plugin_register_osd_type("toggle_announcer", osd_nav_toggle_announcer_new);
      	plugin_register_osd_type("speed_warner", osd_speed_warner_new);
@@ -654,3 +736,6 @@ index 39aeccf..50afc56 100644
      	plugin_register_osd_type("text", osd_text_new);
      	plugin_register_osd_type("gps_status", osd_gps_status_new);
      	plugin_register_osd_type("volume", osd_volume_new);
+-- 
+1.7.2.3
+

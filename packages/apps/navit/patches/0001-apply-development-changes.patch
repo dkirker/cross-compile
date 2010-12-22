@@ -1,3 +1,72 @@
+From c0886cd6e86f253af4d762500948f2bc52b80541 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
+Date: Tue, 21 Dec 2010 16:43:02 +0100
+Subject: [PATCH 1/2] apply development changes
+
+---
+ .../speech_dispatcher/speech_speech_dispatcher.c   |   30 +++++
+ navit/navit/xpm/Makefile.am                        |  121 ++++++++++---------
+ navit/navit/xpm/navit_svg2png                      |   12 ++-
+ 3 files changed, 104 insertions(+), 59 deletions(-)
+
+diff --git a/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c b/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c
+index b2c0e2a..3db7d8a 100644
+--- a/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c
++++ b/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c
+@@ -27,6 +27,7 @@
+ #include <glib.h>
+ #include <stdarg.h>
+ #include "config.h"
++#include "item.h"
+ #include <libspeechd.h>
+ #include "plugin.h"
+ #include "speech.h"
+@@ -59,8 +60,11 @@ static struct speech_methods speechd_meth = {
+ static struct speech_priv *
+ speechd_new(struct speech_methods *meth, struct attr **attrs) {
+ 	struct speech_priv *this;
++	struct attr *volume, *language;
++	char *lang_str;
+ 	SPDConnection *conn;
+ 
++
+ 	conn = spd_open("navit","main",NULL,SPD_MODE_SINGLE);
+ 	if (! conn) 
+ 		return NULL;
+@@ -68,7 +72,33 @@ speechd_new(struct speech_methods *meth, struct attr **attrs) {
+ 	if (this) {
+ 		this->conn=conn;
+ 		*meth=speechd_meth;
++		volume = attr_search(attrs, NULL, attr_data);
++		language = attr_search(attrs, NULL, attr_language);
++		if (language) {
++			lang_str=g_strdup(language->u.str);
++		} else {
++			char *lang_env=getenv("LANG");
++
++			if (lang_env) {
++				char *country,*lang,*lang_full;
++				lang_full=g_strdup(lang_env);
++				strtolower(lang_full,lang_env);
++				lang=g_strdup(lang_full);
++				country=strchr(lang_full,'_');
++				if (country) {
++					lang[country-lang_full]='\0';
++					*country++='-';
++				}
++				lang_str=g_strdup(lang);
++				g_free(lang_full);
++				g_free(lang);
++			}
++		}
+ 		spd_set_punctuation(conn, SPD_PUNCT_NONE);
++		spd_set_volume(conn, volume->u.num);
++		spd_set_language(conn, lang_str);
++		if (lang_str)
++			g_free(lang_str);
+ 	}
+ 	return this;
+ }
 diff --git a/navit/navit/xpm/Makefile.am b/navit/navit/xpm/Makefile.am
 index db34f81..0846675 100644
 --- a/navit/navit/xpm/Makefile.am
@@ -153,3 +222,43 @@ index db34f81..0846675 100644
  if !SUPPORT_WIN32
    DESKTOPFILEdir=$(datadir)/applications
    DESKTOPFILE_DATA = desktop_icons/navit.desktop
+diff --git a/navit/navit/xpm/navit_svg2png b/navit/navit/xpm/navit_svg2png
+index 16ecfb7..ba76d7a 100755
+--- a/navit/navit/xpm/navit_svg2png
++++ b/navit/navit/xpm/navit_svg2png
+@@ -13,7 +13,7 @@ svgtopng()
+ 		$svgtopng --without-gui --export-width=$1 --export-height=$2 --export-png=$BUILDDIR/$4 $3
+ 		;;
+ 	*convert)
+-		$svgtopng $3 -resize $1x$2 $4
++		$svgtopng -background none $3 -resize $1x$2 $4
+ 		;;
+ 	esac
+ }
+@@ -36,7 +36,7 @@ case "$png" in
+ 		svg=${png%.png}
+ 		;;
+ esac
+-if [ ! -f $svg.svg -a ! -f $svg.svgz ]
++if [ ! -f $svg.svg -a ! -f $svg.svgz -a ! -f $svg.xpm ]
+ then
+ 	svg="$SRCDIR/$svg"
+ fi
+@@ -69,6 +69,14 @@ else
+ 		fi
+ 		svgtopng $w $h $svg.svg $png
+ 		rm -f $svg.svg
++	elif [ -f $svg.xpm ]
++	then
++		echo "w:$w h:$h"
++		if [ -z "$w" -a -z "$h" ]; then
++			convert -background none $svg.xpm $png
++		else
++			convert -background none $svg.xpm -resize ${w}x${h} $png
++		fi
+ 	fi
+ fi
+ exit 0
+-- 
+1.7.2.3
+
