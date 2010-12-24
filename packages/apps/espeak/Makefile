@@ -36,6 +36,12 @@ build/%.built: build/.unpacked
 	( ${SB2} cp -dR build/$*/src/libespeak.so.1* build/$*/${APP_DIR}/lib/libespeak.so.1 )
 	( ${SB2} cp -dR build/src/espeak-data build/$*/${APP_DIR}/share/ )
 	( ${SB2} cp -dR files/* build/$*/${APP_DIR}/ )
+	( ${SB2} rm -f ${INSTALL_PREFIX}/lib/libespeak.* )
+	( ${SB2} cp -dR build/$*/src/libespeak.so* ${INSTALL_PREFIX}/lib )
+	( ${SB2} ln -fs libespeak.so.1.1.44 ${INSTALL_PREFIX}/lib/libespeak.so )
+	( ${SB2} rm -rf ${INSTALL_PREFIX}/include/espeak )
+	( ${SB2} mkdir -p ${INSTALL_PREFIX}/include/espeak )
+	( ${SB2} cp -dR build/$*/src/speak_lib.h ${INSTALL_PREFIX}/include/espeak )
 	touch $@
 
 build/.package:
