@@ -7,7 +7,7 @@
 #this rule guarantees we use up-to-date depends files
 %/.depends.inc: %/Makefile support/depends.mk
 	@echo "Creating dependencies for $*"
-	@($(MAKE) -C $* .depends.inc V=$(V)) >& /dev/null
+	@($(MAKE) -C $* .depends.inc V=$(V)) #>& /dev/null
 	@touch $@
 
 #=============

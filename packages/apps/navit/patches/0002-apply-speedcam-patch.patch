@@ -1,7 +1,7 @@
-From 88da25fdd18ed38d383fa5286f09038262c1930a Mon Sep 17 00:00:00 2001
+From fa5670b6bac4494b73895dba67dff7b72f06b0b7 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Tue, 21 Dec 2010 15:45:10 +0000
-Subject: [PATCH 2/2] apply speedcam-patch
+Subject: [PATCH 2/3] apply speedcam-patch
 
 ---
  navit/navit/osd/core/osd_core.c |  691 ++++++++++++++++++++++++++++++++++++++-
