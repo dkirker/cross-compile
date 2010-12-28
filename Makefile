@@ -17,8 +17,8 @@ all: toolchain rootfs stage
 setup: toolchain rootfs staging/mapping-armv7 staging/mapping-armv6 staging/mapping-i686
 
 .PHONY: toolchain
-toolchain: toolchain/arm-2007q3/.unpacked toolchain/i686-unknown-linux-gnu/.unpacked \
-	   doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
+toolchain: toolchain/arm-2009q1/.unpacked toolchain/arm-2007q3/.unpacked \
+	   toolchain/i686-unknown-linux-gnu/.unpacked doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
 
 .PHONY: rootfs
 # rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked rootfs/i686/.unpacked
@@ -64,6 +64,11 @@ rootfs/i686/.unpacked: doctors/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb
 	false
 	touch $@
 
+toolchain/arm-2009q1/.unpacked: downloads/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
+	mkdir -p toolchain
+	tar -C toolchain -x -f $<
+	touch $@
+
 toolchain/arm-2007q3/.unpacked: downloads/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 	mkdir -p toolchain
 	tar -C toolchain -x -f $<
@@ -86,6 +91,10 @@ doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg: doctors/Palm_webOS_SDK.1.4.5.465.dmg
 	cp toolchain/sdk/mnt/Palm_webOS_SDK-Mac-1.4.5.465.pkg $@
 	sudo umount toolchain/sdk/mnt
 	rm -rf toolchain/sdk
+
+downloads/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
+	mkdir -p downloads
+	wget -O $@ http://www.codesourcery.com/sgpp/lite/arm/portal/package4571/public/arm-none-linux-gnueabi/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 
 downloads/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
 	mkdir -p downloads
