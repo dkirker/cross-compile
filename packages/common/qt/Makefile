@@ -1,6 +1,6 @@
 NAME = qt
 VERSION = 4.7
-DEPENDS = dev-sdl/libsdl x/libx11 x/libXext
+DEPENDS = dev-sdl/libsdl x/libx11 x/libXext x/libsm x/libice media/pulseaudio media/libpng12 media/jpeg media/alsa-lib
 
 SRC_GIT = git://gitorious.org/~darronb/qt/qt-palm-pre.git
 GIT_BRANCH = ${VERSION}-stable
