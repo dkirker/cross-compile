@@ -27,7 +27,7 @@ build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	( cd build/$* ; ${SB2} CC="gcc" CFLAGS="-ggdb" ./configure --with-jpeg=no --with-png=no --with-sdl=yes )
+	( cd build/$* ; ${SB2} CC="gcc" ./configure --with-jpeg=no --with-png=no --with-sdl=yes )
 	( cd build/$* ; ${SB2} CC="gcc" $(MAKE) )
 	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
