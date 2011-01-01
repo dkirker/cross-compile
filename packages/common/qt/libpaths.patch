@@ -1,0 +1,25 @@
+--- mkspecs/common/linux.conf.old	2010-12-31 18:35:34.713600232 -0600
++++ mkspecs/common/linux.conf	2010-12-31 18:36:19.730543353 -0600
+@@ -8,11 +8,11 @@
+ QMAKE_INCDIR          =
+ QMAKE_LIBDIR          =
+ QMAKE_INCDIR_X11      = /usr/X11R6/include
+-QMAKE_LIBDIR_X11      = /usr/X11R6/lib
++QMAKE_LIBDIR_X11      = /usr/local/lib
+ QMAKE_INCDIR_QT       = $$[QT_INSTALL_HEADERS]
+ QMAKE_LIBDIR_QT       = $$[QT_INSTALL_LIBS]
+ QMAKE_INCDIR_OPENGL   = /usr/X11R6/include
+-QMAKE_LIBDIR_OPENGL   = /usr/X11R6/lib
++QMAKE_LIBDIR_OPENGL   = /usr/local/lib
+ QMAKE_INCDIR_OPENGL_ES1 = $$QMAKE_INCDIR_OPENGL
+ QMAKE_LIBDIR_OPENGL_ES1 = $$QMAKE_LIBDIR_OPENGL
+ QMAKE_INCDIR_OPENGL_ES2 = $$QMAKE_INCDIR_OPENGL
+@@ -22,7 +22,7 @@
+ QMAKE_INCDIR_OPENVG   = 
+ QMAKE_LIBDIR_OPENVG   =
+ 
+-QMAKE_LIBS            =
++QMAKE_LIBS            = -Wl,-rpath,/usr/local/lib
+ QMAKE_LIBS_DYNLOAD    = -ldl
+ QMAKE_LIBS_X11        = -lXext -lX11 -lm
+ QMAKE_LIBS_X11SM      = -lSM -lICE
