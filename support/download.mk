@@ -83,6 +83,10 @@ ifndef NAME
 PREWARE_SANITY += $(error "Please define NAME in your Makefile")
 endif
 
+ifndef GIT_BRANCH
+GIT_BRANCH = v${VERSION}
+endif
+
 download: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 
 ${DL_DIR}/${NAME}-${VERSION}.tar.gz:
