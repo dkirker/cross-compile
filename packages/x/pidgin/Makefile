@@ -4,8 +4,7 @@ VERSION = 2.6.6
 DEPENDS = common/libgcrypt \
 		  common/gnutls    \
 		  x/gtk2
-
-SRC_BZ2 = http://sourceforge.net/projects/pidgin/files/Pidgin/${NAME}-${VERSION}.tar.bz2
+SRC_BZ2 = http://sourceforge.net/projects/pidgin/files/Pidgin/${VERSION}/${NAME}-${VERSION}.tar.bz2/download
 
 include ../../../support/download.mk
 
