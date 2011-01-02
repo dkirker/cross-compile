@@ -2,19 +2,19 @@ Index: src/lib/elm_config.c
 ===================================================================
 --- src/lib/elm_config.c	(revision 53647)
 +++ src/lib/elm_config.c	(working copy)
-@@ -392,7 +392,7 @@
+@@ -1101,7 +1101,7 @@
      * without the config, but do we want that? */
     _elm_config = ELM_NEW(Elm_Config);
     _elm_config->config_version = ELM_CONFIG_VERSION;
--   _elm_config->engine = ELM_SOFTWARE_X11;
-+   _elm_config->engine = ELM_SOFTWARE_SDL;
-    _elm_config->thumbscroll_enable = 1;
-    _elm_config->thumbscroll_threshhold = 24;
-    _elm_config->thumbscroll_momentum_threshhold = 100.0;
-@@ -410,7 +410,7 @@
-    _elm_config->font_cache = 512;
+-   _elm_config->engine = eina_stringshare_add("software_x11");
++   _elm_config->engine = eina_stringshare_add("software_sdl");
+    _elm_config->thumbscroll_enable = EINA_TRUE;
+    _elm_config->thumbscroll_threshold = 24;
+    _elm_config->thumbscroll_momentum_threshold = 100.0;
+@@ -1125,7 +1125,7 @@
+    _elm_config->edje_cache = 32;
+    _elm_config->edje_collection_cache = 64;
     _elm_config->finger_size = 40;
-    _elm_config->compositing = 1;
 -   _elm_config->fps = 60.0;
 +   _elm_config->fps = 30.0;
     _elm_config->theme = eina_stringshare_add("default");
