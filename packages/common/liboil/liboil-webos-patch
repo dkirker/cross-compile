@@ -1,0 +1,22 @@
+diff -ru liboil/arm/math_vfp_asm.S liboil/arm/math_vfp_asm.S
+--- liboil/arm/math_vfp_asm.S
++++ liboil/arm/math_vfp_asm.S
+@@ -25,5 +25,5 @@
+  */
+
+-#if __VFP_FP__
++#if defined(__VFP_FP__) && !defined(__SOFTFP__)
+ /*
+ ** compile with -mcpu=arm1136j-s -mfpu=vfp -mfloat-abi=softfp
+diff -ru liboil/arm/math_vfp.c liboil/arm/math_vfp.c
+--- liboil/arm/math_vfp.c 2008-03-13 13:17:59.000000000 -0700
++++ liboil/arm/math_vfp.c      2010-12-31 00:08:14.000000000 -0800
+@@ -30,7 +30,7 @@
+ #include <liboil/liboilclasses.h>
+ #include <liboil/liboilfunction.h>
+
+-#if __VFP_FP__
++#if defined(__VFP_FP__) && !defined(__SOFTFP__)
+
+ extern void vfp_add_f32 (float *d, const float *s1, const float *s2, int n);
+ extern void vfp_add_f64 (double *d, const double *s1, const double *s2, int n);
