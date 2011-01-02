@@ -94,7 +94,7 @@ ${DL_DIR}/${NAME}-${VERSION}.tar.gz:
 	$(call PREWARE_SANITY)
 	rm -rf build
 	mkdir build
-	( cd build ; git clone -n ${SRC_GIT} ; cd `basename ${SRC_GIT} .git` ; git checkout v${VERSION} )
+	( cd build ; git clone -n ${SRC_GIT} ; cd `basename ${SRC_GIT} .git` ; git checkout ${GIT_BRANCH} )
 	mkdir -p ${DL_DIR}
 	tar -C build/`basename ${SRC_GIT} .git` -zcf $@ .
 	( cd build/`basename ${SRC_GIT} .git` ; git log --pretty="format:%ct" -n 1 v${VERSION} ) | \
