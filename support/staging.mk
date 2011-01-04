@@ -2,8 +2,6 @@ ifeq ("${ARCH}", "")
 ARCH = armv7
 endif
 
-unexport ARCH
-
 STAGING_DIR := $(shell cd ../../../staging/${ARCH}; pwd)
 
 MAPPING_FILE := $(shell cd ../../../staging; pwd)/mapping-${ARCH}

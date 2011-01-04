@@ -24,11 +24,14 @@ include ../../../support/cross-compile.mk
 
 build: stage
 
+# Prevent the ARCH= variable being passed to recursive make invocations
+MAKEOVERRIDES = 
+
 build/%.built: build/.unpacked
 	rm -rf $@ build/$*
 	cp -R build/src build/$*
 	( cd build/$* ; ${SB2} sh make.sh )
-	( cd build/$* ; ${SB2} $(MAKE) )
+	( cd build/$* ; ${SB2} make )
 	touch $@
 
 clobber::
