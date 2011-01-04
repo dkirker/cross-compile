@@ -6,8 +6,6 @@ SRC_SVN_REV = svn://svn.mplayerhq.hu/mplayer/trunk
 
 include ../../../support/download.mk
 
-CC = gcc
-
 .PHONY: unpack
 unpack: build/.unpacked
 
@@ -27,9 +25,8 @@ include ../../../support/cross-compile.mk
 build: stage
 
 build/%.built: build/.unpacked
-	rm -f $@
-	mkdir -p build/$*
-	cp -R build/src/* build/$*
+	rm -rf $@ build/$*
+	cp -R build/src build/$*
 	( cd build/$* ; ${SB2} sh make.sh )
 	( cd build/$* ; ${SB2} $(MAKE) )
 	touch $@
