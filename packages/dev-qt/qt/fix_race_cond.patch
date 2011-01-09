@@ -1,0 +1,26 @@
+--- src/gui/kernel/qeventdispatcher_glib_qws.cpp.old	2011-01-08 22:53:55.554206531 -0600
++++ src/gui/kernel/qeventdispatcher_glib_qws.cpp	2011-01-08 22:46:18.914508286 -0600
+@@ -83,6 +83,7 @@
+     if (timeout)
+         *timeout = -1;
+     GQWSEventSource *source = reinterpret_cast<GQWSEventSource *>(s);
++    if (!qt_fbdpy || !source->d) return false;
+     return qt_fbdpy->eventPending() || !source->d->queuedUserInputEvents.isEmpty()
+         || !qt_get_server_queue()->isEmpty() ;
+ }
+@@ -90,6 +91,7 @@
+ static gboolean qwsEventSourceCheck(GSource *s)
+ {
+     GQWSEventSource *source = reinterpret_cast<GQWSEventSource *>(s);
++    if (!qt_fbdpy || !source->d) return false;
+     return qt_fbdpy->eventPending() || !source->d->queuedUserInputEvents.isEmpty()
+         || !qt_get_server_queue()->isEmpty() ;
+ }
+@@ -97,6 +99,7 @@
+ static gboolean qwsEventSourceDispatch(GSource *s, GSourceFunc callback, gpointer user_data)
+ {
+     GQWSEventSource *source = reinterpret_cast<GQWSEventSource *>(s);
++    //if (!qt_fbdpy || !source->d) return false;
+ 
+     //??? ulong marker = XNextRequest(X11->display);
+     do {

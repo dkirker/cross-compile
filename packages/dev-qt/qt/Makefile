@@ -15,7 +15,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	mkdir -p build/qt-palm-pre
 	tar -C build/qt-palm-pre -xzf $<
 	mv build/qt-palm-pre build/src
-	#( cd build/src ; patch -p0 < ../../libpaths.patch )
+	( cd build/src ; patch -p0 < ../../fix_race_cond.patch )
 	touch $@
 
 include ../../../support/staging.mk
