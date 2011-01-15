@@ -71,6 +71,7 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
 	${SB2} mkdir -p build/$*/${APP_DIR}/dist_files/
 	${SB2} cp files/appinfo.json build/$*/${APP_DIR}/appinfo.json
+	${SB2} cp files/jail_app.conf build/$*/${APP_DIR}/jail_app.conf
 	${SB2} cp files/Icon.png build/$*/${APP_DIR}/Icon.png
 	${SB2} cp files/navit.sh build/$*/${APP_DIR}/navit.sh
 	${SB2} cp files/navit*.xml build/$*/${APP_DIR}/dist_files/
@@ -90,6 +91,7 @@ build/.package:
 	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp    build/armv7/${APP_DIR}/appinfo.json build/package/all
+	cp    build/armv7/${APP_DIR}/jail_app.conf build/package/all
 	cp    build/armv7/${APP_DIR}/Icon.png build/package/all
 	cp    build/armv7/${APP_DIR}/navit.sh build/package/all
 	cp -R build/armv7/${APP_DIR}/dist_files build/package/all
