@@ -46,7 +46,6 @@ Vehicle</text></img>
 	<img src='gui_display' onclick='setting_layout()'><text>Layout</text></img>
 	<img src='gui_rules' onclick='setting_rules()'><text>Rules</text></img>
 	<img src='gui_maps' onclick='setting_maps()'><text>Karten</text></img>
-	<img src='gui_maps' onclick='map_downloader("http://maps.navit-project.org/planet-110101.bin",1)'><text>Map
 downloader</text></img>
 	<img src='gui_about'  onclick='about()'><text>About</text></img>
 </a>
