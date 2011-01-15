@@ -80,6 +80,8 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	${SB2} cp files/skin/*.png build/$*/${APP_DIR}/share/navit/xpm/skin/
 	${SB2} mkdir -p build/$*/${APP_DIR}/share/navit/xpm/PreNav/
 	${SB2} cp files/PreNav/*.png build/$*/${APP_DIR}/share/navit/xpm/PreNav/
+	${SB2} mkdir -p build/$*/${APP_DIR}/.fonts
+	${SB2} cp build/$*/src/navit/fonts/*.ttf build/$*/${APP_DIR}/.fonts/
 	touch $@
 
 build/.package:
@@ -92,6 +94,7 @@ build/.package:
 	cp    build/armv7/${APP_DIR}/navit.sh build/package/all
 	cp -R build/armv7/${APP_DIR}/dist_files build/package/all
 	cp -R build/armv7/${APP_DIR}/share build/package/all
+	cp -R build/armv7/${APP_DIR}/.fonts build/package/all
 	mkdir -p build/package/armv7
 	cp -R build/armv7/${APP_DIR}/pdl-helper build/package/armv7
 	cp -R build/armv7/${APP_DIR}/bin build/package/armv7
