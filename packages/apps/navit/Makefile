@@ -2,7 +2,7 @@ NAME    = navit
 DEPENDS = media/jpeg media/libpng12 common/glib-2.0 common/freetype common/fontconfig dev-sdl/libsdl dev-sdl/libsdl-image common/libpdl common/libgarmin common/locale apps/speechd
 SRC_SVN_REV = http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
-VERSION = 3883
+VERSION = 3939
 
 include ../../../support/download.mk
 
@@ -71,6 +71,7 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
 	${SB2} mkdir -p build/$*/${APP_DIR}/dist_files/
 	${SB2} cp files/appinfo.json build/$*/${APP_DIR}/appinfo.json
+	${SB2} cp files/jail_app.conf build/$*/${APP_DIR}/jail_app.conf
 	${SB2} cp files/Icon.png build/$*/${APP_DIR}/Icon.png
 	${SB2} cp files/navit.sh build/$*/${APP_DIR}/navit.sh
 	${SB2} cp files/navit*.xml build/$*/${APP_DIR}/dist_files/
@@ -80,6 +81,8 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	${SB2} cp files/skin/*.png build/$*/${APP_DIR}/share/navit/xpm/skin/
 	${SB2} mkdir -p build/$*/${APP_DIR}/share/navit/xpm/PreNav/
 	${SB2} cp files/PreNav/*.png build/$*/${APP_DIR}/share/navit/xpm/PreNav/
+	${SB2} mkdir -p build/$*/${APP_DIR}/.fonts
+	${SB2} cp build/$*/src/navit/fonts/*.ttf build/$*/${APP_DIR}/.fonts/
 	touch $@
 
 build/.package:
@@ -88,10 +91,12 @@ build/.package:
 	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp    build/armv7/${APP_DIR}/appinfo.json build/package/all
+	cp    build/armv7/${APP_DIR}/jail_app.conf build/package/all
 	cp    build/armv7/${APP_DIR}/Icon.png build/package/all
 	cp    build/armv7/${APP_DIR}/navit.sh build/package/all
 	cp -R build/armv7/${APP_DIR}/dist_files build/package/all
 	cp -R build/armv7/${APP_DIR}/share build/package/all
+	cp -R build/armv7/${APP_DIR}/.fonts build/package/all
 	mkdir -p build/package/armv7
 	cp -R build/armv7/${APP_DIR}/pdl-helper build/package/armv7
 	cp -R build/armv7/${APP_DIR}/bin build/package/armv7

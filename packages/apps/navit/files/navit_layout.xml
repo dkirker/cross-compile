@@ -26,7 +26,7 @@ Then you can switch them on later if you like. -->
 <!-- ******************************************************************************************* -->
 <!-- Remove the 'nightlayout="Car-dark"' statment in the next line, 
      if Navit should not switch the layout automatically in the evening -->
-<layout name="Car" nightlayout="Car-dark" color="#ffefb7" font="Prelude">
+<layout name="Car" nightlayout="Car-dark" color="#ffefb7" font="Liberation Sans">
 	<cursor w="50" h="50">
 		<itemgra>
 			<!-- Car outline -->
@@ -3225,7 +3225,7 @@ Then you can switch them on later if you like. -->
 <!-- ********************************   Profile Bike ************************************* -->
 <!-- ******************************************************************************************* -->
 <!-- ******************************************************************************************* -->
-<layout name="Bike" color="#ffefb7" font="Prelude">
+<layout name="Bike" color="#ffefb7" font="Liberation Sans">
 
 	<cursor w="50" h="50">
 		<itemgra>
@@ -4217,7 +4217,7 @@ Then you can switch them on later if you like. -->
 <!-- ********************************   Profile T@H  ************************************* -->
 <!-- ******************************************************************************************* -->
 <!-- ******************************************************************************************* -->
-<layout name="T@H" font="Prelude">
+<layout name="T@H" font="Liberation Sans">
 
 	<cursor w="50" h="50">
 		<itemgra>

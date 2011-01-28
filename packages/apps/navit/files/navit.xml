@@ -39,7 +39,7 @@
 		<!-- for a debug log -->
 		<log enabled="no" type="textfile_debug" data="debug_%Y%m%d-%i.txt" flush_size="1000" flush_time="30"/>
 
-		<vehicle name="GPS" lag="20" profilename="car" enabled="yes" follow="1" active="1" source="webos://"/>
+		<vehicle name="GPS" lag="15" profilename="car" enabled="yes" follow="1" active="1" source="webos://"/>
                 <!--( 17:18      Rikky ) hape: there is the parameter "lag" for vehicle, which projects                  
                                          the car position the specified time ahead. however it does not                  
                                          work very well, because it only uses gps data for the projection.               

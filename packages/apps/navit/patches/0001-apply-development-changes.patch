@@ -1,13 +1,14 @@
-From 989df3d90185f8603b789e2c7fc8ab672a1c2240 Mon Sep 17 00:00:00 2001
+From 4c4aca75ec0ffbdfaf841e7d106ed20edfc041da Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
-Date: Tue, 21 Dec 2010 16:43:02 +0100
-Subject: [PATCH 1/3] apply development changes
+Date: Thu, 6 Jan 2011 19:41:33 +0100
+Subject: [PATCH 1/2] apply-development-changes
 
 ---
  .../speech_dispatcher/speech_speech_dispatcher.c   |   29 +++++
- navit/navit/xpm/Makefile.am                        |  121 ++++++++++---------
+ navit/navit/xpm/Makefile.am                        |  114 +++++++++++---------
  navit/navit/xpm/navit_svg2png                      |   12 ++-
- 3 files changed, 103 insertions(+), 59 deletions(-)
+ navit/po/de.po.in                                  |   18 +++-
+ 4 files changed, 120 insertions(+), 53 deletions(-)
 
 diff --git a/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c b/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c
 index b2c0e2a..99ad5d1 100644
@@ -65,10 +66,10 @@ index b2c0e2a..99ad5d1 100644
  	return this;
  }
 diff --git a/navit/navit/xpm/Makefile.am b/navit/navit/xpm/Makefile.am
-index db34f81..0846675 100644
+index 4dd5507..0846675 100644
 --- a/navit/navit/xpm/Makefile.am
 +++ b/navit/navit/xpm/Makefile.am
-@@ -1,61 +1,61 @@
+@@ -1,54 +1,61 @@
  include $(top_srcdir)/Makefile.inc
  
 -xpm_DATA = bench.xpm
@@ -79,7 +80,6 @@ index db34f81..0846675 100644
 -xpm_DATA += castle.xpm
 -xpm_DATA += ruins.xpm
 -xpm_DATA += cemetery.xpm
--xpm_DATA += cursor.xpm
 -xpm_DATA += dumping_station.xpm
 -xpm_DATA += fountain.xpm
 -xpm_DATA += flag_bk_tr.xpm flag_bk_wh.xpm flag_bl_wh.xpm flag_wh_bk.xpm
@@ -92,13 +92,11 @@ index db34f81..0846675 100644
 -xpm_DATA += gc_webcam.xpm
 -xpm_DATA += gc_question.xpm
 -xpm_DATA += gc_stages.xpm
--xpm_DATA += heliport.xpm
 -xpm_DATA += highway_exit.xpm
 -xpm_DATA += hunting_stand.xpm
 -xpm_DATA += justice.xpm
 -xpm_DATA += level_crossing.xpm
 -xpm_DATA += library.xpm
--xpm_DATA += mark.xpm
 -xpm_DATA += memorial.xpm
 -xpm_DATA += military.xpm
 -xpm_DATA += nav_left_1.xpm nav_left_2.xpm
@@ -120,10 +118,6 @@ index db34f81..0846675 100644
 -xpm_DATA += trailerpark.xpm
 -xpm_DATA += unknown.xpm
 -xpm_DATA += wifi.xpm
--xpm_DATA += viewpoint.xpm
--xpm_DATA += zoo.xpm
--xpm_DATA += zoom_in.xpm
--xpm_DATA += zoom_out.xpm
 -xpm_DATA += toggle_fullscreen.xpm
 -xpm_DATA += menu.xpm
 -xpm_DATA += public_office.xpm
@@ -186,7 +180,7 @@ index db34f81..0846675 100644
  
  svgs  = gui_about.svg
  svgs += gui_actions.svg
-@@ -190,6 +190,8 @@ flag_svgs += country_TZ.svgz country_UA.svgz country_UG.svgz country_UM.svgz cou
+@@ -183,6 +190,8 @@ flag_svgs += country_TZ.svgz country_UA.svgz country_UG.svgz country_UM.svgz cou
  flag_svgs += country_VA.svgz country_VC.svgz country_VE.svgz country_VG.svgz country_VI.svgz country_VN.svgz country_VU.svgz
  flag_svgs += country_WF.svgz country_WS.svgz country_YE.svgz country_YT.svgz country_ZA.svgz country_ZM.svgz country_ZW.svgz
  
@@ -195,7 +189,7 @@ index db34f81..0846675 100644
  if USE_SVG
    xpm_DATA += $(svgs) $(nav_svgs) $(flag_svgs)
  endif
-@@ -199,8 +201,10 @@ if USE_SVG2PNG
+@@ -192,8 +201,10 @@ if USE_SVG2PNG
  	SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir) $(srcdir)/navit_svg2png "@SVG2PNG@" "$@"
  %.png: $(srcdir)/*.svg
  	SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir) $(srcdir)/navit_svg2png "@SVG2PNG@" "$@"
@@ -207,7 +201,7 @@ index db34f81..0846675 100644
  xsize = $(word 1,$(subst x, ,$(scale)))
  ysize = $(word $(words $(scale)),$(subst x, ,$(scale)))
  comma =,
-@@ -218,8 +222,11 @@ if USE_SVG2PNG_SCALES_NAV
+@@ -211,8 +222,11 @@ if USE_SVG2PNG_SCALES_NAV
  pngs += $(foreach scale, $(subst $(comma), ,@SVG2PNG_SCALES_NAV@), $(addsuffix _$(xsize)_$(ysize).png,$(basename $(nav_svgs))))
  endif
  xpm_DATA += $(pngs)
@@ -256,6 +250,42 @@ index 16ecfb7..ba76d7a 100755
  	fi
  fi
  exit 0
+diff --git a/navit/po/de.po.in b/navit/po/de.po.in
+index 3dffbde..134011f 100644
+--- a/navit/po/de.po.in
++++ b/navit/po/de.po.in
+@@ -1357,7 +1357,9 @@ msgid "Northing"
+ msgstr "Einnorden"
+ 
+ msgid "Autozoom"
+-msgstr "automatischer Zoom"
++msgstr ""
++"automatischer\n"
++"Zoom"
+ 
+ msgid "Fullscreen"
+ msgstr "Vollbild"
+@@ -1580,6 +1582,20 @@ msgstr ""
+ "Navigation\n"
+ "beenden"
+ 
++msgid ""
++"Map follows\n"
++"Vehicle"
++msgsrt ""
++"Karte folgt\n"
++"Fahrzeug"
++
++msgid ""
++"Lock on\n"
++"Road"
++msgstr ""
++"Auf Straße\n"
++"zeigen"
++
+ msgid "Window Mode"
+ msgstr "Fenstermodus"
+ 
 -- 
 1.7.2.3
 
