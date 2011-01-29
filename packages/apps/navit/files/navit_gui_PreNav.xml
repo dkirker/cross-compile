@@ -50,7 +50,7 @@ Vehicle</text></img>
 
 <!-- http://wiki.navit-project.org/index.php/OSD_Layouts -->
 <!-- background images -->
-<osd enabled="yes" type="speed_warner" w="51" h="51" x="0" y="17" font_size="350" background_color="#000000FF"  speed_exceed_limit_offset="10" speed_exceed_limit_percent="10" announce_on="1" />
+<osd enabled="yes" type="speed_warner" w="51" h="51" x="0" y="17" font_size="350" background_color="#00000000"  speed_exceed_limit_offset="10" speed_exceed_limit_percent="10" announce_on="1" />
 <osd enabled="yes" type="image" x="0" y="0" w="480" h="38" src="$NAVIT_SHAREDIR/xpm/PreNav/head_w_bg.png" /> 
 <osd enabled="yes" type="text" x="0" y="0" w="480" h="18" label=" Distance: ${navigation.item.destination_length[named]} - Arrival: ${navigation.item.destination_time[arrival]}, ${navigation.item.destination_time[remaining]} - R:${vehicle.position_radius}m" background_color="#000000FF" align="4"/> 
 <osd enabled="yes" type="image" x="0" y="-128" w="480" h="128" src="$NAVIT_SHAREDIR/xpm/PreNav/bottom_bg.png" /> 
@@ -58,12 +58,12 @@ Vehicle</text></img>
 
 
 <!-- TOP SPEED -->
-<osd enabled="yes" type="speed_cam" w="200" h="18" x="116" y="409" announce_on="1" background_color="#000000FF" idle_color="#00FF00" font_size="220" label="${distance} ${camera_type}" />
+<osd enabled="yes" type="speed_cam" w="206" h="20" x="114" y="406" announce_on="1" background_color="#000000CC" font_size="220" label="${distance} ${camera_type} ${speed_limit}km/h" />
 
 <!-- menu right/top-right -->
 <osd enabled="yes" type="image" x="-70" y="18" w="20" h="20" src="$NAVIT_SHAREDIR/xpm/PreNav/ecke_or.png" /> 
 <osd enabled="yes" type="button" x="-50" y="18" w="50" h="50" command="zoom_out()" src="$NAVIT_SHAREDIR/xpm/PreNav/zoom_out.png"/>
-<osd enabled="yes" type="toggle_announcer" x="-50"	y="68" w="50"	h="50" icon_src="$NAVIT_SHAREDIR/xpm/PreNav/%s.png" background_color="#00000088"/>
+<osd enabled="yes" type="toggle_announcer" x="-50" y="68" w="50" h="50" icon_src="$NAVIT_SHAREDIR/xpm/PreNav/%s.png" background_color="#00000088"/>
 <osd enabled="yes" type="button" command="autozoom_active=pitch==0?1:0;follow=pitch==0?1:32000;pitch=pitch==0?20:0;zoom_to_route()" x="-50" y="118" w="50" h="50" src="$NAVIT_SHAREDIR/xpm/PreNav/zoom_route.png"/>
 <osd enabled="yes" type="button" x="-50" y="168" w="50" h="50" command="zoom_in()" src="$NAVIT_SHAREDIR/xpm/PreNav/zoom_in.png"/>
 
