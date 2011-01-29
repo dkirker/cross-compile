@@ -1,6 +1,6 @@
 NAME = qt
 VERSION = 4.7
-DEPENDS = dev-sdl/libsdl x/libx11 x/libXext x/libsm x/libice media/pulseaudio media/libpng12 media/jpeg media/alsa-lib
+DEPENDS = dev-sdl/libsdl x/libx11 x/libXext x/libsm x/libice media/pulseaudio media/libpng12 media/jpeg media/alsa-lib dev-gl/libGLUES_CM dev-gl/gles-headers
 
 SRC_GIT = git://gitorious.org/~darronb/qt/qt-palm-pre.git
 GIT_BRANCH = ${VERSION}-stable
@@ -28,9 +28,9 @@ build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	( cd build/$* ; ${SB2} PATH=${PATH}:/srv/preware/cross-compile/packages/common/qt/build/armv7/bin/ PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/ ./configure -embedded -opensource -plugin-gfx-webos -no-accessibility -no-qt3support -no-gif -no-libtiff -no-libmng -no-webkit -no-phonon -no-phonon-backend -no-cups -no-nis -no-iconv -no-dbus -nomake tools -nomake examples -nomake docs -nomake demos -v -L/usr/local/lib -R/usr/local/lib )
-	( cd build/$* ; ${SB2} PATH=${PATH}:/srv/preware/cross-compile/packages/common/qt/build/armv7/bin/ $(MAKE) )
-	( cd build/$* ; ${SB2} PATH=${PATH}:/srv/preware/cross-compile/packages/common/qt/build/armv7/bin/ $(MAKE) install )
+	( cd build/$* ; MAKEFLAGS='' ${SB2} PATH=${PATH}:/srv/preware/cross-compile/packages/common/qt/build/armv7/bin/ PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/ ./configure -embedded -opensource -plugin-gfx-webos -no-accessibility -no-qt3support -no-gif -no-libtiff -no-libmng -no-webkit -no-phonon -no-phonon-backend -no-cups -no-nis -no-iconv -no-dbus -nomake tools -nomake examples -nomake docs -nomake demos -no-glib -v -L/usr/local/lib -R/usr/local/lib -D QT_NO_QWS_MULTIPROCESS )
+	( cd build/$* ; ${SB2} PATH=${PATH}:`pwd`/bin/ $(MAKE) )
+	( cd build/$* ; ${SB2} PATH=${PATH}:`pwd`/bin/ $(MAKE) install )
 	touch $@
 
 clobber::
