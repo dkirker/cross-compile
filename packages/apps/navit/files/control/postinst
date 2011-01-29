@@ -1,0 +1,57 @@
+#!/bin/sh -e
+
+umask 0000
+
+APP_ID=org.webosinternals.navit
+OLD_DATADIR=/media/internal/.app-storage/file_.media.cryptofs.apps.usr.palm.applications.org.webosinternals.navit_0
+APP_DIR=/media/cryptofs/apps/usr/palm/applications/$APP_ID
+NAVIT_USER_DATADIR=/media/internal/appdata/$APP_ID
+JAILUSERS=/var/palm/data/jailusers
+
+mkdir -p $NAVIT_USER_DATADIR/maps
+
+# Migrate data from old to new directories
+if [ -d $OLD_DATADIR ]
+then
+	mv $OLD_DATADIR/* $NAVIT_USER_DATADIR
+	rmdir $OLD_DATADIR
+	# Replace espeak with speech-dispatcher in navit.xml
+	sed -i -re "/org.webosinternals.espeak/ s/<speech type=\"cmdline\".*\/>/<speech type=\"speech_dispatcher\" data=\"100\" cps=\"15\" \/>/" $NAVIT_USER_DATADIR/navit.xml
+fi
+
+if [ -d /media/internal/MapsNavit ]
+then
+	mv /media/internal/MapsNavit/* $NAVIT_USER_DATADIR/maps
+	rmdir /media/internal/MapsNavit
+	# Change map-directory in navit.xml
+	sed -i -re "s/\/media\/internal\/MapsNavit/\$NAVIT_USER_DATADIR\/maps/" $NAVIT_USER_DATADIR/navit.xml
+fi
+
+for s in $APP_DIR/dist_files/*.xml
+do
+	d="$NAVIT_USER_DATADIR/$(basename $s)"
+
+	if [ ! -f "${d}.md5sum" ]
+	then
+		md5sum "$d" > "${d}.md5sum"
+	fi
+
+	if md5sum -c "${d}.md5sum"
+	then
+		mv "$d" "${d}.old"
+		cp "$s" "$d"
+		md5sum "$d" > "${d}.md5sum"
+	else
+		cp "$s" "${d}.new"
+	fi
+done
+
+# Modify jailusers
+#if grep -q ":${APP_ID}:" $JAILUSERS
+#then
+#	sed -i -re "/:${APP_ID}:/ s@/etc/jail_.*\.conf@${APP_DIR}/jail_app.conf@" $JAILUSERS
+#else
+#	echo "5000:5000:${APP_ID}:/var/palm/jail/${APP_ID}:${APP_DIR}/jail_app.conf" >> $JAILUSERS
+#fi
+sed -i -re "\@:${APP_ID}:.*:${APP_DIR}/jail_app.conf@ d" $JAILUSERS
+

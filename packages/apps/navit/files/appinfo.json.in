@@ -1,6 +1,6 @@
 {
 	"id": "org.webosinternals.navit",
-	"version": "0.2.0",
+	"version": "@VERSION@",
 	"vendor": "Navit Project",
 	"type": "pdk",
 	"main": "navit.sh",

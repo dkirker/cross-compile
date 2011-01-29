@@ -1,8 +1,10 @@
-NAME    = navit
-DEPENDS = media/jpeg media/libpng12 common/glib-2.0 common/freetype common/fontconfig dev-sdl/libsdl dev-sdl/libsdl-image common/libpdl common/libgarmin common/locale apps/speechd
-SRC_SVN_REV = http://navit.svn.sourceforge.net/svnroot/navit/trunk
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
-VERSION = 3939
+NAME    := navit
+DEPENDS := media/jpeg media/libpng12 common/glib-2.0 common/freetype common/fontconfig dev-sdl/libsdl dev-sdl/libsdl-image common/libpdl common/libgarmin common/locale apps/speechd
+SRC_SVN_REV := http://navit.svn.sourceforge.net/svnroot/navit/trunk
+APP_DIR := /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
+BINARY_GIT := git@git.webos-internals.org:/applications/navit.git
+NAVIT_VERSION := `sed -nre "/AC_INIT\(navit,/ s/.* ([0-9\.]+).*\)/\1/ p" build/src/configure.in`
+VERSION := 3939
 
 include ../../../support/download.mk
 
@@ -12,7 +14,8 @@ include ../../../support/cross-compile.mk
 
 stage-local:: build/${ARCH}.built
 
-.PHONY: unpack
+.PHONY: unpack package package-commit clean
+
 unpack: build/.unpacked
 package: build/.package
 
@@ -21,7 +24,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
 	mkdir -p build
 	tar -C build -z -x -f $<
 	mv build/navit build/src
-	touch $@
+	>$@
 
 build/%.aclocal: build/.patched
 	rm -f $@
@@ -29,14 +32,14 @@ build/%.aclocal: build/.patched
 	mkdir -p build/$*
 	cp -R build/src build/$*
 	( cd build/$*/src ; ${SB2} ./autogen.sh )
-	touch $@
+	>$@
 
 build/.patched: build/.unpacked
 	rm -f $@
 	$(foreach patchfile, $(shell ls patches), \
 		patch -p2 -d build/src -i `pwd`/patches/$(patchfile); \
 	)
-	touch $@
+	>$@
 
 build/%.configured: build/${ARCH}.aclocal
 	rm -f $@
@@ -57,7 +60,7 @@ build/%.configured: build/${ARCH}.aclocal
 			--disable-samplemap --disable-speech-espeak \
 			--disable-svg --with-svg2png-use-rsvg-convert \
 			--enable-cache-size=20971520 )
-	touch $@
+	>$@
 
 
 # I call $(MAKE) in xpm/ without sb2 here, it doesn't work inside sb2
@@ -65,33 +68,33 @@ build/%.configured: build/${ARCH}.aclocal
 build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	rm -f $@
 	( cd build/$*/src ; ${SB2} cp `which libtool` . )
-	( cd build/$*/src/navit/xpm/ ; $(MAKE) )
-	( cd build/$*/src ; ${SB2} $(MAKE) && ${SB2} make DESTDIR=`pwd`/.. install )
+	( cd build/$*/src/navit/xpm/ ; $(MAKE) -j8 )
+	( cd build/$*/src ; ${SB2} $(MAKE) -j8 && ${SB2} make -j8 DESTDIR=`pwd`/.. install )
 	find build/$*/${APP_DIR} -name "*.*a" -print0 | xargs -0 rm
 	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
-	${SB2} mkdir -p build/$*/${APP_DIR}/dist_files/
-	${SB2} cp files/appinfo.json build/$*/${APP_DIR}/appinfo.json
-	${SB2} cp files/jail_app.conf build/$*/${APP_DIR}/jail_app.conf
-	${SB2} cp files/Icon.png build/$*/${APP_DIR}/Icon.png
-	${SB2} cp files/navit.sh build/$*/${APP_DIR}/navit.sh
-	${SB2} cp files/navit*.xml build/$*/${APP_DIR}/dist_files/
-	${SB2} cp files/osd_*.png build/$*/${APP_DIR}/share/navit/xpm/
-	${SB2} cp -f files/poi_png/*.png build/$*/${APP_DIR}/share/navit/xpm/
-	${SB2} mkdir -p build/$*/${APP_DIR}/share/navit/xpm/skin/
-	${SB2} cp files/skin/*.png build/$*/${APP_DIR}/share/navit/xpm/skin/
-	${SB2} mkdir -p build/$*/${APP_DIR}/share/navit/xpm/PreNav/
-	${SB2} cp files/PreNav/*.png build/$*/${APP_DIR}/share/navit/xpm/PreNav/
-	${SB2} mkdir -p build/$*/${APP_DIR}/.fonts
-	${SB2} cp build/$*/src/navit/fonts/*.ttf build/$*/${APP_DIR}/.fonts/
-	touch $@
+	mkdir -p build/$*/${APP_DIR}/dist_files/
+	cp files/appinfo.json.in build/$*/${APP_DIR}/appinfo.json.in
+#	cp files/jail_app.conf build/$*/${APP_DIR}/jail_app.conf
+	cp files/Icon.png build/$*/${APP_DIR}/Icon.png
+	cp files/navit.sh build/$*/${APP_DIR}/navit.sh
+	cp files/navit*.xml build/$*/${APP_DIR}/dist_files/
+	cp files/osd_*.png build/$*/${APP_DIR}/share/navit/xpm/
+	cp -f files/poi_png/*.png build/$*/${APP_DIR}/share/navit/xpm/
+	mkdir -p build/$*/${APP_DIR}/share/navit/xpm/skin/
+	cp files/skin/*.png build/$*/${APP_DIR}/share/navit/xpm/skin/
+	mkdir -p build/$*/${APP_DIR}/share/navit/xpm/PreNav/
+	cp files/PreNav/*.png build/$*/${APP_DIR}/share/navit/xpm/PreNav/
+	mkdir -p build/$*/${APP_DIR}/.fonts
+	cp build/$*/src/navit/fonts/*.ttf build/$*/${APP_DIR}/.fonts/
+	>$@
 
 build/.package:
 	rm -f $@
 	make stage ARCH=armv7
 	make stage ARCH=armv6
 	mkdir -p build/package/all
-	cp    build/armv7/${APP_DIR}/appinfo.json build/package/all
-	cp    build/armv7/${APP_DIR}/jail_app.conf build/package/all
+	cp    build/armv7/${APP_DIR}/appinfo.json.in build/package/all
+#	cp    build/armv7/${APP_DIR}/jail_app.conf build/package/all
 	cp    build/armv7/${APP_DIR}/Icon.png build/package/all
 	cp    build/armv7/${APP_DIR}/navit.sh build/package/all
 	cp -R build/armv7/${APP_DIR}/dist_files build/package/all
@@ -105,11 +108,20 @@ build/.package:
 	cp -R build/armv6/${APP_DIR}/pdl-helper build/package/armv6
 	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
 	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
-	touch $@
+	cp -R files/control build/package/
+	>$@
+
+
+package-commit:
+	if [ -d git ]; then (cd git && git reset --hard && git pull); \
+		else git clone ${BINARY_GIT} git;fi
+	(cd git && rm -rf * )
+	cp -a build/package/* git/
+	(cd git && git add * && git commit -m "automatic revision" -a )
 
 clean:
 	( cd build/${ARCH} ; ${SB2} $(MAKE) clean )
 
 
 clobber::
-	rm -rf build
+	rm -rf build git

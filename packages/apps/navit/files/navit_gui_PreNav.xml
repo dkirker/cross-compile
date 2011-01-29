@@ -1,51 +1,47 @@
-<!-- The following line let you select which graphical user interface you'd like to use.
-Options include internal (optimized for touch screen devices), gtk (useful for desktop computers).
-If you don't like the internal gui, set enabled=yes for the following tag and enabled=no for the gui internal tag -->
-
 <gui type="internal" menubar="1" toolbar="1" statusbar="1"
 	font_size="350" icon_xs="32" icon_s="48" icon_l="48" keyboard="1">
 	<![CDATA[
-<html>
-	<a name='Main Menu'><text>Main menu</text>
-		<img src='gui_bookmark' onclick='bookmarks()'><text>Bookmarks</text></img>
-		<img src='gui_town' onclick='town()'><text>Town</text></img>
-		<img cond='click_coord_geo' src='gui_map' onclick='position(click_coord_geo,_("Map Point"),8|16|32|64|256)'><script>write(click_coord_geo)</script></img>
-		<img cond='position_coord_geo' src='gui_vehicle' onclick='position(position_coord_geo,_("Vehicle Position"),8|32|64|128|256)'><script>write(position_coord_geo)</script></img>
-		<img src='gui_quit' onclick='quit()'><text>Quit</text></img>
-		<a href='#Settings'><img src='gui_arrow_right'><text>Settings</text></img></a>
-		<img cond='navit.route.route_status&amp;52' src='gui_stop' onclick='abort_navigation(); menu("#Main Menu",1)'><text>Stop
+	<html>
+		<a name='Main Menu'><text>Main menu</text>
+			<img src='gui_bookmark' onclick='bookmarks()'><text>Bookmarks</text></img>
+			<img src='gui_town' onclick='town()'><text>Town</text></img>
+			<img cond='click_coord_geo' src='gui_map' onclick='position(click_coord_geo,_("Map Point"),8|16|32|64|256)'><script>write(click_coord_geo)</script></img>
+			<img cond='position_coord_geo' src='gui_vehicle' onclick='position(position_coord_geo,_("Vehicle Position"),8|32|64|128|256)'><script>write(position_coord_geo)</script></img>
+			<img src='gui_quit' onclick='quit()'><text>Quit</text></img>
+			<a href='#Settings'><img src='gui_arrow_right'><text>Settings</text></img></a>
+			<img cond='navit.route.route_status&amp;52' src='gui_stop' onclick='abort_navigation(); menu("#Main Menu",1)'><text>Stop
 Navigation</text></img>
-</a>
-<a name='Settings'><text>Settings</text>
-	<img cond='navit.orientation<0' src='gui_stop' onclick='navit.orientation=0; menu("#Settings",1)'><text>Northing</text></img>
-	<img cond='navit.orientation>=0' src='gui_active' onclick='navit.orientation=-1; menu("#Settings",1)'><text>Northing</text></img>
+		</a>
+		<a name='Settings'><text>Settings</text>
+			<img cond='navit.orientation<0' src='gui_stop' onclick='navit.orientation=0; menu("#Settings",1)'><text>Northing</text></img>
+			<img cond='navit.orientation>=0' src='gui_active' onclick='navit.orientation=-1; menu("#Settings",1)'><text>Northing</text></img>
 
-	<img cond='navit.autozoom_active!=0' src='gui_active' onclick='navit.autozoom_active=0; menu("#Settings",1)'><text>Autozoom</text></img>
-	<img cond='navit.autozoom_active==0' src='gui_stop' onclick='navit.autozoom_active=1; menu("#Settings",1)'><text>Autozoom</text></img>
+			<img cond='navit.autozoom_active!=0' src='gui_active' onclick='navit.autozoom_active=0; menu("#Settings",1)'><text>Autozoom</text></img>
+			<img cond='navit.autozoom_active==0' src='gui_stop' onclick='navit.autozoom_active=1; menu("#Settings",1)'><text>Autozoom</text></img>
 
-	<img cond='navit.tracking==1' src='gui_active' onclick='navit.tracking=0; menu("#Settings",1)'><text>Lock on
+			<img cond='navit.tracking==1' src='gui_active' onclick='navit.tracking=0; menu("#Settings",1)'><text>Lock on
 Road</text></img>
-	<img cond='navit.tracking==0' src='gui_stop' onclick='navit.tracking=1; menu("#Settings",1)'><text>Lock on
+			<img cond='navit.tracking==0' src='gui_stop' onclick='navit.tracking=1; menu("#Settings",1)'><text>Lock on
 Road</text></img>
 
-	<img cond='navit.follow_cursor==1' src='gui_active' onclick='navit.follow_cursor=0; menu("#Settings",1)'><text>Map follows
+			<img cond='navit.follow_cursor==1' src='gui_active' onclick='navit.follow_cursor=0; menu("#Settings",1)'><text>Map follows
 Vehicle</text></img>
-	<img cond='navit.follow_cursor==0' src='gui_stop' onclick='navit.follow_cursor=1; menu("#Settings",1)'><text>Map follows
+			<img cond='navit.follow_cursor==0' src='gui_stop' onclick='navit.follow_cursor=1; menu("#Settings",1)'><text>Map follows
 Vehicle</text></img>
 
-	<img cond='navit.pitch==0' src='gui_stop' onclick='navit.pitch=pitch; menu("#Settings",1)'><text>3D</text></img>
-	<img cond='navit.pitch!=0' src='gui_active' onclick='navit.pitch=0; menu("#Settings",1)'><text>3D</text></img>
+			<img cond='navit.pitch==0' src='gui_stop' onclick='navit.pitch=pitch; menu("#Settings",1)'><text>3D</text></img>
+			<img cond='navit.pitch!=0' src='gui_active' onclick='navit.pitch=0; menu("#Settings",1)'><text>3D</text></img>
 
-	<a href='#Advanced'><img src='gui_arrow_right'><text>Advanced</text></img></a>
-</a>
-<a name='Advanced'><text>Advanced</text>
-	<img src='gui_vehicle' onclick='setting_vehicle()'><text>Vehicle</text></img>
-	<img src='gui_display' onclick='setting_layout()'><text>Layout</text></img>
-	<img src='gui_rules' onclick='setting_rules()'><text>Rules</text></img>
-	<img src='gui_maps' onclick='setting_maps()'><text>Maps</text></img>
-	<img src='gui_about'  onclick='about()'><text>About</text></img>
-</a>
-</html>
+			<a href='#Advanced'><img src='gui_arrow_right'><text>Advanced</text></img></a>
+		</a>
+		<a name='Advanced'><text>Advanced</text>
+			<img src='gui_vehicle' onclick='setting_vehicle()'><text>Vehicle</text></img>
+			<img src='gui_display' onclick='setting_layout()'><text>Layout</text></img>
+			<img src='gui_rules' onclick='setting_rules()'><text>Rules</text></img>
+			<img src='gui_maps' onclick='setting_maps()'><text>Maps</text></img>
+			<img src='gui_about'  onclick='about()'><text>About</text></img>
+		</a>
+	</html>
 	]]>
 </gui>
 
@@ -54,49 +50,29 @@ Vehicle</text></img>
 
 <!-- http://wiki.navit-project.org/index.php/OSD_Layouts -->
 <!-- background images -->
-<osd enabled="yes" type="button" x="0" y="0" w="480" h="38" command="" src="PreNav/head_bg.png" /> 
-
+<osd enabled="yes" type="speed_warner" w="51" h="51" x="0" y="17" font_size="350" background_color="#000000FF"  speed_exceed_limit_offset="10" speed_exceed_limit_percent="10" announce_on="1" />
+<osd enabled="yes" type="image" x="0" y="0" w="480" h="38" src="$NAVIT_SHAREDIR/xpm/PreNav/head_w_bg.png" /> 
 <osd enabled="yes" type="text" x="0" y="0" w="480" h="18" label=" Distance: ${navigation.item.destination_length[named]} - Arrival: ${navigation.item.destination_time[arrival]}, ${navigation.item.destination_time[remaining]} - R:${vehicle.position_radius}m" background_color="#000000FF" align="4"/> 
-
-<osd enabled="yes" type="button" x="0" y="-128" w="480" h="128" command="" src="PreNav/bottom_bg.png" /> 
-
-
-<osd enabled="yes" type="button" x="-20" y="-74" w="20" h="20" command="" src="PreNav/ecke_ur.png" /> 
+<osd enabled="yes" type="image" x="0" y="-128" w="480" h="128" src="$NAVIT_SHAREDIR/xpm/PreNav/bottom_bg.png" /> 
+<osd enabled="yes" type="image" x="-20" y="-74" w="20" h="20" src="$NAVIT_SHAREDIR/xpm/PreNav/ecke_ur.png" /> 
 
 
 <!-- TOP SPEED -->
-<!-- <osd enabled="yes" type="text" label="${tracking.item.route_speed}" x="13" y="31" w="94" h="47" background_color="#FF0000CC" align="0" font_size="300"/>
-<osd enabled="yes" type="text" label="${vehicle.position_speed}" x="13" y="78" w="94" h="47" background_color="#000000CC" align="0" font_size="300"/>
-<osd enabled="yes" type="button" x="6" y="24" w="108" h="108" command="" src="PreNav/geschw.png" />  -->
-<osd enabled="yes" type="speed_warner" w="50" h="50" x="6" y="24" font_size="350" speed_exceed_limit_offset="10" speed_exceed_limit_percent="10" announce_on="1" />
+<osd enabled="yes" type="speed_cam" w="200" h="18" x="116" y="409" announce_on="1" background_color="#000000FF" idle_color="#00FF00" font_size="220" label="${distance} ${camera_type}" />
 
 <!-- menu right/top-right -->
-
-<osd enabled="yes" type="button" x="-70" y="18" w="20" h="20" command="" src="PreNav/ecke_or.png" /> 
-
-<osd enabled="yes"  type="button"    x="-50" y="18" w="50" h="50" command="zoom_out()" src="PreNav/zoom_out.png"/>
-
+<osd enabled="yes" type="image" x="-70" y="18" w="20" h="20" src="$NAVIT_SHAREDIR/xpm/PreNav/ecke_or.png" /> 
+<osd enabled="yes" type="button" x="-50" y="18" w="50" h="50" command="zoom_out()" src="$NAVIT_SHAREDIR/xpm/PreNav/zoom_out.png"/>
 <osd enabled="yes" type="toggle_announcer" x="-50"	y="68" w="50"	h="50" icon_src="$NAVIT_SHAREDIR/xpm/PreNav/%s.png" background_color="#00000088"/>
-
-<!-- <osd enabled="yes" type="button" command="zoom_to_route()" x="-50" y="118" w="50" h="50" src="PreNav/zoom_route.png"/> -->
-<!-- <osd enabled="yes" type="button" command="pitch=0;vehicle.follow=0;autozoom_active=0;osd_configuration=2;zoom_to_route()" x="-50" y="118" w="50" h="50" src="PreNav/zoom_route.png"/> -->
-<!-- <osd enabled="yes" type="button" command="pitch=20;vehicle.follow=1;autozoom_active=1;osd_configuration=1" x="-100" y="118" w="50" h="50" src="PreNav/zoom_route.png"/> -->
-<osd enabled="yes" type="button" command="autozoom_active=pitch==0?1:0;follow=pitch==0?1:32000;pitch=pitch==0?20:0;zoom_to_route()" x="-50" y="118" w="50" h="50" src="PreNav/zoom_route.png"/>
-
-
-<osd enabled="yes" type="button" x="-50" y="168"  w="50" h="50" command="zoom_in()" src="PreNav/zoom_in.png"/>
+<osd enabled="yes" type="button" command="autozoom_active=pitch==0?1:0;follow=pitch==0?1:32000;pitch=pitch==0?20:0;zoom_to_route()" x="-50" y="118" w="50" h="50" src="$NAVIT_SHAREDIR/xpm/PreNav/zoom_route.png"/>
+<osd enabled="yes" type="button" x="-50" y="168" w="50" h="50" command="zoom_in()" src="$NAVIT_SHAREDIR/xpm/PreNav/zoom_in.png"/>
 
 
 
 <!-- KARTE <osd enabled="yes"  type="button"    x="-58" y="152" w="50" h="50" command="zoom_to_route()" src="skin/empty.png"/>-->
-
 <!-- bottom-left elements -->
 <osd enabled="yes" type="text" label="${navigation.item.street_name} ${navigation.item.street_name_systematic}" x="126" y="-50" w="400" h="20" align="4" font_size="220" background_color="#000000FF"/>
-
 <osd enabled="yes" type="text" label="${navigation.item[1].street_name} ${navigation.item[1].street_name_systematic}" x="120" y="-26" w="400" h="25" align="4" font_size="440" background_color="#000000FF"/>
-
 <osd enabled="yes" type="text" label="${navigation.item[1].length[named]}" x="0" y="-26" w="110" h="30" align="15" background_color="#000000FF" font_size="440"/>
-
-<osd enabled="yes" type="navigation_next_turn"	x="20" y="-97"	w="64"	h="64"	align="0" icon_src="$NAVIT_SHAREDIR/xpm/%s_bk_64_64.png" background_color="#FFFFFFFF" />
-
+<osd enabled="yes" type="navigation_next_turn" x="20" y="-97" w="64"	h="64" align="0" icon_src="$NAVIT_SHAREDIR/xpm/%s_bk_64_64.png" background_color="#FFFFFFFF" />
 
