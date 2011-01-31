@@ -1,7 +1,7 @@
-From 6d6d79c42e9609b21174342c1c5967a5156579f9 Mon Sep 17 00:00:00 2001
+From df59261788f52415a08e38a4dce833c9a6ce011a Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Sat, 15 Jan 2011 10:42:03 +0100
-Subject: [PATCH 2/2] add translations for new menu
+Subject: [PATCH 2/3] add translations for new menu
 
 ---
  navit/navit/navit_shipped.xml |    5 +++++
@@ -25,10 +25,10 @@ index 51a868c..34ad5ec 100644
  		]]></gui>
  		<!-- for a debug log -->
 diff --git a/navit/po/de.po.in b/navit/po/de.po.in
-index 134011f..81a71bb 100644
+index dee51c7..a6681d2 100644
 --- a/navit/po/de.po.in
 +++ b/navit/po/de.po.in
-@@ -1318,7 +1318,7 @@ msgid "Bookmarks"
+@@ -1320,7 +1320,7 @@ msgid "Bookmarks"
  msgstr "Lesezeichen"
  
  msgid "Layout"
@@ -37,7 +37,7 @@ index 134011f..81a71bb 100644
  
  msgid "Projection"
  msgstr "Projektion"
-@@ -1553,6 +1553,9 @@ msgstr "Mitglieder und Mitarbeiter"
+@@ -1601,6 +1601,9 @@ msgstr "Fahrzeugposition"
  msgid "Main menu"
  msgstr "Hauptmenü"
  
@@ -47,7 +47,7 @@ index 134011f..81a71bb 100644
  msgid ""
  "Show\n"
  "Map"
-@@ -1585,7 +1588,7 @@ msgstr ""
+@@ -1633,7 +1636,7 @@ msgstr ""
  msgid ""
  "Map follows\n"
  "Vehicle"

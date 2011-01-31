@@ -1,7 +1,7 @@
-From 4c4aca75ec0ffbdfaf841e7d106ed20edfc041da Mon Sep 17 00:00:00 2001
+From c38edb3f167d48f3addf3284b836f6e1886d78f3 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Thu, 6 Jan 2011 19:41:33 +0100
-Subject: [PATCH 1/2] apply-development-changes
+Subject: [PATCH 1/3] apply-development-changes
 
 ---
  .../speech_dispatcher/speech_speech_dispatcher.c   |   29 +++++
@@ -251,11 +251,11 @@ index 16ecfb7..ba76d7a 100755
  fi
  exit 0
 diff --git a/navit/po/de.po.in b/navit/po/de.po.in
-index 3dffbde..134011f 100644
+index 98fd51b..dee51c7 100644
 --- a/navit/po/de.po.in
 +++ b/navit/po/de.po.in
-@@ -1357,7 +1357,9 @@ msgid "Northing"
- msgstr "Einnorden"
+@@ -1383,7 +1383,9 @@ msgid "Show/hide route description"
+ msgstr "Routenbeschreibung anzeigen/schließen"
  
  msgid "Autozoom"
 -msgstr "automatischer Zoom"
@@ -263,9 +263,9 @@ index 3dffbde..134011f 100644
 +"automatischer\n"
 +"Zoom"
  
- msgid "Fullscreen"
- msgstr "Vollbild"
-@@ -1580,6 +1582,20 @@ msgstr ""
+ msgid "Enable/disable automatic zoom level changing"
+ msgstr "Automatischen Zoom einschalten/ausschalten"
+@@ -1628,6 +1630,20 @@ msgstr ""
  "Navigation\n"
  "beenden"
  

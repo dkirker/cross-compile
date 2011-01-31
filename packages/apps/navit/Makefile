@@ -4,7 +4,7 @@ SRC_SVN_REV := http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR := /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 BINARY_GIT := git@git.webos-internals.org:/applications/navit.git
 NAVIT_VERSION := `sed -nre "/AC_INIT\(navit,/ s/.* ([0-9\.]+).*\)/\1/ p" build/src/configure.in`
-VERSION := 3939
+VERSION := 4077
 
 include ../../../support/download.mk
 
@@ -113,7 +113,7 @@ build/.package:
 
 
 package-commit:
-	if [ -d git ]; then (cd git && git reset --hard && git pull); \
+	if [ -d git ]; then (cd git && git checkout . && git pull); \
 		else git clone ${BINARY_GIT} git;fi
 	(cd git && rm -rf * )
 	cp -a build/package/* git/
