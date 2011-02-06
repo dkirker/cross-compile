@@ -1,0 +1,46 @@
+From 887fc75a9164da80cdcd8b867c56080442fbfb27 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
+Date: Sun, 6 Feb 2011 12:07:02 +0100
+Subject: [PATCH 5/6] Fix:graphics/sdl:Fix clipping of streetnames on left edge of the screen.
+
+---
+ navit/navit/graphics/sdl/graphics_sdl.c |   13 +++++--------
+ 1 files changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
+index 13fb4ed..44c7e48 100644
+--- a/navit/navit/graphics/sdl/graphics_sdl.c
++++ b/navit/navit/graphics/sdl/graphics_sdl.c
+@@ -1042,10 +1042,10 @@ display_text_draw(struct font_freetype_text *text,
+ 	y += g->dy;
+     }
+ 
+-    x = p->x << 6;
+-    y = p->y << 6;
+     gp = text->glyph;
+     i = text->glyph_count;
++    x = p->x << 6;
++    y = p->y << 6;
+     while (i-- > 0) {
+ 	g = *gp++;
+ 	if (g->w && g->h) {
+@@ -1080,13 +1080,10 @@ display_text_draw(struct font_freetype_text *text,
+ 		unsigned char* pGlyph = glyph;
+ 		for (jj = 0; jj < g->h; ++jj) {
+ 		    for (ii = 0; ii < g->w; ++ii) {
+-			int sx = (x + g->x) >> 6;
+-			int sy = (y + g->y) >> 6;
+-			sx = sx < 0 ? 0 : sx;
+-			sy = sy < 0 ? 0 : sy;
+-
+ 			if(*(pGlyph+0)>10 || *(pGlyph+1)>10 || *(pGlyph+2)>10 || *(pGlyph+3)>10) {
+-                            set_pixel(gr->screen, ii+sx, jj+sy,
++                            set_pixel(gr->screen,
++				      ii+((x + g->x) >> 6),
++				      jj+((y + g->y) >> 6),
+                                       *(pGlyph+2),			// Pixels are in BGRA format
+                                       *(pGlyph+1),
+                                       *(pGlyph+0),
+-- 
+1.7.2.3
+
