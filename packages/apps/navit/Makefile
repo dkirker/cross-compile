@@ -124,4 +124,4 @@ clean:
 
 
 clobber::
-	rm -rf build git
+	rm -rf build
