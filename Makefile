@@ -17,18 +17,19 @@ all: toolchain rootfs stage
 setup: toolchain rootfs staging/mapping-armv7 staging/mapping-armv6 staging/mapping-i686
 
 .PHONY: toolchain
-toolchain: toolchain/arm-2009q1/.unpacked toolchain/arm-2007q3/.unpacked \
-	   toolchain/i686-unknown-linux-gnu/.unpacked doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
+toolchain: toolchain/arm-2009q1/.unpacked \
+	   toolchain/arm-2007q3/.unpacked \
+	   toolchain/i686-unknown-linux-gnu/.unpacked \
+           doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
 
 .PHONY: rootfs
-# rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked rootfs/i686/.unpacked
-rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked
+rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked # rootfs/i686/.unpacked
 
 .PHONY: stage
-# stage: toolchain rootfs staging-armv7 staging-armv6 staging-i686
 stage: toolchain rootfs
 	$(MAKE) -C . staging-armv6
 	$(MAKE) -C . staging-armv7
+#	$(MAKE) -C . staging-i686
 
 include support/build.mk
 
@@ -98,27 +99,27 @@ downloads/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
 
 downloads/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
 	mkdir -p downloads
-	wget -O $@ http://www.codesourcery.com/sgpp/lite/arm/portal/package1787/public/arm-none-linux-gnueabi/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
+	wget -c -O $@ http://www.codesourcery.com/sgpp/lite/arm/portal/package1787/public/arm-none-linux-gnueabi/arm-2007q3-51-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 
 downloads/i686-unknown-linux-gnu-1.4.1.tar.gz:
 	mkdir -p downloads
-	wget -O $@ http://sources.nslu2-linux.org/sources/i686-unknown-linux-gnu-1.4.1.tar.gz
+	wget -c -O $@ http://sources.nslu2-linux.org/sources/i686-unknown-linux-gnu-1.4.1.tar.gz
 
 doctors/webosdoctorp100ueu-wr-1.4.5.jar:
 	mkdir -p doctors
-	wget -O $@ http://palm.cdnetworks.net/rom/pre/p145r0d06302010/eudep145rod/webosdoctorp100ueu-wr.jar
+	wget -c -O $@ http://palm.cdnetworks.net/rom/pre/p145r0d06302010/eudep145rod/webosdoctorp100ueu-wr.jar
 
 doctors/webosdoctorp121ewweu-wr-1.4.5.jar:
 	mkdir -p doctors
-	wget -O $@ http://palm.cdnetworks.net/rom/pixiplus/px145r0d06302010/wrep145rod/webosdoctorp121ewweu-wr.jar
+	wget -c -O $@ http://palm.cdnetworks.net/rom/pixiplus/px145r0d06302010/wrep145rod/webosdoctorp121ewweu-wr.jar
 
 doctors/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb:
 	mkdir -p doctors
-	wget -O $@ http://cdn.downloads.palm.com/sdkdownloads/1.4.5.465/sdkBinaries/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb
+	wget -c -O $@ http://cdn.downloads.palm.com/sdkdownloads/1.4.5.465/sdkBinaries/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb
 
 doctors/Palm_webOS_SDK.1.4.5.465.dmg:
 	mkdir -p doctors
-	wget -O $@ http://cdn.downloads.palm.com/sdkdownloads/1.4.5.465/sdkBinaries/Palm_webOS_SDK.1.4.5.465.dmg
+	wget -c -O $@ http://cdn.downloads.palm.com/sdkdownloads/1.4.5.465/sdkBinaries/Palm_webOS_SDK.1.4.5.465.dmg
 
 .PHONY: clean
 clean:
