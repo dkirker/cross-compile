@@ -1,7 +1,7 @@
 <!-- Navit loads the first layout on startup -->
 <!-- To change the default layout copy the layout to the beginning of the file. -->
 
-<!-- you can switch every POI symbol off and on, but there is no Menu function to do it. 
+<!-- you can switch every POI symbol off and on, but there is no Menu function to do it.
 Every layout has its one POI definition. It starts with the line:
 
 [code]
@@ -24,7 +24,7 @@ Then you can switch them on later if you like. -->
 <!-- ********************************   Profile Car ************************************* -->
 <!-- ******************************************************************************************* -->
 <!-- ******************************************************************************************* -->
-<!-- Remove the 'nightlayout="Car-dark"' statment in the next line, 
+<!-- Remove the 'nightlayout="Car-dark"' statment in the next line,
      if Navit should not switch the layout automatically in the evening -->
 <layout name="Car" nightlayout="Car-dark" color="#ffefb7" font="Prelude">
   	<cursor w="50" h="50">
@@ -1384,7 +1384,7 @@ Then you can switch them on later if you like. -->
     	  <itemgra item_types="poi_bus_station" order="14-">
       		  <icon src="bus.png"/>
     	  </itemgra>
-    	  <itemgra item_types="poi_bus_stop"  order="15-">
+    	  <itemgra item_types="poi_bus_stop"  order="12-">
       		  <icon src="bus.png"/>
     	  </itemgra>
     	  <itemgra item_types="poi_business_service" order="15-">
@@ -3901,7 +3901,7 @@ Then you can switch them on later if you like. -->
     		<itemgra item_types="height_line_2" order="0-">
       			<polyline color="#000000" width="2"/>
     		</itemgra>
-    		<!-- routing backup 
+    		<!-- routing backup
 		<itemgra item_types="street_route" order="2">
 			<polyline color="#0000a0" width="4"/>
 		</itemgra>
