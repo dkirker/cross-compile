@@ -4,7 +4,7 @@ SRC_SVN_REV := http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR := /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 BINARY_GIT := git@git.webos-internals.org:/applications/navit.git
 NAVIT_VERSION := `sed -nre "/AC_INIT\(navit,/ s/.* ([0-9\.]+).*\)/\1/ p" build/src/configure.in`
-VERSION := 4133
+VERSION := 4148
 
 include ../../../support/download.mk
 
@@ -73,19 +73,20 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	find build/$*/${APP_DIR} -name "*.*a" -print0 | xargs -0 rm
 	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
 	mkdir -p build/$*/${APP_DIR}/dist_files/
-	cp files/appinfo.json.in build/$*/${APP_DIR}/appinfo.json.in
-#	cp files/jail_app.conf build/$*/${APP_DIR}/jail_app.conf
-	cp files/Icon.png build/$*/${APP_DIR}/Icon.png
-	cp files/navit.sh build/$*/${APP_DIR}/navit.sh
-	cp files/navit*.xml build/$*/${APP_DIR}/dist_files/
-	cp files/osd_*.png build/$*/${APP_DIR}/share/navit/xpm/
-	cp -f files/poi_png/*.png build/$*/${APP_DIR}/share/navit/xpm/
+	cp    files/appinfo.json.in build/$*/${APP_DIR}/appinfo.json.in
+#	cp    files/jail_app.conf build/$*/${APP_DIR}/jail_app.conf
+	cp    files/Icon.png build/$*/${APP_DIR}/Icon.png
+	cp    files/navit.sh build/$*/${APP_DIR}/navit.sh
+	cp -R files/dist_files/ build/$*/${APP_DIR}/dist_files/
+	cp    files/osd_*.png build/$*/${APP_DIR}/share/navit/xpm/
+	mkdir -p build/$*/${APP_DIR}/share/navit/xpm/poi/
+	cp    files/poi_png/*.png build/$*/${APP_DIR}/share/navit/xpm/poi/
 	mkdir -p build/$*/${APP_DIR}/share/navit/xpm/skin/
-	cp files/skin/*.png build/$*/${APP_DIR}/share/navit/xpm/skin/
+	cp    files/skin/*.png build/$*/${APP_DIR}/share/navit/xpm/skin/
 	mkdir -p build/$*/${APP_DIR}/share/navit/xpm/PreNav/
-	cp files/PreNav/*.png build/$*/${APP_DIR}/share/navit/xpm/PreNav/
+	cp    files/PreNav/*.png build/$*/${APP_DIR}/share/navit/xpm/PreNav/
 	mkdir -p build/$*/${APP_DIR}/.fonts
-	cp build/$*/src/navit/fonts/*.ttf build/$*/${APP_DIR}/.fonts/
+	cp    build/$*/src/navit/fonts/*.ttf build/$*/${APP_DIR}/.fonts/
 	>$@
 
 build/.package:
