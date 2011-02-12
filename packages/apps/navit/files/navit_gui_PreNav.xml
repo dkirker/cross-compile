@@ -38,7 +38,7 @@ Vehicle</text></img>
 			<img src='gui_vehicle' onclick='setting_vehicle()'><text>Vehicle</text></img>
 			<img src='gui_display' onclick='setting_layout()'><text>Layout</text></img>
 			<img src='gui_rules' onclick='setting_rules()'><text>Rules</text></img>
-			<img src='gui_maps' onclick='setting_maps()'><text>Karten</text></img>
+			<img src='gui_maps' onclick='setting_maps()'><text>Maps</text></img>
 			<img src='gui_about'  onclick='about()'><text>About</text></img>
 		</a>
 	</html>
