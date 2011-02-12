@@ -27,22 +27,28 @@ then
 	sed -i -re "s/\/media\/internal\/MapsNavit/\$NAVIT_USER_DATADIR\/maps/" $NAVIT_USER_DATADIR/navit.xml
 fi
 
-for s in $APP_DIR/dist_files/*.xml
+(cd $APP_DIR/dist_files/; find) | while read l
 do
-	d="$NAVIT_USER_DATADIR/$(basename $s)"
+	s="$APP_DIR/dist_files/${l}"
+	d="$NAVIT_USER_DATADIR/${l}"
 
-	if [ ! -f "${d}.md5sum" ]
-	then
-		md5sum "$d" > "${d}.md5sum"
-	fi
-
-	if md5sum -c "${d}.md5sum"
-	then
-		mv "$d" "${d}.old"
-		cp "$s" "$d"
-		md5sum "$d" > "${d}.md5sum"
+	if [ -d "${s}" ]
+ 	then
+		test ! -d "${d}" && mkdir -p "${d}"
 	else
-		cp "$s" "${d}.new"
+		if [ ! -f "${d}.md5sum" ]
+		then
+			md5sum "${d}" > "${d}.md5sum"
+		fi
+
+		if md5sum -c "${d}.md5sum"
+		then
+			mv "${d}" "${d}.old"
+			cp "${s}" "${d}"
+			md5sum "${d}" > "${d}.md5sum"
+		else
+			cp "${s}" "${d}.new"
+		fi
 	fi
 done
 

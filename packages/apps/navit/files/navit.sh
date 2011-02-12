@@ -45,6 +45,6 @@ then
 	rmdir /media/internal/.app-storage/file_.media.cryptofs.apps.usr.palm.applications.org.webosinternals.navit_0
 fi
 
-test -e $NAVIT_USER_DATADIR/navit.xml || cp $APP_DIR/dist_files/navit*.xml $NAVIT_USER_DATADIR/                                                                 
+test -e $NAVIT_USER_DATADIR/navit.xml || cp -R $APP_DIR/dist_files/* $NAVIT_USER_DATADIR/                                                                 
 pgrep "^navit$" || exec $APP_DIR/bin/navit -c $NAVIT_USER_DATADIR/navit.xml 2>&1 | tee -a $NAVIT_LOGFILE
 

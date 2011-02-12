@@ -1,0 +1,46 @@
+<!-- osd items allow to position display and control items directly on top of the map: -->
+
+<!-- http://wiki.navit-project.org/index.php/OSD_Layouts -->
+<osd enabled="yes" type="navigation_next_turn"
+	x="0" y="0"	w="60"	h="60"	align="0"
+   	background_color="#000000cc" icon_src="$NAVIT_SHAREDIR/xpm/%s_wh_48_48.png" />
+<osd enabled="yes" type="text" label="${navigation.item[1].length[named]}"
+	x="0" y="60" w="100" h="25" align="0"
+ 	background_color="#000000cc" font_size="300"/>
+
+<osd enabled="yes" type="text" label="${tracking.item.street_name} ${tracking.item.street_name_systematic}"
+	x="60"	y="0"	w="280"	h="30"	align="4"
+	background_color="#000000cc" font_size="300"/>
+<osd enabled="yes" type="text" label="${navigation.item[1].street_name} ${navigation.item[1].street_name_systematic}"
+	x="60"	y="30" w="280"	h="30"	align="4"
+	background_color="#000000cc" font_size="300"/>
+
+<osd enabled="yes" type="text" label="${vehicle.position_speed} / ${tracking.item.route_speed}"
+ 	x="-180"	y="60"	w="180" h="25"	align="8"
+ 	background_color="#000000cc" font_size="280"/>
+<osd enabled="yes" type="button" command="zoom_in()"
+	x="-64"	y="-84"
+	src="osd_zoom_in.png"/>
+<osd enabled="yes" type="button" command="zoom_out()"
+	x="0"	y="-84"
+	src="osd_zoom_out.png"/>
+<osd enabled="yes" type="toggle_announcer"
+	x="-64"	y="-148" w="64"	h="64"
+	icon_src="$NAVIT_SHAREDIR/xpm/%s_64_64.png"
+	background_color="#000000cc" />
+<osd enabled="yes" type="button" command="zoom_to_route()"
+	x="0" y="-148" w="64" h="64"
+	src="osd_zoom_to_route.png"/>
+<osd enabled="yes" type="text" label="R: ${vehicle.position_radius}m"
+ 	x="64"	y="-45"	w="192" h="25"	align="0"
+ 	background_color="#000000cc" font_size="280"/>
+<osd enabled="yes" type="text" label="ETA: ${navigation.item.destination_time[arrival]}"
+ 	x="0"	y="-20"	w="100"	h="20"	align="4"
+ 	background_color="#000000cc" font_size="200" />
+<osd enabled="yes" type="text" label="TL: ${navigation.item.destination_time[remaining]}"
+ 	x="100" y="-20" w="100"	h="20"	align="4"
+ 	background_color="#000000cc" font_size="200" />
+<osd enabled="yes" type="text" label="Dist: ${navigation.item.destination_length[named]}"
+ 	x="200" y="-20" w="120" h="20"	align="4"
+ 	background_color="#000000cc" font_size="200" />
+

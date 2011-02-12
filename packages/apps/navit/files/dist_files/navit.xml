@@ -76,9 +76,10 @@
 		<!-- Pre OSD based on http://wiki.navit-project.org/index.php/OSD_Layouts#nibbler01_v0.2_for_Netbook_.26_widescreen -->
 		<!-- <xi:include href="$NAVIT_USER_DATADIR/navit_gui_pre.xml"/> -->
 		<!-- OSD made by Stefan G. / AndrejDelany -->
-		<xi:include href="$NAVIT_USER_DATADIR/navit_gui_PreNav.xml"/>
 
-		<xi:include href="$NAVIT_USER_DATADIR/navit_layout.xml"/>
-		<xi:include href="$NAVIT_USER_DATADIR/navit_vehicleprofile.xml"/>
+		<xi:include href="$NAVIT_USER_DATADIR/guis/*.xml"/>
+		<xi:include href="$NAVIT_USER_DATADIR/osds/*.xml"/>
+		<xi:include href="$NAVIT_USER_DATADIR/layouts/*.xml"/>
+		<xi:include href="$NAVIT_USER_DATADIR/vehicle-profiles/*.xml"/>
 	</navit>
 </config>
