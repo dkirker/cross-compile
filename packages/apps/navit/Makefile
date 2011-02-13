@@ -72,12 +72,12 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	( cd build/$*/src ; ${SB2} $(MAKE) -j8 && ${SB2} make -j8 DESTDIR=`pwd`/.. install )
 	find build/$*/${APP_DIR} -name "*.*a" -print0 | xargs -0 rm
 	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
-	mkdir -p build/$*/${APP_DIR}/dist_files/
 	cp    files/appinfo.json.in build/$*/${APP_DIR}/appinfo.json.in
-#	cp    files/jail_app.conf build/$*/${APP_DIR}/jail_app.conf
+#	cp    files/package-sig.crt build/$*/${APP_DIR}/
+#	cp    files/jail_app.conf* build/$*/${APP_DIR}/
 	cp    files/Icon.png build/$*/${APP_DIR}/Icon.png
 	cp    files/navit.sh build/$*/${APP_DIR}/navit.sh
-	cp -R files/dist_files/ build/$*/${APP_DIR}/dist_files/
+	cp -R files/dist_files/ build/$*/${APP_DIR}/
 	cp    files/osd_*.png build/$*/${APP_DIR}/share/navit/xpm/
 	mkdir -p build/$*/${APP_DIR}/share/navit/xpm/poi/
 	cp    files/poi_png/*.png build/$*/${APP_DIR}/share/navit/xpm/poi/
@@ -95,7 +95,8 @@ build/.package:
 	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp    build/armv7/${APP_DIR}/appinfo.json.in build/package/all
-#	cp    build/armv7/${APP_DIR}/jail_app.conf build/package/all
+#	cp    build/armv7/${APP_DIR}/package-sig.crt build/package/all
+#	cp    build/armv7/${APP_DIR}/jail_app.conf* build/package/all
 	cp    build/armv7/${APP_DIR}/Icon.png build/package/all
 	cp    build/armv7/${APP_DIR}/navit.sh build/package/all
 	cp -R build/armv7/${APP_DIR}/dist_files build/package/all
