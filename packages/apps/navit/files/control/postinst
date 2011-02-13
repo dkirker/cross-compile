@@ -10,6 +10,40 @@ NAVIT_USER_DATADIR=/media/internal/appdata/$APP_ID
 
 mkdir -p $NAVIT_USER_DATADIR/maps
 
+# Check if there where any mods to the old files and remove them if not
+LEGACY_FILES="navit_layout.xml navit_vehicleprofile.xml
+	navit_gui_PreNav.xml navit_gui_pre.xml navit_gui.xml"
+result=$(
+ for f in navit.xml $LEGACY_FILES
+ do
+	 d=$NAVIT_USER_DATADIR/$f
+
+	 if [ -e ${d} -a -e ${d}.md5sum ] && md5sum -c "${d}.md5sum" >/dev/null
+	 then
+		 echo -n "1"
+	 elif [ -e ${d} -a ! -e ${d}.md5sum ]
+	 then
+		 echo -n "1"
+	 elif [ ! -e ${d} ]
+	 then
+		 echo -n "1"
+	 else
+		 echo -n "0"
+	 fi
+ done
+)
+
+if [ $result == "111111" ]
+then
+	for f in $LEGACY_FILES
+	do
+		mv $NAVIT_USER_DATADIR/$f $NAVIT_USER_DATADIR/$f.old
+		rm -f $NAVIT_USER_DATADIR/$f.new
+		rm -f $NAVIT_USER_DATADIR/$f.md5sum
+	done
+fi
+###
+
 (cd $APP_DIR/dist_files/; find) | while read l
 do
 	s="$APP_DIR/dist_files/${l}"
@@ -26,9 +60,14 @@ do
 		
 		elif md5sum -c "${d}.md5sum"
 		then
-			mv "${d}" "${d}.old"
-			cp "${s}" "${d}"
-			md5sum "${d}" > "${d}.md5sum"
+			old_md5=$(cut -d ' ' -f 1 "${d}.md5sum")
+			new_md5=$(md5sum ${s} | cut -d ' ' -f 1)
+			if [ $old_md5 != $new_md5 ]
+			then
+				mv "${d}" "${d}.old"
+				cp "${s}" "${d}"
+				md5sum "${d}" > "${d}.md5sum"
+			fi
 		else
 			cp "${s}" "${d}.new"
 		fi

@@ -35,6 +35,15 @@ fi
 echo "------------------------- Start Navit ----------------------------------" >> $NAVIT_LOGFILE
 date >> $NAVIT_LOGFILE
 
-test -e $NAVIT_USER_DATADIR/navit.xml || cp -R $APP_DIR/dist_files/* $NAVIT_USER_DATADIR/                                                                 
+if [ ! -e $NAVIT_USER_DATADIR/navit.xml ]
+then
+	cp -R $APP_DIR/dist_files/* $NAVIT_USER_DATADIR/
+	find $NAVIT_USER_DATADIR -name "*.xml" | \
+		while read l
+		do
+			md5sum ${l} > ${l}.md5sum
+		done
+fi
+
 pgrep "^navit$" || exec $APP_DIR/bin/navit -c $NAVIT_USER_DATADIR/navit.xml 2>&1 | tee -a $NAVIT_LOGFILE
 
