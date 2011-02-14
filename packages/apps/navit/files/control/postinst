@@ -37,7 +37,8 @@ if [ $result == "111111" ]
 then
 	for f in $LEGACY_FILES
 	do
-		mv $NAVIT_USER_DATADIR/$f $NAVIT_USER_DATADIR/$f.old
+		test -e $NAVIT_USER_DATADIR/$f && \
+			mv $NAVIT_USER_DATADIR/$f $NAVIT_USER_DATADIR/$f.old
 		rm -f $NAVIT_USER_DATADIR/$f.new
 		rm -f $NAVIT_USER_DATADIR/$f.md5sum
 	done
