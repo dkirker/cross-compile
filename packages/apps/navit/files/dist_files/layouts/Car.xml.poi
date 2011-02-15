@@ -1,19 +1,19 @@
 <!-- ****************** POI definition for profile "car" ****************************** -->
 <!-- Order: 15~30kmh, 14~60km, 13~90km -->
 <layer name="POI Symbols">
-    	<itemgra item_types="mini_roundabout" order="12-">
-      		<icon src="poi/mini_roundabout.png"/>
+    	<itemgra item_types="mini_roundabout" order="13-">
+      		<icon src="mini_roundabout.png"/>
     	</itemgra>
-    	<itemgra item_types="turning_circle" order="12-">
-      		<icon src="poi/mini_roundabout.png"/>
+    	<itemgra item_types="turning_circle" order="13-">
+      		<icon src="mini_roundabout.png"/>
     	</itemgra>
     	<itemgra item_types="poi_airport" order="5-">
       		<icon src="poi/airport.png"/>
     	</itemgra>
-    	<itemgra item_types="town_ghost" order="14-">
+    	<itemgra item_types="town_ghost" order="15-">
       		<icon src="poi/ghost_town.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_hotel"  order="13-">
+    	<itemgra item_types="poi_hotel"  order="15-">
       		<icon src="poi/hotel.png"/>
     	</itemgra>
     	<itemgra item_types="poi_car_parking" order="13-">
@@ -28,22 +28,22 @@
     	<itemgra item_types="poi_shopping" order="15-">
       		<icon src="poi/shopping.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_attraction" order="14-">
+    	<itemgra item_types="poi_attraction" order="15-">
       		<icon src="poi/attraction.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_cafe" order="14-">
+    	<itemgra item_types="poi_cafe" order="15-">
       		<icon src="poi/cafe.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_bar" order="14-">
+    	<itemgra item_types="poi_bar" order="15-">
       		<icon src="poi/bar.png"/>
     	</itemgra>
     	<itemgra item_types="poi_bridge" order="10-">
       		<icon src="poi/bridge.png"/>
     	</itemgra>
     	<itemgra item_types="highway_exit" order="13-">
-      		<icon src="poi/exit.png"/>
+      		<icon src="highway_exit.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_camp_rv" order="14-">
+    	<itemgra item_types="poi_camp_rv" order="15-">
       		<icon src="poi/camping.png"/>
     	</itemgra>
     	<itemgra item_types="poi_museum_history" order="15-">
@@ -52,10 +52,10 @@
     	<itemgra item_types="poi_hospital" order="15-">
       		<icon src="poi/hospital.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_dining" order="14-">
+    	<itemgra item_types="poi_dining" order="15-">
       		<icon src="poi/dining.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_fastfood" order="13-">
+    	<itemgra item_types="poi_fastfood" order="15-">
       		<icon src="poi/fastfood.png"/>
     	</itemgra>
     	<itemgra item_types="poi_police" order="10-">
@@ -67,10 +67,10 @@
     	<itemgra item_types="poi_autoservice" order="15-">
       		<icon src="poi/car_dealer.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_bank" order="14-">
+    	<itemgra item_types="poi_bank" order="15-">
       		<icon src="poi/bank.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_bay" order="10-">
+    	<itemgra item_types="poi_bay" order="15-">
       		<icon src="poi/bay.png"/>
     	</itemgra>
     	<itemgra item_types="poi_bend" order="15-">
@@ -88,7 +88,7 @@
     	<itemgra item_types="poi_bus_station" order="14-">
       		<icon src="poi/bus.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_bus_stop"  order="14-">
+    	<itemgra item_types="poi_bus_stop" order="14-">
       		<icon src="poi/bus.png"/>
     	</itemgra>
     	<itemgra item_types="poi_business_service" order="15-">
@@ -106,10 +106,10 @@
     	<itemgra item_types="poi_cemetery" order="15-">
       		<icon src="poi/cemetery.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_church" order="14-">
+    	<itemgra item_types="poi_church" order="15-">
       		<icon src="poi/church.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_cinema" order="14-">
+    	<itemgra item_types="poi_cinema" order="15-">
       		<icon src="poi/cinema.png"/>
     	</itemgra>
     	<itemgra item_types="poi_communication" order="15-">
@@ -151,7 +151,7 @@
     	<itemgra item_types="poi_firebrigade" order="15-">
       		<icon src="poi/firebrigade.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_fish" order="9-">
+    	<itemgra item_types="poi_fish" order="15-">
       		<icon src="poi/fish.png"/>
     	</itemgra>
     	<itemgra item_types="poi_forbidden_area" order="10-">
@@ -163,13 +163,13 @@
     	<itemgra item_types="poi_golf" order="15-">
       		<icon src="poi/golf.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_government_building" order="13-">
+    	<itemgra item_types="poi_government_building" order="15-">
       		<icon src="poi/goverment_building.png"/>
     	</itemgra>
     	<itemgra item_types="poi_height" order="15-">
       		<icon src="poi/height.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_heliport" order="14-">
+    	<itemgra item_types="poi_heliport" order="15-">
       		<icon src="poi/heliport.png"/>
     	</itemgra>
     	<itemgra item_types="poi_hotspring" order="15-">
@@ -208,7 +208,7 @@
     	<itemgra item_types="poi_manmade_feature" order="15-">
       		<icon src="poi/manmade_feature.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_marine" order="13-">
+    	<itemgra item_types="poi_marine" order="15-">
       		<icon src="poi/marine.png"/>
     	</itemgra>
     	<itemgra item_types="poi_marine_type" order="15-">
@@ -217,16 +217,16 @@
     	<itemgra item_types="poi_mark" order="10-">
       		<icon src="poi/mark.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_military" order="10-">
+    	<itemgra item_types="poi_military" order="15-">
       		<icon src="poi/military.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_mine" order="13-">
+    	<itemgra item_types="poi_mine" order="15-">
       		<icon src="poi/mine.png"/>
     	</itemgra>
     	<itemgra item_types="poi_nondangerous" order="15-">
       		<icon src="poi/nondangerous.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_oil_field" order="13-">
+    	<itemgra item_types="poi_oil_field" order="15-">
       		<icon src="poi/oil_field.png"/>
     	</itemgra>
     	<itemgra item_types="poi_peak" order="13-">
@@ -235,43 +235,28 @@
     	<itemgra item_types="poi_personal_service" order="15-">
       		<icon src="poi/personal_service.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_pharmacy" order="13-">
+    	<itemgra item_types="poi_pharmacy" order="15-">
       		<icon src="poi/pharmacy.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_post_office,poi_post_box" order="14-">
+    	<itemgra item_types="poi_post_office,poi_post_box" order="15-">
       		<icon src="poi/post.png"/>
     	</itemgra>
     	<itemgra item_types="poi_public_office" order="15-">
       		<icon src="poi/public_office.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_rail_halt" order="16-">
-      		<circle color="#ff0000" radius="3" width="3"/>
-      		<circle color="#000000" radius="5" width="2" text_size="8"/>
-    	</itemgra>
-    	<itemgra item_types="poi_rail_station" order="9-">
-      		<circle color="#ff0000" radius="3" width="3"/>
-      		<circle color="#000000" radius="6" width="2" text_size="8"/>
-    	</itemgra>
-    	<itemgra item_types="poi_rail_tram_stop" order="13-14">
-      		<circle color="#ff0000" radius="2" width="2"/>
-    	</itemgra>
-    	<itemgra item_types="poi_rail_tram_stop" order="15-">
-      		<circle color="#ff0000" radius="3" width="3"/>
-      		<circle color="#606060" radius="5" width="2" text_size="8"/>
-    	</itemgra>
     	<itemgra item_types="poi_repair_service" order="15-">
       		<icon src="poi/repair_service.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_resort" order="14-">
+    	<itemgra item_types="poi_resort" order="15-">
       		<icon src="poi/resort.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_restaurant" order="14-">
+    	<itemgra item_types="poi_restaurant" order="15-">
       		<icon src="poi/restaurant.png"/>
     	</itemgra>
     	<itemgra item_types="poi_restricted_area" order="10-">
       		<icon src="poi/restricted_area.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_restroom" order="10-">
+    	<itemgra item_types="poi_restroom" order="15-">
       		<icon src="poi/restroom.png"/>
     	</itemgra>
     	<itemgra item_types="poi_sailing" order="15-">
@@ -313,7 +298,7 @@
     	<itemgra item_types="poi_shower" order="15-">
       		<icon src="poi/shower.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_skiing" order="14-">
+    	<itemgra item_types="poi_skiing" order="15-">
       		<icon src="poi/skiing.png"/>
     	</itemgra>
     	<itemgra item_types="poi_social_service" order="15-">
@@ -322,13 +307,13 @@
     	<itemgra item_types="poi_sounding" order="15-">
       		<icon src="poi/sounding.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_sport" order="14-">
+    	<itemgra item_types="poi_sport" order="15-">
       		<icon src="poi/sport.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_stadium" order="14-">
+    	<itemgra item_types="poi_stadium" order="15-">
       		<icon src="poi/stadium.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_swimming" order="14-">
+    	<itemgra item_types="poi_swimming" order="15-">
       		<icon src="poi/swimming.png"/>
     	</itemgra>
     	<itemgra item_types="poi_telephone" order="15-">
@@ -355,7 +340,7 @@
     	<itemgra item_types="poi_tunnel" order="10-">
       		<icon src="poi/tunnel.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_wine" order="14-">
+    	<itemgra item_types="poi_wine" order="15-">
       		<icon src="poi/wine.png"/>
     	</itemgra>
     	<itemgra item_types="poi_worship" order="15-">
@@ -364,10 +349,10 @@
     	<itemgra item_types="poi_wrecker" order="15-">
       		<icon src="poi/wrecker.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_zoo" order="13-">
+    	<itemgra item_types="poi_zoo" order="15-">
       		<icon src="poi/zoo.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_picnic" order="14-">
+    	<itemgra item_types="poi_picnic" order="15-">
       		<icon src="poi/picnic.png"/>
     	</itemgra>
     	<itemgra item_types="poi_gc_multi" order="15-">
@@ -395,9 +380,9 @@
       		<icon src="poi/gc_webcam.png"/>
     	</itemgra>
     	<itemgra item_types="traffic_signals" order="10-">
-      		<icon src="poi/traffic_signals.png"/>
+      		<icon src="traffic_signals.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_wifi" order="14-">
+    	<itemgra item_types="poi_wifi" order="15-">
       		<icon src="poi/wifi.png"/>
     	</itemgra>
     	<itemgra item_types="poi_image" order="15-">
@@ -407,16 +392,16 @@
     	<itemgra item_types="poi_bench" order="15-">
       		<icon src="poi/bench.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_biergarten" order="14-">
+    	<itemgra item_types="poi_biergarten" order="15-">
       		<icon src="poi/biergarten.png"/>
     	</itemgra>
     	<itemgra item_types="poi_boundary_stone" order="16-">
-      		<icon src="poi/boundary_stone.png"/>
+      		<icon src="boundary_stone.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_castle" order="14-">
+    	<itemgra item_types="poi_castle" order="15-">
       		<icon src="poi/castle.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_ruins" order="14-">
+    	<itemgra item_types="poi_ruins" order="15-">
       		<icon src="poi/ruins.png"/>
     	</itemgra>
     	<itemgra item_types="poi_hunting_stand" order="15-">
@@ -437,10 +422,10 @@
     	<itemgra item_types="poi_potable_water" order="15-">
       		<icon src="poi/potable_water.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_toilets" order="13-">
+    	<itemgra item_types="poi_toilets" order="15-">
       		<icon src="poi/toilets.png"/>
     	</itemgra>
-    	<itemgra item_types="poi_viewpoint" order="14-">
+    	<itemgra item_types="poi_viewpoint" order="15-">
       		<icon src="poi/viewpoint.png"/>
     	</itemgra>
     	<itemgra item_types="tec_common" order="9-">
@@ -451,6 +436,21 @@
     	</itemgra>
     	<itemgra item_types="vehicle_pedestrian" order="9-">
       		<icon src="poi/gui_vehicle_pedestrian_32_32.png" />
+    	</itemgra>
+    	<itemgra item_types="poi_rail_halt" order="16-">
+      		<circle color="#ff0000" radius="3" width="3"/>
+      		<circle color="#000000" radius="5" width="2" text_size="8"/>
+    	</itemgra>
+    	<itemgra item_types="poi_rail_station" order="9-">
+      		<circle color="#ff0000" radius="3" width="3"/>
+      		<circle color="#000000" radius="6" width="2" text_size="8"/>
+    	</itemgra>
+    	<itemgra item_types="poi_rail_tram_stop" order="13-14">
+      		<circle color="#ff0000" radius="2" width="2"/>
+    	</itemgra>
+    	<itemgra item_types="poi_rail_tram_stop" order="15-">
+      		<circle color="#ff0000" radius="3" width="3"/>
+      		<circle color="#606060" radius="5" width="2" text_size="8"/>
     	</itemgra>
     	<itemgra item_types="poi_custom0,poi_custom1,poi_custom2,poi_custom3,poi_custom4,poi_custom5,poi_custom6,poi_custom7,poi_custom8,poi_custom9,poi_customa,poi_customb,poi_customc,poi_customd,poi_custome,poi_customf" order="16-">
       		<icon src="poi/%s" />
@@ -465,4 +465,3 @@
       		<circle color="#606060" radius="0" width="0" text_size="10"/>
     	</itemgra>
 </layer>
-
