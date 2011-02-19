@@ -88,7 +88,7 @@ do
 	fi
 done
 
-(start-stop-daemon -x $APP_DIR/bin/navit -K && sleep 1s) || true
+killall -w $APP_DIR/bin/navit || true
 jailer -D -i $APP_ID
 
 ## Modify jail
