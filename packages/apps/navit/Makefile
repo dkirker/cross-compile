@@ -4,7 +4,7 @@ SRC_SVN_REV := http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR := /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 BINARY_GIT := git@git.webos-internals.org:/applications/navit.git
 NAVIT_VERSION := `sed -nre "/AC_INIT\(navit,/ s/.* ([0-9\.]+).*\)/\1/ p" build/src/configure.in`
-VERSION := 4183
+VERSION := 4208
 
 include ../../../support/download.mk
 
@@ -14,7 +14,7 @@ include ../../../support/cross-compile.mk
 
 stage-local:: build/${ARCH}.built
 
-.PHONY: unpack package package-commit clean
+.PHONY: unpack package package-commit package-tar clean
 
 unpack: build/.unpacked
 package: build/.package
@@ -120,6 +120,12 @@ package-commit:
 	(cd git && rm -rf * )
 	cp -a build/package/* git/
 	(cd git && git add * && git commit -m "automatic revision" -a )
+
+package-tar:
+	(cd build/package && \
+		tar -c * | gzip --best \
+		> ../../../../../../build/downloads/navit-0.5.0.${VERSION}-0.tar.gz)
+
 
 clean:
 	( cd build/${ARCH} ; ${SB2} $(MAKE) clean )
