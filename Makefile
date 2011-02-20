@@ -29,44 +29,61 @@ setup: toolchain rootfs map depend
 
 ARCH_LIST = armv7 armv6 i686
 
-TOOLCHAIN_LIST = $(foreach arch,$(ARCH_LIST),toolchain-$(arch))
-ROOTFS_LIST    = $(foreach arch,$(ARCH_LIST),   rootfs-$(arch))
-MAP_LIST       = $(foreach arch,$(ARCH_LIST),      map-$(arch))
-STAGE_LIST     = $(foreach arch,$(ARCH_LIST),    stage-$(arch))
+TOOLCHAIN_ARCH_LIST = $(foreach arch,$(ARCH_LIST),toolchain-$(arch))
+ROOTFS_ARCH_LIST    = $(foreach arch,$(ARCH_LIST),   rootfs-$(arch))
+MAP_ARCH_LIST       = $(foreach arch,$(ARCH_LIST),      map-$(arch))
+SETUP_LIST     = $(foreach arch,$(ARCH_LIST),    setup-$(arch))
+STAGE_ARCH_LIST     = $(foreach arch,$(ARCH_LIST),    stage-$(arch))
 
 .PHONY: toolchain
-toolchain: $(TOOLCHAIN_LIST)
+toolchain: $(TOOLCHAIN_ARCH_LIST)
 
 .PHONY: rootfs
-rootfs: $(ROOTFS_LIST)
+rootfs: $(ROOTFS_ARCH_LIST)
 
 .PHONY: map
-map: $(MAP_LIST)
+map: $(MAP_ARCH_LIST)
 
 .PHONY: stage
-stage: $(STAGE_LIST)
+stage: $(STAGE_ARCH_LIST)
 
 
 #
 # Secondary targets (architecture-by-architecture)
 #
 
-.PHONY: $(TOOLCHAIN_LIST)
-toolchain-armv7: toolchain/arm-2007q3/.unpacked \
-	   	 toolchain/arm-2009q1/.unpacked
-toolchain-armv6: toolchain-armv7
-toolchain-i686: toolchain/i686-unknown-linux-gnu/.unpacked \
-	        doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
-
-.PHONY: $(ROOTFS_LIST)
-$(ROOTFS_LIST): rootfs-% : rootfs/%/.unpacked
-
-.PHONY: $(MAP_LIST)
-$(MAP_LIST) : map-% : staging/mapping-%
-
-.PHONY: $(STAGE_LIST)
-$(STAGE_LIST) : stage-% : toolchain-% rootfs-% map-% depend
+.PHONY: $(STAGE_ARCH_LIST)
+$(STAGE_ARCH_LIST) : \
+stage-% : toolchain-% rootfs-% map-% depend
 	$(MAKE) -C . ARCH=$* INC_DEPS=1 buildall
+
+.PHONY: $(SETUP_LIST)
+$(SETUP_LIST) : \
+setup-% : toolchain-% rootfs-% map-% depend
+
+#
+# Alternate secondary targets (only for step-by-step build on one architectures)
+#
+
+.PHONY: $(TOOLCHAIN_ARCH_LIST)
+toolchain-armv7: toolchain-arm-1.x \
+	   	 toolchain-arm-2.x
+toolchain-armv6: toolchain-arm-1.x
+toolchain-i686:  toolchain-emu-1.x
+
+.PHONY: toolchain-arm-1.x toolchain-arm-2.x toolchain-emu-1.x
+toolchain-arm-1.x: toolchain/arm-2007q3/.unpacked
+toolchain-arm-2.x: toolchain/arm-2009q1/.unpacked
+toolchain-emu-1.x: toolchain/i686-unknown-linux-gnu/.unpacked \
+	           doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
+
+.PHONY: $(ROOTFS_ARCH_LIST)
+$(ROOTFS_ARCH_LIST): \
+rootfs-% : rootfs/%/.unpacked
+
+.PHONY: $(MAP_ARCH_LIST)
+$(MAP_ARCH_LIST) : \
+map-% : staging/mapping-%
 
 include support/build.mk
 
