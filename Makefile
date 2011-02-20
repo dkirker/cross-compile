@@ -10,32 +10,72 @@ MD5SUM	 = md5sum
 FAKEROOT = fakeroot
 endif
 
-.PHONY: all
-all: toolchain rootfs stage
+#
+# Primary targets (all architectures at once)
+#
 
+# Build everything (so long you probably do not want to do it!)
+.PHONY: all
+all: stage
+
+# Prepare everything for build but stop just before going for it
+# (so one can later build a package & rely on dependencies for just what is needed)
 .PHONY: setup
-setup: toolchain rootfs staging/mapping-armv7 staging/mapping-armv6 staging/mapping-i686
+setup: toolchain rootfs map depend
+
+#
+# Alternate primary targets (only for step-by-step build on all architectures)
+#
+
+ARCH_LIST = armv7 armv6 i686
+
+TOOLCHAIN_LIST = $(foreach arch,$(ARCH_LIST),toolchain-$(arch))
+ROOTFS_LIST    = $(foreach arch,$(ARCH_LIST),   rootfs-$(arch))
+MAP_LIST       = $(foreach arch,$(ARCH_LIST),      map-$(arch))
+STAGE_LIST     = $(foreach arch,$(ARCH_LIST),    stage-$(arch))
 
 .PHONY: toolchain
-toolchain: toolchain/arm-2009q1/.unpacked \
-	   toolchain/arm-2007q3/.unpacked \
-	   toolchain/i686-unknown-linux-gnu/.unpacked \
-           doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
+toolchain: $(TOOLCHAIN_LIST)
 
 .PHONY: rootfs
-rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked # rootfs/i686/.unpacked
+rootfs: $(ROOTFS_LIST)
+
+.PHONY: map
+map: $(MAP_LIST)
 
 .PHONY: stage
-stage: toolchain rootfs
-	$(MAKE) -C . staging-armv6
-	$(MAKE) -C . staging-armv7
-#	$(MAKE) -C . staging-i686
+stage: $(STAGE_LIST)
+
+
+#
+# Secondary targets (architecture-by-architecture)
+#
+
+.PHONY: $(TOOLCHAIN_LIST)
+toolchain-armv7: toolchain/arm-2007q3/.unpacked \
+	   	 toolchain/arm-2009q1/.unpacked
+toolchain-armv6: toolchain-armv7
+toolchain-i686: toolchain/i686-unknown-linux-gnu/.unpacked \
+	        doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
+
+.PHONY: $(ROOTFS_LIST)
+$(ROOTFS_LIST): rootfs-% : rootfs/%/.unpacked
+
+.PHONY: $(MAP_LIST)
+$(MAP_LIST) : map-% : staging/mapping-%
+
+.PHONY: $(STAGE_LIST)
+$(STAGE_LIST) : stage-% : toolchain-% rootfs-% map-% depend
+	$(MAKE) -C . ARCH=$* INC_DEPS=1 buildall
 
 include support/build.mk
 
-.PHONY: staging-%
-staging-%: toolchain rootfs staging/mapping-% $(dep_files)
-	$(MAKE) -C . ARCH=$* INC_DEPS=1 buildall
+.PHONY: depend
+depend: $(dep_files)
+
+#
+# Targets & rules to satisfy secondary targets
+#
 
 .PRECIOUS: staging/mapping-%
 staging/mapping-%:

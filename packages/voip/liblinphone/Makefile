@@ -1,6 +1,6 @@
 NAME = linphone
 VERSION = 3.3.2
-DEPENDS = common/libosip2 common/libeXosip2 media/gsm media/speex common/ncurses common/readline
+DEPENDS = voip/libosip2 voip/libeXosip2 media/gsm media/libspeex media/pulseaudio common/ncurses common/readline
 
 SRC_TGZ = http://download.savannah.gnu.org/releases/linphone/3.3.x/sources/linphone-3.3.2.tar.gz
 PATCH   = linphone-3.3.2-fix.patch
@@ -30,14 +30,17 @@ include ../../../support/cross-compile.mk
 
 configure:: build/${ARCH}.configured
 stage-local:: build/${ARCH}.built
-install:: build/${ARCH}.installed
+#install:: build/${ARCH}.installed
 
 .SECONDARY: build/${ARCH}.aclocal
 build/%.aclocal: build/.unpacked
 	rm -f $@
 	rm -rf build/$*
 	mkdir -p build/$*
-	cp -R build/src/* build/$*
+# cp is notorious for compromising last-modification time...
+# so rely on tar instead until autoconf/automake weirdness is fixed!
+#	cp -R build/src/* build/$*
+	(cd build/src; tar cf - .) | (cd build/$*; tar xf -)
 #	( cd build/$* ; ${SB2} ./autogen.sh )
 	touch $@
 
@@ -47,18 +50,16 @@ build/%.configured: build/${ARCH}.aclocal
 	( cd build/$* ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ ${CFLAGS_OPT}" \
 	        LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
 	        PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
-	        ./configure --prefix=${INSTALL_PREFIX} --enable-gtk_ui=no --disable-video --disable-strict --disable-nls --enable-alsa=no --enable-pulseaudio=yes --enable-oss=no --with-gsm=${INSTALL_PREFIX} )
+	        ./configure --prefix=${INSTALL_PREFIX} --enable-gtk_ui=no --disable-video --disable-strict --disable-nls --enable-alsa=no --enable-oss=no --enable-pulseaudio=yes --with-gsm=${INSTALL_PREFIX} )
 	touch $@
 
 
 build/%.built: build/${ARCH}.configured
 	rm -f $@
-	( cd build/$* ; ${SB2} $(MAKE) )
-	touch $@
-
-build/%.installed: build/${ARCH}.built
-	rm -f $@
-	( cd build/$* ; ${SB2} $(MAKE) install prefix=${INSTALL_PREFIX} )
+	( cd build/$* ; ${SB2} $(MAKE) CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ ${CFLAGS_OPT}" \
+	        LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
+	        PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig \
+	        install prefix=${INSTALL_PREFIX} )
 	touch $@
 
 clobber::
