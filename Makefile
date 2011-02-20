@@ -32,7 +32,7 @@ ARCH_LIST = armv7 armv6 i686
 TOOLCHAIN_ARCH_LIST = $(foreach arch,$(ARCH_LIST),toolchain-$(arch))
 ROOTFS_ARCH_LIST    = $(foreach arch,$(ARCH_LIST),   rootfs-$(arch))
 MAP_ARCH_LIST       = $(foreach arch,$(ARCH_LIST),      map-$(arch))
-SETUP_LIST     = $(foreach arch,$(ARCH_LIST),    setup-$(arch))
+SETUP_ARCH_LIST     = $(foreach arch,$(ARCH_LIST),    setup-$(arch))
 STAGE_ARCH_LIST     = $(foreach arch,$(ARCH_LIST),    stage-$(arch))
 
 .PHONY: toolchain
@@ -53,12 +53,10 @@ stage: $(STAGE_ARCH_LIST)
 #
 
 .PHONY: $(STAGE_ARCH_LIST)
-$(STAGE_ARCH_LIST) : \
 stage-% : toolchain-% rootfs-% map-% depend
 	$(MAKE) -C . ARCH=$* INC_DEPS=1 buildall
 
-.PHONY: $(SETUP_LIST)
-$(SETUP_LIST) : \
+.PHONY: $(SETUP_ARCH_LIST)
 setup-% : toolchain-% rootfs-% map-% depend
 
 #
@@ -78,11 +76,9 @@ toolchain-emu-1.x: toolchain/i686-unknown-linux-gnu/.unpacked \
 	           doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
 
 .PHONY: $(ROOTFS_ARCH_LIST)
-$(ROOTFS_ARCH_LIST): \
 rootfs-% : rootfs/%/.unpacked
 
 .PHONY: $(MAP_ARCH_LIST)
-$(MAP_ARCH_LIST) : \
 map-% : staging/mapping-%
 
 include support/build.mk

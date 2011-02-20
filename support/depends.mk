@@ -15,12 +15,16 @@ PKG_PATH = $(PKG_CAT)/$(PKG_NAME)
 #build_common/bison: <deps>
 #and
 #clobber_common/bison:
+#
+# NB: we intentionally split $$(MAKE) in 2 concatenated strings so to fool make
+#     (it would otherwise execute those lines *only* on a "make -n", nasty...)
+#
 .depends.inc: Makefile ../../../support/depends.mk
 	@echo 'build_$(PKG_PATH): $(addprefix build_,$(DEPENDS))' > $@
-	@echo '	$$(MAKE) -C packages/$(PKG_PATH) stage-local ARCH=$$(ARCH)' >> $@
+	@echo '	$$''(MAKE) -C packages/$(PKG_PATH) stage-local ARCH=$$(ARCH)' >> $@
 	@echo >> $@
 	@echo 'clobber_$(PKG_PATH): ' >> $@
-	@echo '	$$(MAKE) -C packages/$(PKG_PATH) clobber ARCH=$$(ARCH)' >> $@
+	@echo '	$$''(MAKE) -C packages/$(PKG_PATH) clobber ARCH=$$(ARCH)' >> $@
 
 .PHONY: stage build_deps
 
