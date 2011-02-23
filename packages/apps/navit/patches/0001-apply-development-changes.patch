@@ -1,4 +1,4 @@
-From 6b6c4465cb911ca0746da3381810ee2e1e508cd4 Mon Sep 17 00:00:00 2001
+From 52bffa7bf09e8a02dc92794e77fdd11368e6ef54 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Thu, 6 Jan 2011 19:41:33 +0100
 Subject: [PATCH 1/3] apply-development-changes
@@ -11,7 +11,7 @@ Subject: [PATCH 1/3] apply-development-changes
  4 files changed, 120 insertions(+), 53 deletions(-)
 
 diff --git a/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c b/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c
-index b2c0e2a..99ad5d1 100644
+index 0522818..bef6e9c 100644
 --- a/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c
 +++ b/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c
 @@ -27,6 +27,7 @@
@@ -24,14 +24,14 @@ index b2c0e2a..99ad5d1 100644
  #include "speech.h"
 @@ -59,6 +60,8 @@ static struct speech_methods speechd_meth = {
  static struct speech_priv *
- speechd_new(struct speech_methods *meth, struct attr **attrs) {
+ speechd_new(struct speech_methods *meth, struct attr **attrs, struct attr *attr) {
  	struct speech_priv *this;
 +	struct attr *volume, *language;
 +	char *lang_str;
  	SPDConnection *conn;
  
  	conn = spd_open("navit","main",NULL,SPD_MODE_SINGLE);
-@@ -68,7 +71,33 @@ speechd_new(struct speech_methods *meth, struct attr **attrs) {
+@@ -68,7 +71,33 @@ speechd_new(struct speech_methods *meth, struct attr **attrs, struct attr *attr)
  	if (this) {
  		this->conn=conn;
  		*meth=speechd_meth;
@@ -287,5 +287,5 @@ index 98fd51b..dee51c7 100644
  msgstr "Fenstermodus"
  
 -- 
-1.7.2.3
+1.7.4.1
 

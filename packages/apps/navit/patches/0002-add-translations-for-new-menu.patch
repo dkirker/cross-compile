@@ -1,4 +1,4 @@
-From 33917a4b4c41420f914d2536fa7a776bb18cbd7e Mon Sep 17 00:00:00 2001
+From 6cae6b9069030ea4ce556b50d9d23cd7b9a3c03c Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Sat, 15 Jan 2011 10:42:03 +0100
 Subject: [PATCH 2/3] add translations for new menu
@@ -57,5 +57,5 @@ index dee51c7..a6681d2 100644
  "Fahrzeug"
  
 -- 
-1.7.2.3
+1.7.4.1
 

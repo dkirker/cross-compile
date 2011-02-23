@@ -1,0 +1,14 @@
+{
+    "role": {
+    "exeName":"@APP_DIR@/@APP_ID@/bin/navit",
+    "type": "regular",
+    "allowedNames": ["@APP_ID@","","com.palm.cplite"]
+    },
+    "permissions": [
+        {
+         "service":"@APP_ID@",
+ "outbound":["com.palm.audio","com.palm.mediad","com.palm.hidd","com.palm.applicationManager","com.palm.location","com.palm.deviceprofile","com.palm.connectionmanager"]
+        }
+    ]
+}
+
