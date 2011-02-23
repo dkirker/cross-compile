@@ -1,6 +1,6 @@
 {
     "role": {
-    "exeName":"@APP_DIR@/@APP_ID@/bin/navit",
+    "exeName":"@APP_DIR@/bin/navit",
     "type": "regular",
     "allowedNames": ["@APP_ID@",""]
     },
