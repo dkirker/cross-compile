@@ -103,9 +103,9 @@ EOT
 
 if [ -d /var/palm/ls2/roles ]	# we are on WebOS >= 2.0
 then
-	sed -re "s/@APP_DIR@/${APP_DIR}/g" -e "s/@APP_ID@/${APP_ID}/g" \
+	sed -re "s@\@APP_DIR\@@${APP_DIR}@g" -e "s@\@APP_ID\@@${APP_ID}@g" \
 		$APP_DIR/dist_files/ls2-prv.json > $LS2_PRV
-	sed -re "s/@APP_DIR@/${APP_DIR}/g" -e "s/@APP_ID@/${APP_ID}/g" \
+	sed -re "s@\@APP_DIR\@@${APP_DIR}@g" -e "s@\@APP_ID\@@${APP_ID}@g" \
 		$APP_DIR/dist_files/ls2-pub.json > $LS2_PUB
 fi
 
