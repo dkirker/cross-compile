@@ -1,7 +1,7 @@
-From 6cae6b9069030ea4ce556b50d9d23cd7b9a3c03c Mon Sep 17 00:00:00 2001
+From 5046598d348c6daabbfb206461ffc36b8c70613e Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Sat, 15 Jan 2011 10:42:03 +0100
-Subject: [PATCH 2/3] add translations for new menu
+Subject: [PATCH 2/4] add translations for new menu
 
 ---
  navit/navit/navit_shipped.xml |    5 +++++

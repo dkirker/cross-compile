@@ -1,7 +1,7 @@
-From 52bffa7bf09e8a02dc92794e77fdd11368e6ef54 Mon Sep 17 00:00:00 2001
+From d90489847b88590e268a420548d02f1f384455d0 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Thu, 6 Jan 2011 19:41:33 +0100
-Subject: [PATCH 1/3] apply-development-changes
+Subject: [PATCH 1/4] apply-development-changes
 
 ---
  .../speech_dispatcher/speech_speech_dispatcher.c   |   29 +++++

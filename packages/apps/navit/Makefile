@@ -4,7 +4,7 @@ SRC_SVN_REV := http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR := /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 BINARY_GIT := git@git.webos-internals.org:/applications/navit.git
 NAVIT_VERSION := `sed -nre "/AC_INIT\(navit,/ s/.* ([0-9\.]+).*\)/\1/ p" build/src/configure.in`
-VERSION := 4238
+VERSION := 4254
 
 include ../../../support/download.mk
 
@@ -68,16 +68,19 @@ build/%.configured: build/${ARCH}.aclocal
 build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	rm -f $@
 	( cd build/$*/src ; ${SB2} cp `which libtool` . )
-	( cd build/$*/src/navit/xpm/ ; $(MAKE) -j8 )
+	#( cd build/$*/src/navit/xpm/ ; $(MAKE) -j8 )
 	( cd build/$*/src ; ${SB2} $(MAKE) -j8 && ${SB2} make -j8 DESTDIR=`pwd`/.. install )
 	find build/$*/${APP_DIR} -name "*.*a" -print0 | xargs -0 rm
 	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
 	cp    files/appinfo.json.in build/$*/${APP_DIR}/appinfo.json.in
+	cp    files/ls2-*.json build/$*/${APP_DIR}/
 #	cp    files/package-sig.crt build/$*/${APP_DIR}/
 #	cp    files/jail_app.conf* build/$*/${APP_DIR}/
 	cp    files/Icon.png build/$*/${APP_DIR}/Icon.png
 	cp    files/navit.sh build/$*/${APP_DIR}/navit.sh
 	cp -R files/dist_files/ build/$*/${APP_DIR}/
+	mkdir -p build/$*/${APP_DIR}/share/navit/
+	cp -R files/xpm/ build/$*/${APP_DIR}/share/navit/
 	cp    files/osd_*.png build/$*/${APP_DIR}/share/navit/xpm/
 	mkdir -p build/$*/${APP_DIR}/share/navit/xpm/poi/
 	cp    files/poi_png/*.png build/$*/${APP_DIR}/share/navit/xpm/poi/
@@ -95,6 +98,7 @@ build/.package:
 	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp    build/armv7/${APP_DIR}/appinfo.json.in build/package/all
+	cp    build/armv7/${APP_DIR}/ls2-*.json build/package/all
 #	cp    build/armv7/${APP_DIR}/package-sig.crt build/package/all
 #	cp    build/armv7/${APP_DIR}/jail_app.conf* build/package/all
 	cp    build/armv7/${APP_DIR}/Icon.png build/package/all

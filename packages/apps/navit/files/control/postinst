@@ -64,11 +64,13 @@ fi
 do
 	s="$APP_DIR/dist_files/${l}"
 	d="$NAVIT_USER_DATADIR/${l}"
+	dir="$(dirname $d)"
 
 	if [ -d "${s}" ]
  	then
 		test ! -d "${d}" && mkdir -p "${d}"
 	else
+		mkdir -p "${dir}" || true
 		if [ ! -f "${d}.md5sum" ]
 		then
 			cp "${s}" "${d}"
@@ -104,9 +106,9 @@ EOT
 if [ -d /var/palm/ls2/roles ]	# we are on WebOS >= 2.0
 then
 	sed -re "s@\@APP_DIR\@@${APP_DIR}@g" -e "s@\@APP_ID\@@${APP_ID}@g" \
-		$APP_DIR/dist_files/ls2-prv.json > $LS2_PRV
+		$APP_DIR/ls2-prv.json > $LS2_PRV
 	sed -re "s@\@APP_DIR\@@${APP_DIR}@g" -e "s@\@APP_ID\@@${APP_ID}@g" \
-		$APP_DIR/dist_files/ls2-pub.json > $LS2_PUB
+		$APP_DIR/ls2-pub.json > $LS2_PUB
 fi
 
 if grep -q ":${APP_ID}:" $JAILUSERS
