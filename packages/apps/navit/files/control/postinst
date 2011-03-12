@@ -101,6 +101,7 @@ cat <<EOT >>$JAIL_DST
 link:/media/internal/.widk/usr/lib/locale:/usr/lib/locale
 mount:ro:/etc/fonts
 mount:rw:/var/cache
+copy:/etc/localtime
 EOT
 
 if [ -d /var/palm/ls2/roles ]	# we are on WebOS >= 2.0
@@ -116,7 +117,7 @@ then
 	sed -i -re "/:${APP_ID}:/ s@/etc/jail_.*\.conf@${JAIL_DST}@" $JAILUSERS
 else
 	UID=$(rnd)
-	GID=$(head -1 $JAILUSERS | cut -d: -f2)
+	GID=5000 #$(head -1 $JAILUSERS | cut -d: -f2)
 	echo "${UID}:${GID}:${APP_ID}:/var/palm/jail/${APP_ID}:${JAIL_DST}" >> $JAILUSERS
 fi
 
