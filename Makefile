@@ -92,6 +92,20 @@ doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg: doctors/Palm_webOS_SDK.1.4.5.465.dmg
 	sudo umount toolchain/sdk/mnt
 	rm -rf toolchain/sdk
 
+doctors/Palm_webOS_SDK-Mac-2.1.0.519.mpkg: doctors/Palm_webOS_SDK.2.1.0.519.dmg
+	rm -rf $@
+	${MAKE} -C packages/host/dmg2img stage-local
+	mkdir -p toolchain/sdk/mnt
+	packages/host/dmg2img/build/src/dmg2img -p 4 \
+		-i $< \
+		-o toolchain/sdk/Palm_webOS_SDK.2.1.0.519.hfs
+	sudo mount -t hfsplus -o loop \
+		toolchain/sdk/Palm_webOS_SDK.2.1.0.519.hfs \
+		toolchain/sdk/mnt
+	cp -rip toolchain/sdk/mnt/Palm_webOS_SDK-Mac-2.1.0.519.mpkg $@
+	sudo umount toolchain/sdk/mnt
+	rm -rf toolchain/sdk
+
 downloads/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
 	mkdir -p downloads
 	wget -O $@ http://www.codesourcery.com/sgpp/lite/arm/portal/package4571/public/arm-none-linux-gnueabi/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
@@ -119,6 +133,14 @@ doctors/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb:
 doctors/Palm_webOS_SDK.1.4.5.465.dmg:
 	mkdir -p doctors
 	wget -O $@ http://cdn.downloads.palm.com/sdkdownloads/1.4.5.465/sdkBinaries/Palm_webOS_SDK.1.4.5.465.dmg
+
+doctors/webosdoctorp100ueu-wr-2.1.0.jar:
+	mkdir -p doctors
+	wget -O $@ http://palm.cdnetworks.net/rom/preplus/p210r0d03142011/eudep210rod/webosdoctorp101ueu-wr.jar
+
+doctors/palm-sdk_2.1.0-svn409992-pho519_i386.deb:
+	mkdir -p doctors
+	wget -O $@ https://cdn.downloads.palm.com/sdkdownloads/2.1.0.519/sdkBinaries/palm-sdk_2.1.0-svn409992-pho519_i386.deb
 
 .PHONY: clean
 clean:
