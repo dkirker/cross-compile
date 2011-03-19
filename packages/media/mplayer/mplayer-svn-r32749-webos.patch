@@ -1833,7 +1833,7 @@ diff -Nuar mplayer_orig//make.sh mplayer/make.sh
 --- mplayer_orig//make.sh	1970-01-01 08:00:00.000000000 +0800
 +++ mplayer/make.sh	2010-12-31 17:52:45.328963276 +0800
 @@ -0,0 +1 @@
-+./configure --target=arm-linux --cc=arm-linux-gnueabi-gcc --enable-cross-compile --host-cc=gcc --with-sdl-config=/usr/local/bin/sdl-config --enable-sdl --disable-neon --disable-fbdev --disable-v4l2 --enable-real --disable-inet6 --disable-alsa --disable-pulse --disable-libcdio --disable-tv --disable-vm --disable-vcd --disable-xv  --disable-directfb --extra-libs="-Wl,--allow-shlib-undefined -Wl,-rpath-link /usr/local/lib -L /usr/local/lib -lGLESv2 -lpdl"
++./configure --target=arm-linux --cc=arm-linux-gnueabi-gcc --enable-cross-compile --host-cc=gcc --with-sdl-config=/usr/local/bin/sdl-config --enable-sdl --disable-neon --disable-fbdev --disable-v4l2 --enable-real --disable-inet6 --disable-alsa --disable-pulse --disable-ossaudio --disable-libcdio --disable-tv --disable-vm --disable-vcd --disable-xv  --disable-directfb --extra-libs="-Wl,--allow-shlib-undefined -Wl,-rpath-link /usr/local/lib -L /usr/local/lib -lGLESv2 -lpdl"
 Index: mplayer/Makefile
 ===================================================================
 --- mplayer/Makefile	(revision 32749)
