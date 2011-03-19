@@ -30,7 +30,16 @@ stage: toolchain rootfs
 	$(MAKE) -C . staging-armv7
 	$(MAKE) -C . staging-armv6
 
+.PHONY: download
+download: toolchain rootfs
+	$(MAKE) -C . download-armv7
+	$(MAKE) -C . download-armv6
+
 include support/build.mk
+
+.PHONY: download-%
+download-%: toolchain rootfs staging/mapping-% $(dep_files)
+	$(MAKE) -C . ARCH=$* INC_DEPS=1 downloadall
 
 .PHONY: staging-%
 staging-%: toolchain rootfs staging/mapping-% $(dep_files)
