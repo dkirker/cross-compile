@@ -10,3 +10,5 @@ stage-local::
 
 clobber::
 
+download::
+

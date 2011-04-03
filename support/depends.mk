@@ -21,6 +21,9 @@ PKG_PATH = $(PKG_CAT)/$(PKG_NAME)
 	@echo >> $@
 	@echo 'clobber_$(PKG_PATH): ' >> $@
 	@echo '	$$(MAKE) -C packages/$(PKG_PATH) clobber ARCH=$$(ARCH)' >> $@
+	@echo >> $@
+	@echo 'download_$(PKG_PATH): ' >> $@
+	@echo '	$$(MAKE) -C packages/$(PKG_PATH) download ARCH=$$(ARCH)' >> $@
 
 .PHONY: stage build_deps
 

@@ -31,3 +31,5 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
+
+download::

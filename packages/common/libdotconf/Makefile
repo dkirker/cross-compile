@@ -1,6 +1,6 @@
 NAME = libdotconf
 VERSION = 1.3
-SRC_TGZ = http://files.opentts.org/dotconf/dotconf-${VERSION}.tar.gz
+SRC_TGZ = http://www.mirrorservice.org/sites/www.ibiblio.org/gentoo/distfiles/dotconf-${VERSION}.tar.gz
 
 include ../../../support/download.mk
 
@@ -33,7 +33,7 @@ build/%.built: build/.unpacked
 	( cd build/$* ; ${SB2} auto$(MAKE) --add-missing --copy --gnu )
 	( cd build/$* ; ${SB2} export CFLAGS=-I${INSTALL_PREFIX}/include && \
 		export LDFLAGS="-L${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib" && \
- 	        ${SB2} ./configure --prefix=${INSTALL_PREFIX} )
+		${SB2} ./configure --prefix=${INSTALL_PREFIX} )
 	( cd build/$* ; ${SB2} $(MAKE) install )
 	mkdir -p build/$*/media/internal/.local/lib
 	cp build/$*/src/.libs/libdotconf.so.0 build/$*/media/internal/.local/lib/

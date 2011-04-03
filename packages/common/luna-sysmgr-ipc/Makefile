@@ -9,3 +9,4 @@ stage-local::
 
 clobber::
 
+download::

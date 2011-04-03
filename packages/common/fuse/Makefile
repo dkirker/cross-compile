@@ -14,6 +14,7 @@ build/.unpacked:
 	curl ${SRC_GZ} | tar -C build -zxf -
 	mv build/${NAME}-${VERSION} build/src
 	curl ${PATCH} | zcat | patch -d build/src -p1
+	patch -d build/src -p1 < ltmain.sh.patch
 	touch $@
 
 include ../../../support/staging.mk
@@ -35,3 +36,5 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
+
+download::

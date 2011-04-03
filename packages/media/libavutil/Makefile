@@ -10,3 +10,5 @@ stage-local::
 
 clobber::
 	rm -rf ${STAGING_DIR}/usr/lib/${NAME}.so
+
+download::

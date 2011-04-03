@@ -37,6 +37,9 @@ all_targets = $(addprefix build_,$(package_dirs))
 #all the clobber targets
 clobber_targets = $(addprefix clobber_,$(package_dirs))
 
+#all the download targets
+download_targets = $(addprefix download_,$(package_dirs))
+
 #And, after all that fun has been had, finally we include the depeneds rules
 #we created and now we just have to invoke them as required
 ifneq ("$(INC_DEPS)","")
@@ -48,6 +51,7 @@ endif
 #Rule to build every package using the dependencies we've created
 buildall: $(all_targets)
 clobberall: $(clobber_targets)
+downloadall: $(download_targets)
 
 #This rule tries every package by itself after a fresh clobber
 #to help draw out packages with missing deps
