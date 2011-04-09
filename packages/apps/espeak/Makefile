@@ -1,9 +1,10 @@
 NAME    = espeak
-VERSION = 1.44.05
-SRC_ZIP = http://downloads.sourceforge.net/project/espeak/espeak/espeak-1.44/espeak-1.44.05-source.zip
+VERSION = 1.45.03
+SRC_ZIP = http://downloads.sourceforge.net/project/espeak/espeak/espeak-1.45/espeak-1.45.03-source.zip
 #SRC_SVN = http://espeak.svn.sourceforge.net/svnroot/espeak/trunk
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.speechd
 #REVISION= 252
+SO_VER  = 1.1.45
 
 include ../../../support/download.mk
 
@@ -31,15 +32,15 @@ build/%.built: build/.unpacked
 	( cd build/$*/src ; ${SB2} $(MAKE) PREFIX=${APP_DIR} \
 		AUDIO="" all)
 	mkdir -p build/$*/${APP_DIR}/bin build/$*/${APP_DIR}/lib build/$*/${APP_DIR}/share
-	( ${SB2} cp -dR build/$*/src/speak build/$*/${APP_DIR}/bin/ )
-	( ${SB2} cp -dR build/$*/src/espeak build/$*/${APP_DIR}/bin/ )
-	( ${SB2} cp -dR build/$*/src/libespeak.so.1* build/$*/${APP_DIR}/lib/libespeak.so.1 )
-	( ${SB2} cp -dR build/src/espeak-data build/$*/${APP_DIR}/share/ )
-	( ${SB2} cp -dR files/* build/$*/${APP_DIR}/ )
+	cp -dR build/$*/src/speak build/$*/${APP_DIR}/bin/
+	cp -dR build/$*/src/espeak build/$*/${APP_DIR}/bin/
+	cp -dR build/$*/src/libespeak.so.${SO_VER} build/$*/${APP_DIR}/lib/libespeak.so.1
+	cp -dR build/src/espeak-data build/$*/${APP_DIR}/share/
+	cp -dR files/* build/$*/${APP_DIR}/
 	( ${SB2} mkdir -p ${INSTALL_PREFIX}/lib )
-	( ${SB2} rm -f ${INSTALL_PREFIX}/lib/libespeak.* )
+	( ${SB2} rm -f  ${INSTALL_PREFIX}/lib/libespeak.* )
 	( ${SB2} cp -dR build/$*/src/libespeak.so* ${INSTALL_PREFIX}/lib )
-	( ${SB2} ln -fs libespeak.so.1.1.44 ${INSTALL_PREFIX}/lib/libespeak.so )
+	( ${SB2} ln -fs libespeak.so.${SO_VER} ${INSTALL_PREFIX}/lib/libespeak.so )
 	( ${SB2} rm -rf ${INSTALL_PREFIX}/include/espeak )
 	( ${SB2} mkdir -p ${INSTALL_PREFIX}/include/espeak )
 	( ${SB2} cp -dR build/$*/src/speak_lib.h ${INSTALL_PREFIX}/include/espeak )
