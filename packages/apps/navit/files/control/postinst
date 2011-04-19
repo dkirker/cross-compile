@@ -102,8 +102,6 @@ link:/media/internal/.widk/usr/lib/locale:/usr/lib/locale
 mount:ro:/etc/fonts
 mount:rw:/var/cache
 copy:/etc/localtime
-# We need /opt for gdb
-mount:ro:/opt
 EOT
 
 if [ -d /var/palm/ls2/roles ]	# we are on WebOS >= 2.0
