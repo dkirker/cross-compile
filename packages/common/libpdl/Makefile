@@ -8,8 +8,9 @@ LIBRARIES = build/opt/PalmPDK/device/lib/libpdl.so
 unpack: build/.unpacked
 
 build/.unpacked: ../../../doctors/Palm_webOS_SDK-Mac-${VERSION}.pkg
+	rm -rf build
 	mkdir -p build
-	( cd build ; xar -x -f ../$< palmpdk.pkg )
+	( cd build ; 7z x -y ../$< palmpdk.pkg )
 	( cd build ; gunzip -c palmpdk.pkg/Payload | cpio -i )
 	touch $@
 

@@ -89,30 +89,19 @@ toolchain/i686-unknown-linux-gnu/.unpacked: downloads/i686-unknown-linux-gnu-1.4
 	touch $@
 
 doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg: doctors/Palm_webOS_SDK.1.4.5.465.dmg
-	${MAKE} -C packages/host/dmg2img stage-local
+	rm -rf $@
 	mkdir -p toolchain/sdk/mnt
-	packages/host/dmg2img/build/src/dmg2img -p 4 \
-		-i doctors/Palm_webOS_SDK.1.4.5.465.dmg \
-		-o toolchain/sdk/Palm_webOS_SDK.1.4.5.465.hfs
-	sudo mount -t hfsplus -o loop \
-		toolchain/sdk/Palm_webOS_SDK.1.4.5.465.hfs \
-		toolchain/sdk/mnt
-	cp toolchain/sdk/mnt/Palm_webOS_SDK-Mac-1.4.5.465.pkg $@
-	sudo umount toolchain/sdk/mnt
+	7z x -y -so $< 4.hfs > toolchain/sdk/Palm_webOS_SDK.1.4.5.465.hfs
+	7z x -y -otoolchain/sdk toolchain/sdk/Palm_webOS_SDK.1.4.5.465.hfs Palm_webOS_SDK/Palm_webOS_SDK-Mac-1.4.5.465.pkg
+	mv toolchain/sdk/Palm_webOS_SDK/Palm_webOS_SDK-Mac-1.4.5.465.pkg $@
 	rm -rf toolchain/sdk
 
 doctors/Palm_webOS_SDK-Mac-2.1.0.519.mpkg: doctors/Palm_webOS_SDK.2.1.0.519.dmg
 	rm -rf $@
-	${MAKE} -C packages/host/dmg2img stage-local
 	mkdir -p toolchain/sdk/mnt
-	packages/host/dmg2img/build/src/dmg2img -p 4 \
-		-i $< \
-		-o toolchain/sdk/Palm_webOS_SDK.2.1.0.519.hfs
-	sudo mount -t hfsplus -o loop \
-		toolchain/sdk/Palm_webOS_SDK.2.1.0.519.hfs \
-		toolchain/sdk/mnt
-	cp -rip toolchain/sdk/mnt/Palm_webOS_SDK-Mac-2.1.0.519.mpkg $@
-	sudo umount toolchain/sdk/mnt
+	7z x -y -so $< 4.hfs > toolchain/sdk/Palm_webOS_SDK.2.1.0.519.hfs
+	7z x -y -otoolchain/sdk toolchain/sdk/Palm_webOS_SDK.2.1.0.519.hfs Palm_webOS_SDK/Palm_webOS_SDK-Mac-2.1.0.519.mpkg
+	mv toolchain/sdk/Palm_webOS_SDK/Palm_webOS_SDK-Mac-2.1.0.519.mpkg $@
 	rm -rf toolchain/sdk
 
 downloads/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
@@ -142,6 +131,10 @@ doctors/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb:
 doctors/Palm_webOS_SDK.1.4.5.465.dmg:
 	mkdir -p doctors
 	wget -O $@ http://cdn.downloads.palm.com/sdkdownloads/1.4.5.465/sdkBinaries/Palm_webOS_SDK.1.4.5.465.dmg
+
+doctors/Palm_webOS_SDK.2.1.0.519.dmg:
+	mkdir -p doctors
+	wget -O $@ http://cdn.downloads.palm.com/sdkdownloads/2.1.0.519/sdkBinaries/Palm_webOS_SDK.2.1.0.519.dmg
 
 doctors/webosdoctorp100ueu-wr-2.1.0.jar:
 	mkdir -p doctors
