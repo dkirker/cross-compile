@@ -68,9 +68,17 @@ rootfs/armv6/.unpacked: doctors/webosdoctorp121ewweu-wr-1.4.5.jar
 
 rootfs/i686/.unpacked: doctors/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb
 	rm -rf rootfs/i686
-	mkdir -p rootfs/i686
-#	%%% Need to do something here %%%
-	false
+	mkdir -p rootfs/i686/extract/mnt
+	7z x -y -so $< data.tar.gz | tar -C rootfs/i686/extract -xz
+	7z x -y -orootfs/i686/extract "rootfs/i686/extract/opt/PalmSDK/Current/share/emulator/images/SDK 1.4.5.465.vmdk.zip"
+	VBoxManage clonehd rootfs/i686/extract/nova-cust-image-sdk1457.vmdk rootfs/i686/extract/nova-cust-image-sdk1457.raw --format RAW
+	rm -f rootfs/i686/extract/nova-cust-image-sdk1457.vmdk
+	7z x -y -orootfs/i686/extract rootfs/i686/extract/nova-cust-image-sdk1457.raw 0.img
+	rm -f rootfs/i686/extract/nova-cust-image-sdk1457.raw
+	sudo mount -oloop rootfs/i686/extract/0.img rootfs/i686/extract/mnt
+	sudo tar -C rootfs/i686/extract/mnt -c . | tar -C rootfs/i686 -x || true	# Get rid of rights
+	sudo umount rootfs/i686/extract/mnt
+	rm -rf rootfs/i686/extract
 	touch $@
 
 toolchain/arm-2009q1/.unpacked: downloads/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
