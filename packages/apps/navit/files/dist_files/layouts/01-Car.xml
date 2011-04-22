@@ -5,7 +5,7 @@
 <!-- ******************************************************************************************* -->
 <!-- Remove the 'nightlayout="Car-dark"' statment in the next line,
      if Navit should not switch the layout automatically in the evening -->
-<layout name="Car" nightlayout="Car-dark" color="#ffefb7" font="Prelude">
+<layout name="Car" nightlayout="Car-dark" color="#ffefb7" font="Liberation Sans">
   	
 	<xi:include href="$NAVIT_USER_DATADIR/layouts/cursor.xml.car"/>
 
