@@ -33,13 +33,14 @@ DEPENDS = \
 
 SRC_GIT = git://git.webos-internals.org/x11/xserver.git
 
-#So this isn't the best, but here we hardcode X to
-#expect to be in this directory.  This is where X looks all it's
-#components and what-have-you, and helps avoid modifying
-#the device's /usr/local
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xorg-server
+ifndef XAPPID
+XAPPID = xorg-server
+endif
+
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.$(XAPPID)
+
 #We add this to the -rpath so we have the libs X wants
-XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
+XLIBS = $(APP_DIR)/xlib
 
 include ../../../support/download.mk
 
@@ -59,7 +60,7 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/${ARCH}.built
+build: build/${ARCH}-$(XAPPID).built
 
 build/%.built: build/.unpacked
 	rm -f $@

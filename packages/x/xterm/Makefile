@@ -13,6 +13,7 @@ DEPENDS = \
 
 SRC_TGZ = ftp://invisible-island.net/${NAME}/${NAME}-${VERSION}.tgz
 #We add this to the -rpath so we have the libs X wants
+XAPP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xorg-server
 XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
 
 include ../../../support/download.mk
