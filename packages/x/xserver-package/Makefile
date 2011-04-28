@@ -51,9 +51,12 @@ build/%.built: src-update
 	( cp ../xkbcomp/build/$*-$(XAPPID)/xkbcomp build/$*/bin/ )
 	( cp ../xkbset/build/$*-$(XAPPID)/xkbset build/$*/bin/ )
 	( cd ../xkeyboardconfig/build/$*/ && make install prefix=$(PWD)/build/$*/ exec_prefix=$(PWD)/build/$* )
-	( cp ../xkeyboardconfig/build/$*/keymap/palm-pre* build/$*/share/X11/xkb/keymap/ )
-	( cp ../xkeyboardconfig/build/$*/symbols/palm-pre* build/$*/share/X11/xkb/symbols/ )
-	( cp ../xkeyboardconfig/build/$*/keycodes/palm-pre* build/$*/share/X11/xkb/keycodes/ )
+	( cp ../xkeyboardconfig/build/$*/keymap/palm-pre build/$*/share/X11/xkb/keymap/ )
+	( cp ../xkeyboardconfig/build/$*/symbols/palm-pre build/$*/share/X11/xkb/symbols/ )
+	( cp ../xkeyboardconfig/build/$*/keycodes/palm-pre build/$*/share/X11/xkb/keycodes/ )
+	( cp ../xkeyboardconfig/build/$*/keymap/palm-prex build/$*/share/X11/xkb/keymap/ )
+	( cp ../xkeyboardconfig/build/$*/symbols/palm-prex build/$*/share/X11/xkb/symbols/ )
+	( cp ../xkeyboardconfig/build/$*/keycodes/palm-prex build/$*/share/X11/xkb/keycodes/ )
 	( ${SB2} strip build/$*/bin/* )
 	touch $@
 
