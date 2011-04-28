@@ -46,6 +46,7 @@ build/%.built: src-update
 	( cp -r ../xlib-package/build/$* build/$*/xlib )
 	( mkdir -p build/$*/bin )
 	( cp ../xorg-server/build/$*-$(XAPPID)/hw/kdrive/sdl/Xsdl build/$*/bin/ )
+	( cp ../xorg-server/build/$*-$(XAPPID)/forker build/$*/bin/ )
 	( cp ../xkbcomp/build/$*-$(XAPPID)/xkbcomp build/$*/bin/ )
 	( cd ../xkeyboardconfig/build/$*/ && make install prefix=$(PWD)/build/$*/ exec_prefix=$(PWD)/build/$* )
 	( cp ../xkeyboardconfig/build/$*/keymap/palm-pre build/$*/share/X11/xkb/keymap/ )

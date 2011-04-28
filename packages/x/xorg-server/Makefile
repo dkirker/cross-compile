@@ -83,6 +83,7 @@ build/%.built: build/.unpacked
 		--disable-xvfb \
 		--disable-dri \
 	)
+	( ${SB2} gcc -o build/$*/forker forker.c )
 	[ "${ARCH}" != "armv6" ] || ( cd build/$*/hw/kdrive/sdl ; sed -i "s/^LIBS = /LIBS = -legl13 /" Makefile )
 	( cd build/$* ; ${SB2} $(MAKE))
 	touch $@
