@@ -38,10 +38,9 @@ build/%.built: build/.unpacked
 	( cd build/$* ; ${SB2} \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	./configure \
-		--prefix=${INSTALL_PREFIX} \
+		--prefix=${APP_DIR} \
 	)
 	( cd build/$* ; ${SB2} $(MAKE))
-	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::
