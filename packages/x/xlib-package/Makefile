@@ -30,7 +30,17 @@ DEPENDS = \
 	common/adrenogfx       \
 	common/tisgxgfx        \
 	common/libpdl          \
-	common/libsqlite
+	common/libsqlite       \
+	x/libXaw               \
+	x/libXext              \
+	x/libXft               \
+	x/libXmu               \
+	x/libXpm               \
+	x/libXrender           \
+	x/libxt                \
+	x/libx11               \
+	x/libice               \
+	x/libsm
 
 include ../../../support/staging.mk
 
@@ -52,6 +62,7 @@ XLIBS= \
 	/usr/local/lib/libXaw7.so.7            \
 	/usr/local/lib/libXext.so.6            \
 	/usr/local/lib/libXfont.so.1           \
+	/usr/local/lib/libXft.so.2             \
 	/usr/local/lib/libXmu.so.6             \
 	/usr/local/lib/libXmuu.so.1            \
 	/usr/local/lib/libXpm.so.4             \
