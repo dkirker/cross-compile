@@ -1,7 +1,6 @@
 NAME = xkbset
 VERSION = 0.5
 
-# TODO: What does this dep on?
 DEPENDS = \
 	x/libx11 \
 	x/libxcb \
