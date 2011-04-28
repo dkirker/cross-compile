@@ -5,7 +5,8 @@ DEPENDS = \
 	x/xlib-package \
 	x/xorg-server \
 	x/xkeyboardconfig \
-	x/xkbcomp
+	x/xkbcomp \
+	x/xkbset
 
 # Tell x dependencies to build themselves using this ID
 # This is NOT safe for parallel WIDK builds, hrm.
@@ -48,10 +49,11 @@ build/%.built: src-update
 	( cp ../xorg-server/build/$*-$(XAPPID)/hw/kdrive/sdl/Xsdl build/$*/bin/ )
 	( cp ../xorg-server/build/$*-$(XAPPID)/forker build/$*/bin/ )
 	( cp ../xkbcomp/build/$*-$(XAPPID)/xkbcomp build/$*/bin/ )
+	( cp ../xkbset/build/$*-$(XAPPID)/xkbset build/$*/bin/ )
 	( cd ../xkeyboardconfig/build/$*/ && make install prefix=$(PWD)/build/$*/ exec_prefix=$(PWD)/build/$* )
-	( cp ../xkeyboardconfig/build/$*/keymap/palm-pre build/$*/share/X11/xkb/keymap/ )
-	( cp ../xkeyboardconfig/build/$*/symbols/palm-pre build/$*/share/X11/xkb/symbols/ )
-	( cp ../xkeyboardconfig/build/$*/keycodes/palm-pre build/$*/share/X11/xkb/keycodes/ )
+	( cp ../xkeyboardconfig/build/$*/keymap/palm-pre* build/$*/share/X11/xkb/keymap/ )
+	( cp ../xkeyboardconfig/build/$*/symbols/palm-pre* build/$*/share/X11/xkb/symbols/ )
+	( cp ../xkeyboardconfig/build/$*/keycodes/palm-pre* build/$*/share/X11/xkb/keycodes/ )
 	( ${SB2} strip build/$*/bin/* )
 	touch $@
 
