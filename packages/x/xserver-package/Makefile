@@ -42,7 +42,7 @@ build/%.built: src-update
 	( cp build/src/${ARCH}/start.sh build/$* )
 	( cp build/src/${ARCH}/icon.png build/$* )
 	( cp build/src/${ARCH}/appinfo.json build/$* )
-	( cp -r build/src/${ARCH}/control build/$*/ )
+	( cp build/src/${ARCH}/package.properties build/$* )
 	( cp -r ../xlib-package/build/$* build/$*/xlib )
 	( mkdir -p build/$*/bin )
 	( cp ../xorg-server/build/$*-$(XAPPID)/hw/kdrive/sdl/Xsdl build/$*/bin/ )
@@ -69,7 +69,12 @@ package-commit: clobber stage
 	( cd git && git add . && git commit -am "(Automatic commit)" )
 
 test: stage
-	rsync -avz --no-o --no-g -e ssh build/${ARCH}/ pre:/media/cryptofs/apps/usr/palm/applications/org.webosinternals.${XAPPID}/
+	rm -rf build/ipk
+	mkdir -p build/ipk
+	palm-package -o build/ipk build/armv7
+	#palm-package build/armv6
+	-palm-install -r org.webosinternals.${XAPPID}
+	palm-install build/ipk/*.ipk
 
 clobber::
 	rm -rf build
