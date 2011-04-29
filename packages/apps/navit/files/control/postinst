@@ -110,6 +110,7 @@ then
 		$APP_DIR/ls2-prv.json > $LS2_PRV
 	sed -re "s@\@APP_DIR\@@${APP_DIR}@g" -e "s@\@APP_ID\@@${APP_ID}@g" \
 		$APP_DIR/ls2-pub.json > $LS2_PUB
+	/usr/bin/ls-control scan-services || true
 fi
 
 if grep -q ":${APP_ID}:" $JAILUSERS
