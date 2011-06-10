@@ -2,18 +2,23 @@ NAME = fuse
 VERSION = 2.7.2
 DEPENDS = 
 
-SRC_GZ = http://palm.cdnetworks.net/opensource/1.4.1.1/fuse-2.7.2.tar.gz
-PATCH =  http://palm.cdnetworks.net/opensource/1.4.1.1/fuse-2.7.2-patches.tgz
+SRC_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/fuse-2.7.2.tar.gz
+PATCH_TGZ =  http://palm.cdnetworks.net/opensource/1.4.1.1/fuse-2.7.2-patches.tgz
 
-.PHONY: unpack
+include ../../../support/download.mk
+
+.PHONY: unpack patch
 unpack: build/.unpacked
+patch: build/.patched
 
-build/.unpacked: 
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
-	curl ${SRC_GZ} | tar -C build -zxf -
+	tar -C build -z -x -f $<
 	mv build/${NAME}-${VERSION} build/src
-	curl ${PATCH} | zcat | patch -d build/src -p1
+	${MAKE} SRC_FILE=${PATCH_TGZ} \
+		LOCAL_FILE=${NAME}-${VERSION}-patches.tgz download
+	tar -zxOf ${DL_DIR}/${NAME}-${VERSION}-patches.tgz | patch -d build/src -p1
 	patch -d build/src -p1 < ltmain.sh.patch
 	touch $@
 
@@ -36,5 +41,3 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
-
-download::

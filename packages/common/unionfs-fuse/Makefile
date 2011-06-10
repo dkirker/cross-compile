@@ -4,13 +4,15 @@ DEPENDS = common/fuse
 
 SRC_BZ2 = http://podgorny.cz/unionfs-fuse/releases/unionfs-fuse-0.23.tar.bz2
 
+include ../../../support/download.mk
+
 .PHONY: unpack
 unpack: build/.unpacked
 
-build/.unpacked: 
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	rm -rf build
 	mkdir -p build
-	curl ${SRC_BZ2} | tar -C build -jxf -
+	tar -C build -j -x -f $<
 	mv build/${NAME}-${VERSION} build/src
 	touch $@
 
@@ -31,5 +33,3 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
-
-download::
