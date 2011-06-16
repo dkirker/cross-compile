@@ -27,7 +27,7 @@ build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	( cd build/$* ; ${SB2} configure --prefix=$(INSTALL_PREFIX))
+	( cd build/$* ; ${SB2} ./configure --prefix=$(INSTALL_PREFIX))
 	( cd build/$* ; ${SB2} $(MAKE) )
 	#( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
