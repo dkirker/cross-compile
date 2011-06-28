@@ -37,8 +37,8 @@ build/%.built: build/.unpacked
 	#XXX the libtool which ships with fontconfig generates wierd errors
 	# Using the one from scratchbox works fine right now
 	( cd build/$* ; ${SB2} cp \`which libtool\` .)
-	( cd build/$* ; ${SB2} $(MAKE) SUBDIRS=fontconfig )
-	( cd build/$* ; ${SB2} $(MAKE) SUBDIRS=fontconfig install)
+	( cd build/$* ; ${SB2} $(MAKE) )
+	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::
