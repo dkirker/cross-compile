@@ -32,6 +32,7 @@ DEPENDS = \
 	common/libpdl          \
 	common/libsqlite       \
 	x/libXaw               \
+	x/libXi                \
 	x/libXext              \
 	x/libXft               \
 	x/libXmu               \
@@ -60,6 +61,8 @@ XLIBS= \
 	/usr/local/lib/libXaw.so.7             \
 	/usr/local/lib/libXaw6.so.6            \
 	/usr/local/lib/libXaw7.so.7            \
+	/usr/local/lib/libXi.so.6              \
+	/usr/local/lib/libXi.so.6.1.0          \
 	/usr/local/lib/libXext.so.6            \
 	/usr/local/lib/libXfont.so.1           \
 	/usr/local/lib/libXft.so.2             \
