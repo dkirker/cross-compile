@@ -76,13 +76,17 @@ package-commit: clobber stage
 	-cp -r build/armv6/* git/armv6/
 	( cd git && git add . && git commit -am "(Automatic commit)" )
 
-test: stage
+package:
 	rm -rf build/ipk
 	mkdir -p build/ipk
 	palm-package -o build/ipk build/armv7
 	#palm-package build/armv6
+
+install:
 	-palm-install -r org.webosinternals.${XAPPID}
 	palm-install build/ipk/*.ipk
+
+test: stage package install
 
 clobber::
 	rm -rf build
