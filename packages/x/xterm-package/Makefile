@@ -1,6 +1,6 @@
 # Packages up xterm...
 NAME = xterm-package
-VERSION = 0.3.1
+VERSION = 0.3.5
 DEPENDS = \
 	x/xlib-package \
 	x/xorg-server \
@@ -42,6 +42,7 @@ build/%.built: src-update
 	( rm -rf build/$* )
 	( mkdir -p build/$* )
 	( cp build/src/${ARCH}/start.sh build/$* )
+	( cp build/src/${ARCH}/xecutah.sh build/$* )
 	( cp build/src/${ARCH}/icon.png build/$* )
 	( cp build/src/${ARCH}/appinfo.json build/$* )
 	( cp build/src/${ARCH}/package.properties build/$* )

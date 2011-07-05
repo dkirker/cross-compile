@@ -1,6 +1,6 @@
 # Packages up xserver
 NAME = xserver-package
-VERSION = 0.4.3
+VERSION = 0.5.3
 DEPENDS = \
 	x/xlib-package \
 	x/xorg-server \
@@ -41,6 +41,7 @@ build/%.built: src-update
 	( rm -rf build/$* )
 	( mkdir -p build/$* )
 	( cp build/src/${ARCH}/start.sh build/$* )
+	( cp build/src/${ARCH}/xecutah.sh build/$* )
 	( cp build/src/${ARCH}/set_keymap_later.sh build/$* )
 	( cp build/src/${ARCH}/icon.png build/$* )
 	( cp build/src/${ARCH}/appinfo.json build/$* )
