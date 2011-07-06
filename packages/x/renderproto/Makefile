@@ -1,7 +1,7 @@
 NAME = renderproto
-VERSION = 0.11
+VERSION = 0.11.1
 
-SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
+SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
 

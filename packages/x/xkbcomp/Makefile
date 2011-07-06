@@ -1,9 +1,9 @@
 NAME = xkbcomp
-VERSION = 1.1.1
+VERSION = 1.2.0
 
 DEPENDS = x/libx11 x/xkbfile
 
-SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
+SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
 ifndef XAPPID
 XAPPID = xkbcomp
