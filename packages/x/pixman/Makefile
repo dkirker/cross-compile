@@ -1,5 +1,5 @@
 NAME = pixman
-VERSION = 0.17.8
+VERSION = 0.23.2
 
 DEPENDS = x/fontconfig
 
@@ -33,7 +33,6 @@ build/%.built: build/.unpacked
 	( cd build/$* ; ${SB2} \
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} \
-		--disable-arm-neon \
 		--disable-gtk \
 	)
 	( cd build/$* ; ${SB2} $(MAKE))
