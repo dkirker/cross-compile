@@ -70,8 +70,8 @@ build/%.built: build/.unpacked
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	../src/configure \
 		--prefix=${APP_DIR} \
-		--enable-xsdl \
 		--enable-kdrive \
+		--enable-xsdl \
 		\
 		--disable-xorg \
 		--disable-glx \
