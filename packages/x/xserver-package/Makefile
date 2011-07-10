@@ -1,6 +1,6 @@
 # Packages up xserver
 NAME = xserver-package
-VERSION = 0.5.3
+VERSION = 0.5.4
 DEPENDS = \
 	x/xlib-package \
 	x/xorg-server \
