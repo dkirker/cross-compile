@@ -112,6 +112,14 @@ doctors/Palm_webOS_SDK-Mac-2.1.0.519.mpkg: doctors/Palm_webOS_SDK.2.1.0.519.dmg
 	mv toolchain/sdk/Palm_webOS_SDK/Palm_webOS_SDK-Mac-2.1.0.519.mpkg $@
 	rm -rf toolchain/sdk
 
+doctors/Palm_webOS_SDK-Mac-3.0.0.643.mpkg: doctors/Palm_webOS_SDK.3.0.0.643.dmg
+	rm -rf $@
+	mkdir -p toolchain/sdk/mnt
+	7z x -y -so $< 4.hfs > toolchain/sdk/Palm_webOS_SDK.3.0.0.643.hfs
+	7z x -y -otoolchain/sdk toolchain/sdk/Palm_webOS_SDK.3.0.0.643.hfs Palm_webOS_SDK/Palm_webOS_SDK-Mac-3.0.0.643.mpkg
+	mv toolchain/sdk/Palm_webOS_SDK/Palm_webOS_SDK-Mac-3.0.0.643.mpkg $@
+	rm -rf toolchain/sdk
+
 downloads/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2:
 	mkdir -p downloads
 	wget -O $@ http://www.codesourcery.com/sgpp/lite/arm/portal/package4571/public/arm-none-linux-gnueabi/arm-2009q1-203-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
@@ -143,6 +151,10 @@ doctors/Palm_webOS_SDK.1.4.5.465.dmg:
 doctors/Palm_webOS_SDK.2.1.0.519.dmg:
 	mkdir -p doctors
 	wget -O $@ http://cdn.downloads.palm.com/sdkdownloads/2.1.0.519/sdkBinaries/Palm_webOS_SDK.2.1.0.519.dmg
+
+doctors/Palm_webOS_SDK.3.0.0.643.dmg:
+	mkdir -p doctors
+	wget -O $@ https://cdn.downloads.palm.com/sdkdownloads/3.0.0.643/sdkBinaries/Palm_webOS_SDK.3.0.0.643.dmg
 
 doctors/webosdoctorp100ueu-wr-2.1.0.jar:
 	mkdir -p doctors

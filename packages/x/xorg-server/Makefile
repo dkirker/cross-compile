@@ -69,7 +69,7 @@ build/%.built: build/.unpacked
 	( rm -rf build/$* )
 	( mkdir -p build/$* )
 	( cd build/$* ; ${SB2} \
-	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
+	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib -Wl,--allow-shlib-undefined\" \
 	../src/configure \
 		--prefix=${APP_DIR} \
 		--enable-kdrive \
@@ -89,6 +89,9 @@ build/%.built: build/.unpacked
 	[ "${ARCH}" != "armv6" ] || ( cd build/$*/hw/kdrive/sdl ; sed -i "s/^LIBS = /LIBS = -legl13 /" Makefile )
 	( cd build/$* ; ${SB2} $(MAKE))
 	touch $@
+
+rebuild:
+	( cd build/armv7-xserver ; ${SB2} $(MAKE))
 
 clobber::
 	rm -rf build
