@@ -14,6 +14,7 @@ DEPENDS = \
 	x/randrproto           \
 	x/renderproto          \
 	x/resourceproto        \
+	x/recordproto          \
 	x/scrnsaverproto       \
 	x/videoproto           \
 	x/xcmiscproto          \
