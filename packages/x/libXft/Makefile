@@ -1,9 +1,9 @@
 NAME = libXft
-VERSION = 2.1.14
+VERSION = 2.2.0
 
 DEPENDS = x/libXrender x/fontconfig
 
-SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
+SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
 

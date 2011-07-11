@@ -1,7 +1,7 @@
 NAME = xproto
-VERSION = 7.0.16
+VERSION = 7.0.20
 
-SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
+SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
 

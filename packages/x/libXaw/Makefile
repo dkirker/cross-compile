@@ -1,5 +1,5 @@
 NAME = libXaw
-VERSION = 1.0.7
+VERSION = 1.0.8
 
 DEPENDS = \
 		x/xorg-server \
@@ -7,7 +7,7 @@ DEPENDS = \
 		x/libXmu \
 		x/libXpm
 
-SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
+SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
 include ../../../support/download.mk
 

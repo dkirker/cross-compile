@@ -1,5 +1,7 @@
 NAME = xorg-server
-VERSION = 0.1.0
+GIT_BRANCH := xserver-1.9
+VERSION := 0.2.0
+
 DEPENDS = \
 	common/openssl         \
 	dev-sdl/libsdl         \
@@ -70,8 +72,8 @@ build/%.built: build/.unpacked
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib -Wl,--allow-shlib-undefined\" \
 	../src/configure \
 		--prefix=${APP_DIR} \
-		--enable-xsdl \
 		--enable-kdrive \
+		--enable-xsdl \
 		\
 		--disable-xorg \
 		--disable-glx \
