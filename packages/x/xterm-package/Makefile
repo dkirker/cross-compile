@@ -38,7 +38,7 @@ build/%.built: src-update
 	( cp build/src/${ARCH}/appinfo.json build/$* )
 	( cp build/src/${ARCH}/package.properties build/$* )
 	( mkdir -p build/$*/bin )
-	( cp ../xterm/build/$*-$(XAPPID)/xterm build/$*/bin/ )
+	( cp ../xterm/build/$*/xterm build/$*/bin/ )
 	( ${SB2} strip build/$*/bin/* )
 	touch $@
 

@@ -35,7 +35,7 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/${ARCH}-$(XAPPID).built
+build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
