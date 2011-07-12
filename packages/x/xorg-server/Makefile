@@ -88,7 +88,7 @@ build/%.built: build/.unpacked
 	touch $@
 
 rebuild:
-	( cd build/armv7-xserver ; ${SB2} $(MAKE))
+	( cd build/${ARCH} ; ${SB2} $(MAKE))
 
 clobber::
 	rm -rf build

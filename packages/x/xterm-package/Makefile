@@ -1,6 +1,6 @@
 # Packages up xterm...
 NAME = xterm-package
-VERSION = 0.4.1
+VERSION = 0.6.0
 DEPENDS = \
 	x/xterm
 
@@ -32,34 +32,35 @@ build/%.built: src-update
 	rm -f $@
 	( rm -rf build/$* )
 	( mkdir -p build/$* )
-	( cp build/src/${ARCH}/xecutah.sh build/$* )
-	( cp build/src/${ARCH}/icon.png build/$* )
-	( cp build/src/${ARCH}/appinfo.json build/$* )
-	( cp build/src/${ARCH}/package.properties build/$* )
+	( cp build/src/xecutah.sh build/$* )
+	( cp build/src/icon.png build/$* )
+	( cp build/src/appinfo.json build/$* )
+	( cp build/src/package.properties build/$* )
 	( mkdir -p build/$*/bin )
 	( cp ../xterm/build/$*/xterm build/$*/bin/ )
 	( ${SB2} strip build/$*/bin/* )
 	touch $@
 
 # TODO: Add armv6 support
-package-commit: clobber stage
+package-commit:
 	if [ -d git ]; then \
 		(cd git && git checkout . && git pull); \
 	else \
 		git clone "${SRC_GIT_COMMIT}" git; \
 	fi
-	cd git && rm -rf *
+	cd git && rm -rf armv7 armv6
 	mkdir -p git/armv7
 	cp -r build/armv7/* git/armv7/
+	rm -f git/armv7/* || true # don't delete the directories
 	mkdir -p git/armv6
 	-cp -r build/armv6/* git/armv6/
+	rm -f git/armv6/* || true # don't delete the directories
 	( cd git && git add . && git commit -am "(Automatic commit)" )
 
 package:
 	rm -rf build/ipk
 	mkdir -p build/ipk
-	palm-package -o build/ipk build/armv7
-	#palm-package build/armv6
+	palm-package -o build/ipk build/${ARCH}
 
 install:
 	-palm-install -r org.webosinternals.xterm

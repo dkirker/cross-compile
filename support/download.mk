@@ -104,17 +104,9 @@ ${DL_DIR}/${NAME}-${VERSION}.tar.gz:
 	( cd build ; git clone -l ../git `basename ${SRC_GIT} .git` ; cd `basename ${SRC_GIT} .git` ; git checkout ${GIT_BRANCH} )
 	mkdir -p ${DL_DIR}
 	tar -C build/`basename ${SRC_GIT} .git` -zcf $@ .
-	( cd build/`basename ${SRC_GIT} .git` ; git log --pretty="format:%ct" -n 1 v${VERSION} ) | \
+	( cd build/`basename ${SRC_GIT} .git` ; git log --pretty="format:%ct" -n 1 ${GIT_BRANCH} ) | \
 	python -c 'import os,sys; time = int(sys.stdin.read()); os.utime("$@",(time,time));'
 	rm -rf build/`basename ${SRC_GIT} .git`
-
-head:
-	rm -f ${DL_DIR}/${NAME}-${VERSION}.tar.gz
-	$(call PREWARE_SANITY)
-	$(MAKE) GIT_BRANCH=HEAD download
-	$(MAKE) package
-	rm -f ${DL_DIR}/${NAME}-${VERSION}.tar.gz
-
 endif
 
 ifdef SRC_SVN
