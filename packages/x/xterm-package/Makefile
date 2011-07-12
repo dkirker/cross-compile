@@ -1,6 +1,6 @@
 # Packages up xterm...
 NAME = xterm-package
-VERSION = 0.3.5
+VERSION = 0.4.0
 DEPENDS = \
 	x/xterm
 
@@ -32,7 +32,6 @@ build/%.built: src-update
 	rm -f $@
 	( rm -rf build/$* )
 	( mkdir -p build/$* )
-	( cp build/src/${ARCH}/start.sh build/$* )
 	( cp build/src/${ARCH}/xecutah.sh build/$* )
 	( cp build/src/${ARCH}/icon.png build/$* )
 	( cp build/src/${ARCH}/appinfo.json build/$* )
