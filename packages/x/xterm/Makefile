@@ -11,7 +11,7 @@ DEPENDS = \
 		  common/glib-2.0 \
 		  common/ncurses
 
-SRC_TGZ = ftp://invisible-island.net/${NAME}/${NAME}-${VERSION}.tgz
+SRC_TGZ = http://ftp.sunfreeware.com/ftp/pub/freeware/SOURCES/${NAME}-${VERSION}.tar.gz
 
 # Expect xlibs to be in the xserver package, in the 'xlib' directory.
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
