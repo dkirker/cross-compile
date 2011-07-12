@@ -66,6 +66,8 @@ XLIBS= \
 	/usr/local/lib/libXi.so.6              \
 	/usr/local/lib/libXi.so.6.1.0          \
 	/usr/local/lib/libXext.so.6            \
+	/usr/local/lib/libXtst.so.6            \
+	/usr/local/lib/libXtst.so.6.1.0        \
 	/usr/local/lib/libXfont.so.1           \
 	/usr/local/lib/libXft.so.2             \
 	/usr/local/lib/libXmu.so.6             \
