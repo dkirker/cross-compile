@@ -1,4 +1,6 @@
 # Packages up server and client X libraries.
+# Not meant to be an actual package, but a meta-package of sorts
+# that gathers together all the needed x libraries.
 NAME = xlib-package
 VERSION = 0.3.0
 DEPENDS = \
