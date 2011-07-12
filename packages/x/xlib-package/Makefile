@@ -41,6 +41,7 @@ DEPENDS = \
 	x/libXpm               \
 	x/libXrender           \
 	x/libxt                \
+	x/libxtst              \
 	x/libx11               \
 	x/libice               \
 	x/libsm
