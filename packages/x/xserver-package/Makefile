@@ -8,10 +8,6 @@ DEPENDS = \
 	x/xkbcomp \
 	x/xkbset
 
-# Tell x dependencies to build themselves using this ID
-# This is NOT safe for parallel WIDK builds, hrm.
-export XAPPID=xserver
-
 SRC_GIT = git://git.webos-internals.org/x11/xlauncher.git
 SRC_GIT_COMMIT = git@git.webos-internals.org:x11/xlauncher.git
 
@@ -48,10 +44,10 @@ build/%.built: src-update
 	( cp build/src/${ARCH}/package.properties build/$* )
 	( cp -r ../xlib-package/build/$* build/$*/xlib )
 	( mkdir -p build/$*/bin )
-	( cp ../xorg-server/build/$*-$(XAPPID)/hw/kdrive/sdl/Xsdl build/$*/bin/ )
-	( cp ../xorg-server/build/$*-$(XAPPID)/forker build/$*/bin/ )
-	( cp ../xkbcomp/build/$*-$(XAPPID)/xkbcomp build/$*/bin/ )
-	( cp ../xkbset/build/$*-$(XAPPID)/xkbset build/$*/bin/ )
+	( cp ../xorg-server/build/$*/hw/kdrive/sdl/Xsdl build/$*/bin/ )
+	( cp ../xorg-server/build/$*/forker build/$*/bin/ )
+	( cp ../xkbcomp/build/$*/xkbcomp build/$*/bin/ )
+	( cp ../xkbset/build/$*/xkbset build/$*/bin/ )
 	( cd ../xkeyboardconfig/build/$*/ && make install prefix=$(PWD)/build/$*/ exec_prefix=$(PWD)/build/$* )
 	( cp ../xkeyboardconfig/build/$*/keymap/palm-pre build/$*/share/X11/xkb/keymap/ )
 	( cp ../xkeyboardconfig/build/$*/symbols/palm-pre build/$*/share/X11/xkb/symbols/ )
@@ -83,7 +79,7 @@ package:
 	#palm-package build/armv6
 
 install:
-	-palm-install -r org.webosinternals.${XAPPID}
+	-palm-install -r org.webosinternals.xserver
 	palm-install build/ipk/*.ipk
 
 test: stage package install

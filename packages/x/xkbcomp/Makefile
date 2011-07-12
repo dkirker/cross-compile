@@ -5,10 +5,8 @@ DEPENDS = x/libx11 x/xkbfile
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
-ifndef XAPPID
-XAPPID = xkbcomp
-endif
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.$(XAPPID)
+# Expect xlibs to be in the xserver package, in the 'xlib' directory.
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
 XLIBS = $(APP_DIR)/xlib
 
 include ../../../support/download.mk
@@ -29,7 +27,7 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/${ARCH}-$(XAPPID).built
+build: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@

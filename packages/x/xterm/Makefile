@@ -13,10 +13,8 @@ DEPENDS = \
 
 SRC_TGZ = ftp://invisible-island.net/${NAME}/${NAME}-${VERSION}.tgz
 
-ifndef XAPPID
-XAPPID = xterm
-endif
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.$(XAPPID)
+# Expect xlibs to be in the xserver package, in the 'xlib' directory.
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
 XLIBS = $(APP_DIR)/xlib
 
 include ../../../support/download.mk
