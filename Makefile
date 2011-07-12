@@ -18,7 +18,7 @@ setup: toolchain rootfs staging/mapping-armv7 staging/mapping-armv6 staging/mapp
 
 .PHONY: toolchain
 toolchain: toolchain/arm-2009q1/.unpacked toolchain/arm-2007q3/.unpacked \
-	   toolchain/i686-unknown-linux-gnu/.unpacked doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg
+	   toolchain/i686-unknown-linux-gnu/.unpacked doctors/Palm_webOS_SDK-Mac-3.0.0.643.mpkg
 
 .PHONY: rootfs
 # rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked rootfs/i686/.unpacked
