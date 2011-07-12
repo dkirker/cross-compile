@@ -1,5 +1,5 @@
 NAME = xterm
-VERSION = 256
+VERSION = 270
 
 DEPENDS = \
 		  x/libx11 \
@@ -49,8 +49,8 @@ build/%.built: build/.unpacked
 		--prefix=${INSTALL_PREFIX} \
 		--enable-88-color \
 		--enable-256-color \
-		--enable-width-chars \
-		--enable-luit \
+		--disable-luit \
+		--disable-wide-chars \
 	)	
 	( cd build/$* ; ${SB2} $(MAKE))
 	( cd build/$* ; ${SB2} $(MAKE) install)
