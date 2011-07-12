@@ -1,5 +1,5 @@
 NAME = synergy
-VERSION = 1.4.2
+VERSION = 1.3.7
 
 DEPENDS = \
 		  x/libx11 \
