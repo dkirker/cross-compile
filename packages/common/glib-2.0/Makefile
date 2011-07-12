@@ -12,17 +12,11 @@ DL_DIR = ../../../downloads
 SRC_DL = ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 PATCH_DL = ${DL_DIR}/${NAME}-${VERSION}-patches.tgz
 
-.patch.url:
-	echo ${PATCH_TGZ} > .patch.url
-
-${PATCH_DL}: .patch.url
+${PATCH_DL}:
 	curl ${PATCH_TGZ} > $@.tmp
 	mv $@.tmp $@
 
-.src.url:
-	echo ${SRC_BZ2} > .src.url
-
-${SRC_DL}: .src.url
+${SRC_DL}:
 	curl ${SRC_BZ2} > $@.tmp
 	mv $@.tmp $@
 
