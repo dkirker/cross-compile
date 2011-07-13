@@ -9,42 +9,64 @@ MD5SUM	 = md5sum
 endif
 
 .PHONY: all
-all: toolchain rootfs stage
+all: stage
 
-.PHONY: setup
-setup: toolchain rootfs staging/mapping-armv7 staging/mapping-armv6 staging/mapping-i686
+ARCH_LIST = armv7 armv6 i686
+
+TOOLCHAIN_ARCH_LIST = $(foreach arch,$(ARCH_LIST),toolchain-$(arch))
+ROOTFS_ARCH_LIST    = $(foreach arch,$(ARCH_LIST),   rootfs-$(arch))
+SETUP_ARCH_LIST     = $(foreach arch,$(ARCH_LIST),    setup-$(arch))
+DOWNLOAD_ARCH_LIST  = $(foreach arch,$(ARCH_LIST), download-$(arch))
+STAGE_ARCH_LIST     = $(foreach arch,$(ARCH_LIST),    stage-$(arch))
 
 .PHONY: toolchain
-toolchain: toolchain/arm-2009q1/.unpacked \
-	   toolchain/arm-2007q3/.unpacked \
-	   toolchain/i686-unknown-linux-gnu/.unpacked \
-	   doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg \
-	   doctors/Palm_webOS_SDK-Mac-3.0.0.643.mpkg
+toolchain: $(TOOLCHAIN_ARCH_LIST)
 
 .PHONY: rootfs
-# rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked rootfs/i686/.unpacked
-rootfs: rootfs/armv7/.unpacked rootfs/armv6/.unpacked
+rootfs: ${ROOTFS_ARCH_LIST}
 
-.PHONY: stage
-stage: toolchain rootfs
-	$(MAKE) -C . staging-armv7
-	$(MAKE) -C . staging-armv6
-#	$(MAKE) -C . staging-i686
+.PHONY: setup
+setup: ${SETUP_ARCH_LIST}
 
 .PHONY: download
-download: toolchain rootfs
-	$(MAKE) -C . download-armv7
-	$(MAKE) -C . download-armv6
-#	$(MAKE) -C . download-i686
+download: ${DOWNLOAD_ARCH_LIST}
+
+.PHONY: stage
+stage: ${STAGE_ARCH_LIST}
 
 include support/build.mk
 
+.PHONY: $(TOOLCHAIN_ARCH_LIST)
+toolchain-armv7: toolchain-arm-1.x \
+	   	 toolchain-arm-2.x \
+	         doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg \
+		 doctors/Palm_webOS_SDK-Mac-3.0.0.643.mpkg
+toolchain-armv6: toolchain-arm-1.x \
+	         doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg \
+		 doctors/Palm_webOS_SDK-Mac-3.0.0.643.mpkg
+toolchain-i686:  toolchain-emu-1.x \
+	         doctors/Palm_webOS_SDK-Mac-1.4.5.465.pkg \
+		 doctors/Palm_webOS_SDK-Mac-3.0.0.643.mpkg
+
+.PHONY: toolchain-arm-1.x toolchain-arm-2.x toolchain-emu-1.x
+toolchain-arm-1.x: toolchain/arm-2007q3/.unpacked
+toolchain-arm-2.x: toolchain/arm-2009q1/.unpacked
+toolchain-emu-1.x: toolchain/i686-unknown-linux-gnu/.unpacked
+
+.PHONY: rootfs-%
+rootfs-%: rootfs/%/.unpacked
+	@true
+
+.PHONY: setup-%
+setup-%: toolchain-% rootfs-% staging/mapping-% $(dep_files)
+	@true
+
 .PHONY: download-%
-download-%: toolchain rootfs staging/mapping-% $(dep_files)
+download-%: toolchain-% rootfs-% staging/mapping-% $(dep_files)
 	$(MAKE) -C . ARCH=$* INC_DEPS=1 downloadall
 
-.PHONY: staging-%
-staging-%: toolchain rootfs staging/mapping-% $(dep_files)
+.PHONY: stage-%
+stage-%: toolchain-% rootfs-% staging/mapping-% $(dep_files)
 	$(MAKE) -C . ARCH=$* INC_DEPS=1 buildall
 
 .PRECIOUS: staging/mapping-%
@@ -170,8 +192,10 @@ doctors/palm-sdk_2.1.0-svn409992-pho519_i386.deb:
 clean:
 	rm -f .*~ *~ scripts/*~ support/*~ packages/*/*~
 
+CLOBBER_ARCH_LIST = $(foreach arch,$(ARCH_LIST), clobber-$(arch))
+
 .PHONY: clobber
-clobber: clobber-armv7 clobber-armv6 clobber-i686
+clobber: ${CLOBBER_ARCH_LIST}
 	rm -rf toolchain rootfs staging
 
 .PHONY: clobber-%
