@@ -1,5 +1,5 @@
 NAME = xterm
-VERSION = 256
+VERSION = 270
 
 DEPENDS = \
 		  x/libx11 \
@@ -11,9 +11,11 @@ DEPENDS = \
 		  common/glib-2.0 \
 		  common/ncurses
 
-SRC_TGZ = ftp://invisible-island.net/${NAME}/${NAME}-${VERSION}.tgz
-#We add this to the -rpath so we have the libs X wants
-XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
+SRC_TGZ = http://ftp.sunfreeware.com/ftp/pub/freeware/SOURCES/${NAME}-${VERSION}.tar.gz
+
+# Expect xlibs to be in the xserver package, in the 'xlib' directory.
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
+XLIBS = $(APP_DIR)/xlib
 
 include ../../../support/download.mk
 
@@ -47,8 +49,8 @@ build/%.built: build/.unpacked
 		--prefix=${INSTALL_PREFIX} \
 		--enable-88-color \
 		--enable-256-color \
-		--enable-width-chars \
-		--enable-luit \
+		--disable-luit \
+		--disable-wide-chars \
 	)	
 	( cd build/$* ; ${SB2} $(MAKE))
 	( cd build/$* ; ${SB2} $(MAKE) install)

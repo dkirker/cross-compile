@@ -71,7 +71,7 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	#( cd build/$*/src/navit/xpm/ ; $(MAKE) -j8 )
 	( cd build/$*/src ; ${SB2} $(MAKE) -j8 && ${SB2} make -j8 DESTDIR=`pwd`/.. install )
 	find build/$*/${APP_DIR} -name "*.*a" -print0 | xargs -0 rm
-	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
+	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -Wl,--allow-shlib-undefined -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
 	cp    files/appinfo.json.in build/$*/${APP_DIR}/appinfo.json.in
 	cp    files/ls2-*.json build/$*/${APP_DIR}/
 #	cp    files/package-sig.crt build/$*/${APP_DIR}/

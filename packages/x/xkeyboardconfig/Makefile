@@ -1,5 +1,5 @@
 NAME = xkeyboard-config
-VERSION = 1.7-2
+VERSION = 1.7-5
 
 DEPENDS=x/xkbcomp
 

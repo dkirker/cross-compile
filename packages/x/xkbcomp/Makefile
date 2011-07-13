@@ -1,12 +1,13 @@
 NAME = xkbcomp
-VERSION = 1.1.1
+VERSION = 1.2.0
 
 DEPENDS = x/libx11 x/xkbfile
 
-SRC_BZ2 = http://www.x.org/releases/X11R7.5/src/everything/${NAME}-${VERSION}.tar.bz2
+SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
-#APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xorg-server
-#XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
+# Expect xlibs to be in the xserver package, in the 'xlib' directory.
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
+XLIBS = $(APP_DIR)/xlib
 
 include ../../../support/download.mk
 
@@ -35,10 +36,9 @@ build/%.built: build/.unpacked
 	( cd build/$* ; ${SB2} \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	./configure \
-		--prefix=${INSTALL_PREFIX} \
+		--prefix=${APP_DIR} \
 	)
 	( cd build/$* ; ${SB2} $(MAKE))
-	( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::

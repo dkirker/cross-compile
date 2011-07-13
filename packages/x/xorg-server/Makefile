@@ -1,5 +1,6 @@
 NAME = xorg-server
-VERSION = 0.0.3
+VERSION := 0.3.1
+
 DEPENDS = \
 	common/openssl         \
 	dev-sdl/libsdl         \
@@ -13,6 +14,7 @@ DEPENDS = \
 	x/randrproto           \
 	x/renderproto          \
 	x/resourceproto        \
+	x/recordproto          \
 	x/scrnsaverproto       \
 	x/videoproto           \
 	x/xcmiscproto          \
@@ -33,13 +35,11 @@ DEPENDS = \
 
 SRC_GIT = git://git.webos-internals.org/x11/xserver.git
 
-#So this isn't the best, but here we hardcode X to
-#expect to be in this directory.  This is where X looks all it's
-#components and what-have-you, and helps avoid modifying
-#the device's /usr/local
-APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xorg-server
+# Expect xlibs to be in the xserver package, in the 'xlib' directory.
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
+
 #We add this to the -rpath so we have the libs X wants
-XLIBS = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xlib
+XLIBS = $(APP_DIR)/xlib
 
 include ../../../support/download.mk
 
@@ -66,11 +66,11 @@ build/%.built: build/.unpacked
 	( rm -rf build/$* )
 	( mkdir -p build/$* )
 	( cd build/$* ; ${SB2} \
-	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
+	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib -Wl,--allow-shlib-undefined\" \
 	../src/configure \
 		--prefix=${APP_DIR} \
-		--enable-xsdl \
 		--enable-kdrive \
+		--enable-xsdl \
 		\
 		--disable-xorg \
 		--disable-glx \
@@ -82,9 +82,13 @@ build/%.built: build/.unpacked
 		--disable-xvfb \
 		--disable-dri \
 	)
+	( ${SB2} gcc -o build/$*/forker forker.c )
 	[ "${ARCH}" != "armv6" ] || ( cd build/$*/hw/kdrive/sdl ; sed -i "s/^LIBS = /LIBS = -legl13 /" Makefile )
 	( cd build/$* ; ${SB2} $(MAKE))
 	touch $@
+
+rebuild:
+	( cd build/${ARCH} ; ${SB2} $(MAKE))
 
 clobber::
 	rm -rf build
