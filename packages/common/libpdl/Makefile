@@ -22,8 +22,14 @@ include ../../../support/cross-compile.mk
 stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
-	${SB2} cp ${HEADERS} /usr/local/include/
-	${SB2} cp ${LIBRARIES} /usr/local/lib/
+	for f in ${HEADERS} ; do \
+	  ${SB2} rm -f /usr/local/include/`basename $$f` ; \
+	  ${SB2} cp $$f /usr/local/include/ ; \
+	done
+	for f in ${LIBRARIES} ; do \
+	  ${SB2} rm -f /usr/local/lib/`basename $$f` ; \
+	  ${SB2} cp $$f /usr/local/lib/ ; \
+	done
 	touch $@
 
 clobber::
