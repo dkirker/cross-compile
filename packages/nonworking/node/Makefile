@@ -1,8 +1,8 @@
 NAME = node
-VERSION = 0.3.2
-DEPENDS = 
+VERSION = 0.4.8
+DEPENDS = python/python
 
-SRC_TGZ = http://nodejs.org/dist/${NAME}-v${VERSION}.tar.gz
+SRC_TGZ = http://nodejs.org/dist/node-v$(VERSION).tar.gz
 
 include ../../../support/download.mk
 
@@ -12,22 +12,24 @@ unpack: build/.unpacked
 build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
-	tar -C build -x -f $<
-	mv build/${NAME}-v${VERSION} build/src
+	tar -C build -z -x -f $<
+	mv build/node-v${VERSION} build/src
 	touch $@
 
 include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage-local:: build/${ARCH}.built
+stage-local: build/${ARCH}.built
 
+# 'node' binary ends up in build/$(ARCH)/build/default/node, fwiw
 build/%.built: build/.unpacked
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
-	( cd build/$* ; ${SB2} ./configure )
-	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} make install )
+	( cd build/$* ; ${SB2} ./configure --prefix=$(INSTALL_PREFIX))
+	( cd build/$* ; ${SB2} $(MAKE) )
+	#( cd build/$* ; ${SB2} $(MAKE) install )
 	touch $@
 
 clobber::
