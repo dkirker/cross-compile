@@ -46,6 +46,8 @@ DEPENDS = \
 	x/libice               \
 	x/libsm
 
+download:
+
 include ../../../support/staging.mk
 
 stage-local:: build
