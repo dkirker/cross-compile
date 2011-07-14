@@ -19,20 +19,20 @@ stage-local:: build
 
 
 .PHONY: unpack
-unpack: build/.unpacked
+unpack: build/.unpacked-${VERSION}
 
-build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
+build/.unpacked-${VERSION}: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -f $@
 	mkdir -p build/src
 	tar -C build/src -x -v -f $<
 	touch $@
 
-build: build/${ARCH}.built
+build: build/${ARCH}.built-${VERSION}
 
-src-update: build/.unpacked
+src-update: build/.unpacked-${VERSION}
 	( cd build/src && git checkout master && git pull )
 
-build/%.built: src-update
+build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	rm -f $@
 	( rm -rf build/$* )
 	( mkdir -p build/$* )
