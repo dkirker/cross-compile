@@ -1,6 +1,6 @@
 # Packages up xterm...
 NAME = xterm-package
-VERSION = 0.6.0
+VERSION = 0.6.5
 DEPENDS = \
 	x/xterm
 
@@ -28,7 +28,7 @@ build: build/${ARCH}.built-${VERSION}
 src-update: build/.unpacked-${VERSION}
 	( cd build/src && git checkout master && git pull )
 
-build/%.built-${VERSION}: src-update
+build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	rm -f $@
 	( rm -rf build/$* )
 	( mkdir -p build/$* )
