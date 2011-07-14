@@ -15,9 +15,9 @@ XLIBS = $(APP_DIR)/xlib
 include ../../../support/download.mk
 
 .PHONY: unpack
-unpack: build/.unpacked
+unpack: build/.unpacked-${VERSION}
 
-build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
+build/.unpacked-${VERSION}: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
 	tar -C build -z -x -f $<
@@ -30,9 +30,9 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/${ARCH}.built
+build: build/${ARCH}.built-${VERSION}
 
-build/%.built: build/.unpacked
+build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
