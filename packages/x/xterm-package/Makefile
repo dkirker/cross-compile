@@ -50,10 +50,10 @@ package-commit:
 	fi
 	cd git && rm -rf armv7 armv6
 	mkdir -p git/armv7
-	cp -r build/armv7/* git/armv7/
+	tar -C build/armv7 -cf - . | tar -C git/armv7 -xf -
 	rm -f git/armv7/* || true # don't delete the directories
 	mkdir -p git/armv6
-	-cp -r build/armv6/* git/armv6/
+	tar -C build/armv6 -cf - . | tar -C git/armv6 -xf -
 	rm -f git/armv6/* || true # don't delete the directories
 	( cd git && git add . && git commit -am "(Automatic commit)" )
 
