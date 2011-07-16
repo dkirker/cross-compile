@@ -1,6 +1,6 @@
 # Packages up xterm...
 NAME = xterm-package
-VERSION = 0.6.5
+VERSION = 0.7.2
 DEPENDS = \
 	x/xterm
 
