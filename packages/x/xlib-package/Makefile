@@ -54,7 +54,7 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/${ARCH}.built
+build: build/${ARCH}.built-${VERSION}
 
 XLIBS= \
 	/usr/local/lib/libICE.so.6             \
@@ -104,7 +104,7 @@ XLIBS= \
 	/usr/local/lib/libxcb.so.1             \
 	/usr/local/lib/libxkbfile.so.1
 
-build/%.built:
+build/%.built-${VERSION}:
 	rm -f $@
 	( rm -rf build/$* )
 	( mkdir -p build/$* )

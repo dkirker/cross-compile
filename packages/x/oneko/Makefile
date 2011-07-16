@@ -1,20 +1,14 @@
-NAME = xterm
-VERSION = 270
+NAME = oneko
+VERSION = 1.2
 
-DEPENDS = \
-		  x/libx11 \
-		  x/libice \
-		  x/libsm \
-		  x/libXext \
-		  x/libXrender \
-		  x/libXaw \
-		  common/glib-2.0 \
-		  common/ncurses
+DEPENDS = x/libXext
 
-SRC_TGZ = http://ftp.sunfreeware.com/ftp/pub/freeware/SOURCES/${NAME}-${VERSION}.tar.gz
+SRC_TGZ = http://archive.ubuntu.com/ubuntu/pool/universe/o/${NAME}/${NAME}_${VERSION}.sakura.6.orig.tar.gz
 
 # Expect xlibs to be in the xserver package, in the 'xlib' directory.
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
+
+#We add this to the -rpath so we have the libs X wants
 XLIBS = $(APP_DIR)/xlib
 
 include ../../../support/download.mk
@@ -26,7 +20,8 @@ build/.unpacked-${VERSION}: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
 	tar -C build -z -x -f $<
-	mv build/${NAME}-${VERSION} build/src
+	mv build/${NAME}-${VERSION}.sakura.6.orig build/src
+	patch -d build/src -p1 < oneko-${VERSION}.patch
 	touch $@
 
 include ../../../support/staging.mk
@@ -42,18 +37,9 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
 	( cd build/$* ; ${SB2} \
-	CFLAGS=\"-O2 -I/usr/local/include -I/usr/local/include/ncurses\" \
-	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
-	PATH=\"/usr/local/bin:${PATH}\" \
-	./configure \
-		--prefix=${INSTALL_PREFIX} \
-		--enable-88-color \
-		--enable-256-color \
-		--disable-luit \
-		--disable-wide-chars \
-	)	
-	( cd build/$* ; ${SB2} $(MAKE))
-	( cd build/$* ; ${SB2} $(MAKE) install)
+	  gcc -o ${NAME} ${NAME}.c \
+		-I. -I./cursors -I/usr/local/include/X11 -L/usr/local/lib \
+		-Wl,-rpath=${XLIBS}:.:/usr/local/lib -lX11 -lXext -lm -DSHAPE )
 	touch $@
 
 clobber::

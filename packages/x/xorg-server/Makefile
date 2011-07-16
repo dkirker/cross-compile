@@ -1,5 +1,5 @@
 NAME = xorg-server
-VERSION := 0.3.1
+VERSION := 0.6.7
 
 DEPENDS = \
 	common/openssl         \
@@ -44,9 +44,9 @@ XLIBS = $(APP_DIR)/xlib
 include ../../../support/download.mk
 
 .PHONY: unpack
-unpack: build/.unpacked
+unpack: build/.unpacked-${VERSION}
 
-build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
+build/.unpacked-${VERSION}: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build src
 	tar -C src -z -x -f $<
@@ -59,9 +59,9 @@ stage-local:: build
 
 include ../../../support/cross-compile.mk
 
-build: build/${ARCH}.built
+build: build/${ARCH}.built-${VERSION}
 
-build/%.built: build/.unpacked
+build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	rm -f $@
 	( rm -rf build/$* )
 	( mkdir -p build/$* )

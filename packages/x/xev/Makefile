@@ -1,9 +1,15 @@
-NAME = libxkbfile
-VERSION = 1.0.7
+NAME = xev
+VERSION = 1.1.0
 
-DEPENDS = x/libx11
+DEPENDS = x/libxcb x/xau
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
+
+# Expect xlibs to be in the xserver package, in the 'xlib' directory.
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
+
+#We add this to the -rpath so we have the libs X wants
+XLIBS = $(APP_DIR)/xlib
 
 include ../../../support/download.mk
 
@@ -30,6 +36,8 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
 	( cd build/$* ; ${SB2} \
+	CFLAGS=\"-I/usr/local/include\" \
+	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
