@@ -1,0 +1,3 @@
+<mapset enabled="yes">
+	<map type="binfile" enabled="yes" data="$NAVIT_USER_DATADIR/maps/*.bin"/>
+</mapset>

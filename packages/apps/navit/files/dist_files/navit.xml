@@ -67,16 +67,7 @@
 		<!-- <speech type="cmdline" data="flite -t '%s'"/> -->
 		<speech type="speech_dispatcher" data="100" cps="15" />
 
-		<mapset enabled="yes">
-			<map type="binfile" enabled="yes" data="$NAVIT_USER_DATADIR/maps/*.bin"/>
-		</mapset>
-		
-		<!-- A very simple OSD ... -->
-		<!-- <xi:include href="$NAVIT_USER_DATADIR/navit_gui.xml"/> -->
-		<!-- Pre OSD based on http://wiki.navit-project.org/index.php/OSD_Layouts#nibbler01_v0.2_for_Netbook_.26_widescreen -->
-		<!-- <xi:include href="$NAVIT_USER_DATADIR/navit_gui_pre.xml"/> -->
-		<!-- OSD made by Stefan G. / AndrejDelany -->
-
+		<xi:include href="$NAVIT_USER_DATADIR/maps/*.xml"/>
 		<xi:include href="$NAVIT_USER_DATADIR/guis/*.xml"/>
 		<xi:include href="$NAVIT_USER_DATADIR/osds/*.xml"/>
 		<xi:include href="$NAVIT_USER_DATADIR/layouts/*.xml"/>
