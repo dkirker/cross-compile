@@ -4,7 +4,7 @@ SRC_SVN_REV := http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR := /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 BINARY_GIT := git@git.webos-internals.org:/applications/navit.git
 NAVIT_VERSION := `sed -nre "/AC_INIT\(navit,/ s/.* ([0-9\.]+).*\)/\1/ p" build/src/configure.in`
-VERSION := 4446
+VERSION := 4637
 
 include ../../../support/download.mk
 
@@ -12,21 +12,21 @@ include ../../../support/staging.mk
 
 include ../../../support/cross-compile.mk
 
-stage-local:: build/${ARCH}.built
+stage-local:: build
 
-.PHONY: unpack package package-commit package-tar clean
+.PHONY: unpack
+unpack: build/.unpacked-${VERSION}
+package: build/.package-${VERSION}
+build: build/${ARCH}.built-${VERSION}
 
-unpack: build/.unpacked
-package: build/.package
-
-build/.unpacked: ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
+build/.unpacked-${VERSION}: ${DL_DIR}/${NAME}-svn-r${VERSION}.tar.gz
 	rm -f $@
 	mkdir -p build
 	tar -C build -z -x -f $<
 	mv build/navit build/src
 	>$@
 
-build/%.aclocal: build/.patched
+build/%.aclocal-${VERSION}: build/.patched-${VERSION}
 	rm -f $@
 	rm -rf build/$*
 	mkdir -p build/$*
@@ -34,14 +34,14 @@ build/%.aclocal: build/.patched
 	( cd build/$*/src ; ${SB2} ./autogen.sh )
 	>$@
 
-build/.patched: build/.unpacked
+build/.patched-${VERSION}: build/.unpacked-${VERSION}
 	rm -f $@
 	$(foreach patchfile, $(shell ls patches), \
 		patch -p2 -d build/src -i `pwd`/patches/$(patchfile); \
 	)
 	>$@
 
-build/%.configured: build/${ARCH}.aclocal
+build/%.configured-${VERSION}: build/${ARCH}.aclocal-${VERSION}
 	rm -f $@
 	( cd build/$*/src ; ${SB2} CFLAGS="-I${INSTALL_PREFIX}/include\ -g\ -O2" \
 		LDFLAGS="-L${INSTALL_PREFIX}/lib\ -Wl,-rpath,${INSTALL_PREFIX}/lib" \
@@ -65,13 +65,13 @@ build/%.configured: build/${ARCH}.aclocal
 
 # I call $(MAKE) in xpm/ without sb2 here, it doesn't work inside sb2
 # and creates images anyway
-build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
+build/%.built-${VERSION}: build/.unpacked-${VERSION} build/.patched-${VERSION} build/${ARCH}.configured-${VERSION}
 	rm -f $@
 	( cd build/$*/src ; ${SB2} cp `which libtool` . )
 	#( cd build/$*/src/navit/xpm/ ; $(MAKE) -j8 )
 	( cd build/$*/src ; ${SB2} $(MAKE) -j8 && ${SB2} make -j8 DESTDIR=`pwd`/.. install )
 	find build/$*/${APP_DIR} -name "*.*a" -print0 | xargs -0 rm
-	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -Wl,--allow-shlib-undefined -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/pdl-helper
+	${SB2} gcc -I/usr/local/include/SDL -L/usr/local/lib -Wl,-rpath,/usr/local/lib,-rpath,`cd ../../../rootfs/${ARCH}/usr/lib; pwd` -Wl,--allow-shlib-undefined -lpdl files/pdl-helper.c -o build/$*/${APP_DIR}/bin/pdl-helper
 	cp    files/appinfo.json.in build/$*/${APP_DIR}/appinfo.json.in
 	cp    files/ls2-*.json build/$*/${APP_DIR}/
 #	cp    files/package-sig.crt build/$*/${APP_DIR}/
@@ -90,40 +90,41 @@ build/%.built: build/.unpacked build/.patched build/${ARCH}.configured
 	cp    files/PreNav/*.png build/$*/${APP_DIR}/share/navit/xpm/PreNav/
 	mkdir -p build/$*/${APP_DIR}/.fonts
 	cp    build/$*/src/navit/fonts/*.ttf build/$*/${APP_DIR}/.fonts/
+	${SB2} strip build/$*/${APP_DIR}/bin/*
+	${SB2} strip build/$*/${APP_DIR}/lib/navit/*/*.so
 	>$@
 
-build/.package:
+build/.package-${VERSION}:
 	rm -f $@
 	make stage ARCH=armv7
-	make stage ARCH=armv6
+#	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp    build/armv7/${APP_DIR}/appinfo.json.in build/package/all
 	cp    build/armv7/${APP_DIR}/ls2-*.json build/package/all
-#	cp    build/armv7/${APP_DIR}/package-sig.crt build/package/all
-#	cp    build/armv7/${APP_DIR}/jail_app.conf* build/package/all
 	cp    build/armv7/${APP_DIR}/Icon.png build/package/all
 	cp    build/armv7/${APP_DIR}/navit.sh build/package/all
 	cp -R build/armv7/${APP_DIR}/dist_files build/package/all
 	cp -R build/armv7/${APP_DIR}/share build/package/all
 	cp -R build/armv7/${APP_DIR}/.fonts build/package/all
 	mkdir -p build/package/armv7
-	cp -R build/armv7/${APP_DIR}/pdl-helper build/package/armv7
 	cp -R build/armv7/${APP_DIR}/bin build/package/armv7
 	cp -R build/armv7/${APP_DIR}/lib build/package/armv7
-	mkdir -p build/package/armv6
-	cp -R build/armv6/${APP_DIR}/pdl-helper build/package/armv6
-	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
-	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
+#	mkdir -p build/package/armv6
+#	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
+#	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
 	cp -R files/control build/package/
 	>$@
 
 
 package-commit:
-	if [ -d git ]; then (cd git && git checkout . && git pull); \
-		else git clone ${BINARY_GIT} git;fi
-	(cd git && rm -rf * )
+	if [ -d git ]; then \
+		(cd git && git checkout . && git pull); \
+	else \
+		git clone "${BINARY_GIT}" git; \
+	fi
+	( cd git && rm -rf * )
 	cp -a build/package/* git/
-	(cd git && git add * && git commit -m "automatic revision" -a )
+	( cd git && git add . && git commit -am "(Automatic commit r${VERSION})" )
 
 package-tar:
 	(cd build/package && \

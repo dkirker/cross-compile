@@ -1,7 +1,7 @@
-From 5046598d348c6daabbfb206461ffc36b8c70613e Mon Sep 17 00:00:00 2001
+From b53eb776705adcec16892339c84e5792fbe47b21 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Sat, 15 Jan 2011 10:42:03 +0100
-Subject: [PATCH 2/4] add translations for new menu
+Subject: [PATCH 3/3] add translations for new menu
 
 ---
  navit/navit/navit_shipped.xml |    5 +++++
@@ -9,7 +9,7 @@ Subject: [PATCH 2/4] add translations for new menu
  2 files changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/navit/navit/navit_shipped.xml b/navit/navit/navit_shipped.xml
-index 51a868c..34ad5ec 100644
+index cfcbc70..2667c40 100644
 --- a/navit/navit/navit_shipped.xml
 +++ b/navit/navit/navit_shipped.xml
 @@ -81,6 +81,11 @@ Navigation</text></img>
@@ -25,10 +25,10 @@ index 51a868c..34ad5ec 100644
  		]]></gui>
  		<!-- for a debug log -->
 diff --git a/navit/po/de.po.in b/navit/po/de.po.in
-index dee51c7..a6681d2 100644
+index af96238..ee4813c 100644
 --- a/navit/po/de.po.in
 +++ b/navit/po/de.po.in
-@@ -1320,7 +1320,7 @@ msgid "Bookmarks"
+@@ -1348,7 +1348,7 @@ msgid "Bookmarks"
  msgstr "Lesezeichen"
  
  msgid "Layout"
@@ -37,7 +37,7 @@ index dee51c7..a6681d2 100644
  
  msgid "Projection"
  msgstr "Projektion"
-@@ -1601,6 +1601,9 @@ msgstr "Fahrzeugposition"
+@@ -1643,6 +1643,9 @@ msgstr "Fahrzeugposition"
  msgid "Main menu"
  msgstr "Hauptmenü"
  
@@ -47,7 +47,7 @@ index dee51c7..a6681d2 100644
  msgid ""
  "Show\n"
  "Map"
-@@ -1633,7 +1636,7 @@ msgstr ""
+@@ -1675,7 +1678,7 @@ msgstr ""
  msgid ""
  "Map follows\n"
  "Vehicle"
@@ -57,5 +57,5 @@ index dee51c7..a6681d2 100644
  "Fahrzeug"
  
 -- 
-1.7.4.1
+1.7.5.4
 

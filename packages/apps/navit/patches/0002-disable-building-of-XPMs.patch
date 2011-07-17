@@ -1,14 +1,14 @@
-From 4f50a3a030be779346ee0a1f013cb336658fe0d8 Mon Sep 17 00:00:00 2001
+From 63eeb75861cfb3b8f128d658eea5017bc2bdd2aa Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Sat, 15 Jan 2011 10:41:23 +0100
-Subject: [PATCH 3/4] disable building of XPMs
+Subject: [PATCH 2/3] disable building of XPMs
 
 ---
  navit/navit/Makefile.am |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/navit/navit/Makefile.am b/navit/navit/Makefile.am
-index 0ee09ae..bcf8f72 100644
+index 7d3af80..cdf883e 100644
 --- a/navit/navit/Makefile.am
 +++ b/navit/navit/Makefile.am
 @@ -4,8 +4,8 @@ SUBDIRS=fib-1.1 support
@@ -23,5 +23,5 @@ index 0ee09ae..bcf8f72 100644
  MODULES = $(wildcard $(top_builddir)/navit/binding/*/*.la $(top_builddir)/navit/font/*/*.la $(top_builddir)/navit/graphics/*/*.la $(top_builddir)/navit/gui/*/*.la $(top_builddir)/navit/map/*/*.la $(top_builddir)/navit/osd/*/*.la $(top_builddir)/navit/speech/*/*.la $(top_builddir)/navit/vehicle/*/*.la)
  
 -- 
-1.7.4.1
+1.7.5.4
 

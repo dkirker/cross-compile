@@ -6,7 +6,7 @@ then
 	APP_DIR=$(pwd)
 fi
 
-eval $($APP_DIR/pdl-helper)
+eval $($APP_DIR/bin/pdl-helper)
 
 export NAVIT_USER_DATADIR=$PDL_DataFilePath
 export LD_LIBRARY_PATH=$APP_DIR/lib:/media/internal/.widk/usr/lib
