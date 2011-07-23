@@ -47,6 +47,8 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	( cp ../xorg-server/build/$*/forker build/$*/bin/ )
 	( cp ../xkbcomp/build/$*/xkbcomp build/$*/bin/ )
 	( cp ../xkbset/build/$*/xkbset build/$*/bin/ )
+	( mkdir -p build/$*/share/X11/xkb/keymap )
+	# %%% FIXME %%% the following line is wrong when make stage is called from top-level
 	( cd ../xkeyboardconfig/build/$*/ && make install prefix=$(PWD)/build/$*/ exec_prefix=$(PWD)/build/$* )
 	( cp ../xkeyboardconfig/build/$*/keymap/palm-pre build/$*/share/X11/xkb/keymap/ )
 	( cp ../xkeyboardconfig/build/$*/symbols/palm-pre build/$*/share/X11/xkb/symbols/ )
