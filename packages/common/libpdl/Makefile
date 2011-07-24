@@ -7,6 +7,10 @@ LIBRARIES = build/opt/PalmPDK/device/lib/libpdl.so
 .PHONY: unpack
 unpack: build/.unpacked
 
+../../../doctors/Palm_webOS_SDK-Mac-${VERSION}.mpkg:
+../../../doctors/%:
+	make -C ../../../ doctors/$*
+
 build/.unpacked: ../../../doctors/Palm_webOS_SDK-Mac-${VERSION}.mpkg
 	rm -rf build
 	mkdir -p build
