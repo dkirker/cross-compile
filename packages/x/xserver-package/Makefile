@@ -8,8 +8,6 @@ DEPENDS = \
 	x/xkbcomp \
 	x/xkbset
 
-DIR=$(realpath $(lastword $(MAKEFILE_LIST)))
-
 SRC_GIT = git://git.webos-internals.org/x11/xlauncher.git
 SRC_GIT_COMMIT = git@git.webos-internals.org:x11/xlauncher.git
 
@@ -49,7 +47,7 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	( cp ../xorg-server/build/$*/forker build/$*/bin/ )
 	( cp ../xkbcomp/build/$*/xkbcomp build/$*/bin/ )
 	( cp ../xkbset/build/$*/xkbset build/$*/bin/ )
-	( cd ../xkeyboardconfig/build/$*/ && make install prefix=$(DIR)/build/$*/ exec_prefix=$(DIR)/build/$* )
+	( cd ../xkeyboardconfig/build/$*/ && make install prefix=$(CURDIR)/build/$*/ exec_prefix=$(CURDIR)/build/$* )
 	( cp ../xkeyboardconfig/build/$*/keymap/palm-pre build/$*/share/X11/xkb/keymap/ )
 	( cp ../xkeyboardconfig/build/$*/symbols/palm-pre build/$*/share/X11/xkb/symbols/ )
 	( cp ../xkeyboardconfig/build/$*/keycodes/palm-pre build/$*/share/X11/xkb/keycodes/ )
