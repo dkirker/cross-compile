@@ -54,6 +54,9 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	( cp ../xkeyboardconfig/build/$*/keymap/palm-prex build/$*/share/X11/xkb/keymap/ )
 	( cp ../xkeyboardconfig/build/$*/symbols/palm-prex build/$*/share/X11/xkb/symbols/ )
 	( cp ../xkeyboardconfig/build/$*/keycodes/palm-prex build/$*/share/X11/xkb/keycodes/ )
+	( cp ../xkeyboardconfig/build/$*/keymap/touchpad build/$*/share/X11/xkb/keymap/ )
+	( cp ../xkeyboardconfig/build/$*/symbols/touchpad build/$*/share/X11/xkb/symbols/ )
+	( cp ../xkeyboardconfig/build/$*/keycodes/touchpad build/$*/share/X11/xkb/keycodes/ )
 	( ${SB2} strip build/$*/bin/* )
 	touch $@
 
