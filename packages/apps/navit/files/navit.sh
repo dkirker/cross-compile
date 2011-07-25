@@ -32,6 +32,15 @@ if [ `ls -l $NAVIT_LOGFILE | awk '{print $5}'` -gt 300000 ];then
 	gzip -9 $NAVIT_LOGFILE
 fi
 
+#test startup command
+if [ -e $NAVIT_USER_DATADIR/command.txt ]
+then
+        #first line is the target position, second line are the commands
+        echo "`head -n 1 $NAVIT_USER_DATADIR/command.txt`" > $NAVIT_USER_DATADIR/center.txt
+        CMD="-e `head -n 2 $NAVIT_USER_DATADIR/command.txt|tail -n 1`"
+        rm -f  $NAVIT_USER_DATADIR/command.txt
+fi
+
 echo "------------------------- Start Navit ----------------------------------" >> $NAVIT_LOGFILE
 date >> $NAVIT_LOGFILE
 
@@ -45,5 +54,5 @@ then
 		done
 fi
 
-pgrep "^navit$" || exec $APP_DIR/bin/navit -c $NAVIT_USER_DATADIR/navit.xml 2>&1 | tee -a $NAVIT_LOGFILE
+pgrep "^navit$" || exec $APP_DIR/bin/navit $CMD -c $NAVIT_USER_DATADIR/navit.xml
 
