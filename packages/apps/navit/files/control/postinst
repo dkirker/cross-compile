@@ -98,6 +98,7 @@ jailer -D -i $APP_ID
 ## Modify jail
 cp $JAIL_SRC $JAIL_DST
 cat <<EOT >>$JAIL_DST
+mkdir:/usr/lib
 link:/media/internal/.widk/usr/lib/locale:/usr/lib/locale
 mount:ro:/etc/fonts
 mount:rw:/var/cache
