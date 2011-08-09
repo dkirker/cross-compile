@@ -1,6 +1,6 @@
 # Packages up xserver
 NAME = xserver-package
-VERSION = 0.7.2
+VERSION = 0.7.3
 DEPENDS = \
 	x/xlib-package \
 	x/xorg-server \
@@ -68,13 +68,13 @@ package-commit:
 	else \
 		git clone "${SRC_GIT_COMMIT}" git; \
 	fi
-	cd git && rm -rf armv7 armv6
+	cd git && rm -rf armv7
 	mkdir -p git/armv7
 	tar -C build/armv7 -cf - . | tar -C git/armv7 -xf -
 	rm -f git/armv7/* || true # don't delete the directories
-	mkdir -p git/armv6
-	tar -C build/armv6 -cf - . | tar -C git/armv6 -xf -
-	rm -f git/armv6/* || true # don't delete the directories
+	#mkdir -p git/armv6
+	#tar -C build/armv6 -cf - . | tar -C git/armv6 -xf -
+	#rm -f git/armv6/* || true # don't delete the directories
 	( cd git && git add . && git commit -am "(Automatic commit)" )
 
 package:
