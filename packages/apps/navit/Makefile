@@ -4,7 +4,7 @@ SRC_SVN_REV := http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR := /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 BINARY_GIT := git@git.webos-internals.org:/applications/navit.git
 NAVIT_VERSION := `sed -nre "/AC_INIT\(navit,/ s/.* ([0-9\.]+).*\)/\1/ p" build/src/configure.in`
-VERSION := 4663
+VERSION := 4718
 
 include ../../../support/download.mk
 
