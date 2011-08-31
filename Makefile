@@ -93,7 +93,7 @@ rootfs/armv6/.unpacked: doctors/webosdoctorp121ewweu-wr-1.4.5.jar
 rootfs/i686/.unpacked: doctors/palm-sdk_1.4.5-svn307799-sdk1457-pho465_i386.deb
 	rm -rf rootfs/i686
 	mkdir -p rootfs/i686/extract/mnt
-	7z x -y -so $< data.tar | tar -C rootfs/i686/extract -x
+	ar p $< data.tar.gz | tar -C rootfs/i686/extract -x -z
 	7z x -y -orootfs/i686/extract "rootfs/i686/extract/opt/PalmSDK/Current/share/emulator/images/SDK 1.4.5.465.vmdk.zip"
 	VBoxManage clonehd rootfs/i686/extract/nova-cust-image-sdk1457.vmdk rootfs/i686/extract/nova-cust-image-sdk1457.raw --format RAW
 	rm -f rootfs/i686/extract/nova-cust-image-sdk1457.vmdk
