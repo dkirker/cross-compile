@@ -7,7 +7,8 @@
     "permissions": [
         {
          "service":"@APP_ID@",
- "outbound":["com.palm.audio","com.palm.mediad","com.palm.hidd","com.palm.applicationManager","com.palm.location","com.palm.deviceprofile","com.palm.connectionmanager"]
+         "outbound":["com.palm.audio","com.palm.mediad","com.palm.hidd","com.palm.applicationManager","com.palm.location","com.palm.deviceprofile","com.palm.connectionmanager","com.palm.vibrate"],
+         "inbound":[]
         }
     ]
 }
