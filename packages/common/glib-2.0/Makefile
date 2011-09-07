@@ -25,11 +25,11 @@ include ../../../support/cross-compile.mk
 GLIB_CFLAGS=""
 
 ifeq ("$(ARCH)","armv7")
-GLIB_CFLAGS="-O3 -march=armv7-a -mtune=cortex-a8 -mcpu=cortex-a8 -mfloat-abi=softfp -mfpu=neon -ftree-vectorize -I/usr/local/include"
+GLIB_CFLAGS="-O3 -march=armv7-a -mtune=cortex-a8 -mcpu=cortex-a8 -mfloat-abi=softfp -I/usr/local/include"
 endif
 
 ifeq ("$(ARCH)","armv6")
-GLIB_CFLAGS="-O3 -march=armv6 -mtune=arm1136jf-s -mcpu=arm1136jf-s -mfloat-abi=softfp -mfpu=vfp -ftree-vectorize -I/usr/local/include"
+GLIB_CFLAGS="-O0 -march=armv6 -mtune=arm1136jf-s -mcpu=arm1136jf-s -mfloat-abi=softfp -I/usr/local/include"
 endif
 
 stage-local:: build/${ARCH}.built

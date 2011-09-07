@@ -1,6 +1,6 @@
 # Packages up xserver
 NAME = xserver-package
-VERSION = 0.7.2
+VERSION = 0.7.3
 DEPENDS = \
 	x/xlib-package \
 	x/xorg-server \
@@ -37,14 +37,13 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	( rm -rf build/$* )
 	( mkdir -p build/$* )
 	( cp build/src/xecutah.sh build/$* )
-	( cp build/src/set_keymap_later.sh build/$* )
+	( cp build/src/set_keymap.sh build/$* )
 	( cp build/src/icon.png build/$* )
 	( cp build/src/appinfo.json build/$* )
 	( cp build/src/package.properties build/$* )
 	( cp -r ../xlib-package/build/$* build/$*/xlib )
 	( mkdir -p build/$*/bin )
 	( cp ../xorg-server/build/$*/hw/kdrive/sdl/Xsdl build/$*/bin/ )
-	( cp ../xorg-server/build/$*/forker build/$*/bin/ )
 	( cp ../xkbcomp/build/$*/xkbcomp build/$*/bin/ )
 	( cp ../xkbset/build/$*/xkbset build/$*/bin/ )
 	( mkdir -p build/$*/share/X11/xkb/keymap )
@@ -68,13 +67,13 @@ package-commit:
 	else \
 		git clone "${SRC_GIT_COMMIT}" git; \
 	fi
-	cd git && rm -rf armv7 armv6
+	cd git && rm -rf armv7
 	mkdir -p git/armv7
 	tar -C build/armv7 -cf - . | tar -C git/armv7 -xf -
 	rm -f git/armv7/* || true # don't delete the directories
-	mkdir -p git/armv6
-	tar -C build/armv6 -cf - . | tar -C git/armv6 -xf -
-	rm -f git/armv6/* || true # don't delete the directories
+	#mkdir -p git/armv6
+	#tar -C build/armv6 -cf - . | tar -C git/armv6 -xf -
+	#rm -f git/armv6/* || true # don't delete the directories
 	( cd git && git add . && git commit -am "(Automatic commit)" )
 
 package:
