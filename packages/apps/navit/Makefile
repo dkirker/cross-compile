@@ -78,7 +78,7 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION} build/.patched-${VERSION} b
 #	cp    files/jail_app.conf* build/$*/${APP_DIR}/
 	cp    files/Icon.png build/$*/${APP_DIR}/Icon.png
 	cp    files/navit.sh build/$*/${APP_DIR}/navit.sh
-	cp -R files/dist_files/ build/$*/${APP_DIR}/
+	cp -R files/dist_files*/ build/$*/${APP_DIR}/
 	mkdir -p build/$*/${APP_DIR}/share/navit/
 	cp -R files/xpm/ build/$*/${APP_DIR}/share/navit/
 	cp    files/osd_*.png build/$*/${APP_DIR}/share/navit/xpm/

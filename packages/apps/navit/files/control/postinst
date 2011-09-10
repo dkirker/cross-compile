@@ -3,19 +3,20 @@
 umask 0000
 
 APP_ID=org.webosinternals.navit
-APP_DIR=/media/cryptofs/apps/usr/palm/applications/$APP_ID
-NAVIT_USER_DATADIR=/media/internal/appdata/$APP_ID
+APP_DIR=/media/cryptofs/apps/usr/palm/applications/${APP_ID}
+NAVIT_USER_DATADIR=/media/internal/appdata/${APP_ID}
 JAILUSERS=/var/palm/data/jailusers
 JAIL_SRC=/etc/jail_pdk.conf
-JAIL_DST=$APP_DIR/jail_app.conf
-LS2_PRV=/var/palm/ls2/roles/prv/$APP_ID.json
-LS2_PUB=/var/palm/ls2/roles/pub/$APP_ID.json
+JAIL_DST=${APP_DIR}/jail_app.conf
+LS2_PRV=/var/palm/ls2/roles/prv/${APP_ID}.json
+LS2_PUB=/var/palm/ls2/roles/pub/${APP_ID}.json
+DEVICE=$(grep "^BUILDNAME=" /etc/palm-build-info | sed -re "s/.*=Nova-[^-]+-(.*)/\1/")
 
 rnd() {
 	while /bin/true
 	do
 		r=$(tr -cd 0-9 </dev/urandom | dd bs=1 count=4 2>/dev/null)
-		if ! grep -q "^${r}:" $JAILUSERS
+		if ! grep -q "^${r}:" ${JAILUSERS}
 		then
 			echo $r
 			break
@@ -23,15 +24,15 @@ rnd() {
 	done
 }
 
-mkdir -p $NAVIT_USER_DATADIR/maps
+mkdir -p ${NAVIT_USER_DATADIR}/maps
 
 # Check if there where any mods to the old files and remove them if not
 LEGACY_FILES="navit_layout.xml navit_vehicleprofile.xml
 	navit_gui_PreNav.xml navit_gui_pre.xml navit_gui.xml"
 result=$(
- for f in navit.xml $LEGACY_FILES
+ for f in navit.xml ${LEGACY_FILES}
  do
-	 d=$NAVIT_USER_DATADIR/$f
+	 d=${NAVIT_USER_DATADIR}/${f}
 
 	 if [ -e ${d} -a -e ${d}.md5sum ] && md5sum -c "${d}.md5sum" >/dev/null
 	 then
@@ -48,22 +49,29 @@ result=$(
  done
 )
 
-if [ $result == "111111" ]
+if [ ${result} == "111111" ]
 then
-	for f in $LEGACY_FILES
+	for f in ${LEGACY_FILES}
 	do
-		test -e $NAVIT_USER_DATADIR/$f && \
-			mv $NAVIT_USER_DATADIR/$f $NAVIT_USER_DATADIR/$f.old
-		rm -f $NAVIT_USER_DATADIR/$f.new
-		rm -f $NAVIT_USER_DATADIR/$f.md5sum
+		test -e ${NAVIT_USER_DATADIR}/${f} && \
+			mv ${NAVIT_USER_DATADIR}/${f} ${NAVIT_USER_DATADIR}/${f}.old
+		rm -f ${NAVIT_USER_DATADIR}/${f}.new
+		rm -f ${NAVIT_USER_DATADIR}/${f}.md5sum
 	done
 fi
 ###
 
-(cd $APP_DIR/dist_files/; find) | while read l
+(cd ${APP_DIR}/dist_files/ && find; cd ${APP_DIR}/dist_files.${DEVICE}/ && find) | \
+	sort -u | while read l
 do
-	s="$APP_DIR/dist_files/${l}"
-	d="$NAVIT_USER_DATADIR/${l}"
+	if [ -e "${APP_DIR}/dist_files.${DEVICE}/${l}" ]
+	then
+		s="${APP_DIR}/dist_files.${DEVICE}/${l}"
+	else
+		s="${APP_DIR}/dist_files/${l}"
+	fi
+
+	d="${NAVIT_USER_DATADIR}/${l}"
 	dir="$(dirname $d)"
 
 	if [ -d "${s}" ]
@@ -80,7 +88,7 @@ do
 		then
 			old_md5=$(cut -d ' ' -f 1 "${d}.md5sum")
 			new_md5=$(md5sum ${s} | cut -d ' ' -f 1)
-			if [ $old_md5 != $new_md5 ]
+			if [ ${old_md5} != ${new_md5} ]
 			then
 				mv "${d}" "${d}.old"
 				cp "${s}" "${d}"
@@ -92,12 +100,12 @@ do
 	fi
 done
 
-killall -w $APP_DIR/bin/navit || true
-jailer -D -i $APP_ID
+killall -w ${APP_DIR}/bin/navit || true
+jailer -D -i ${APP_ID}
 
 ## Modify jail
-cp $JAIL_SRC $JAIL_DST
-cat <<EOT >>$JAIL_DST
+cp ${JAIL_SRC} ${JAIL_DST}
+cat <<EOT >>${JAIL_DST}
 mkdir:/usr/lib
 link:/media/internal/.widk/usr/lib/locale:/usr/lib/locale
 mount:ro:/etc/fonts
@@ -108,18 +116,18 @@ EOT
 if [ -d /var/palm/ls2/roles ]	# we are on WebOS >= 2.0
 then
 	sed -re "s@\@APP_DIR\@@${APP_DIR}@g" -e "s@\@APP_ID\@@${APP_ID}@g" \
-		$APP_DIR/ls2-prv.json > $LS2_PRV
+		${APP_DIR}/ls2-prv.json > ${LS2_PRV}
 	sed -re "s@\@APP_DIR\@@${APP_DIR}@g" -e "s@\@APP_ID\@@${APP_ID}@g" \
-		$APP_DIR/ls2-pub.json > $LS2_PUB
+		${APP_DIR}/ls2-pub.json > ${LS2_PUB}
 	/usr/bin/ls-control scan-services || true
 fi
 
-if grep -q ":${APP_ID}:" $JAILUSERS
+if grep -q ":${APP_ID}:" ${JAILUSERS}
 then
-	sed -i -re "/:${APP_ID}:/ s@/etc/jail_.*\.conf@${JAIL_DST}@" $JAILUSERS
+	sed -i -re "/:${APP_ID}:/ s@/etc/jail_.*\.conf@${JAIL_DST}@" ${JAILUSERS}
 else
 	UID=$(rnd)
-	GID=5000 #$(head -1 $JAILUSERS | cut -d: -f2)
-	echo "${UID}:${GID}:${APP_ID}:/var/palm/jail/${APP_ID}:${JAIL_DST}" >> $JAILUSERS
+	GID=5000
+	echo "${UID}:${GID}:${APP_ID}:/var/palm/jail/${APP_ID}:${JAIL_DST}" >> ${JAILUSERS}
 fi
 
