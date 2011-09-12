@@ -48,7 +48,7 @@
 		<!--<vehicle name="Demo" profilename="car" enabled="yes" active="yes" source="demo://"/>-->
 
 		<!-- For the cumulative displacement filter to be enabled, set cdf_histsize="x" here, with x being an integer somewhere around 4 -->
-		<tracking cdf_histsize="3"/>
+		<tracking cdf_histsize="3" tunnel_extrapolation="12" />
 
 		<route destination_distance="50"/>
 
