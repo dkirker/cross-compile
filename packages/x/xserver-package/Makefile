@@ -8,8 +8,8 @@ DEPENDS = \
 	x/xkbcomp \
 	x/xkbset
 
-SRC_GIT = git://git.webos-internals.org/x11/xlauncher.git
-SRC_GIT_COMMIT = git@git.webos-internals.org:x11/xlauncher.git
+SRC_GIT = git://git.webos-internals.org/x11/xserver.git
+SRC_GIT_COMMIT = git@git.webos-internals.org:x11/xserver.git
 
 include ../../../support/download.mk
 include ../../../support/staging.mk
