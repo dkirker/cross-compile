@@ -4,8 +4,8 @@ VERSION = 0.7.2
 DEPENDS = \
 	x/xterm
 
-SRC_GIT = git://git.webos-internals.org/x11/xterm-launcher.git
-SRC_GIT_COMMIT = git@git.webos-internals.org:x11/xterm-launcher.git
+SRC_GIT = git://git.webos-internals.org/x11/xterm.git
+SRC_GIT_COMMIT = git@git.webos-internals.org:x11/xterm.git
 
 include ../../../support/download.mk
 include ../../../support/staging.mk

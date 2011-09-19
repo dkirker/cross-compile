@@ -33,7 +33,7 @@ DEPENDS = \
 	common/libpdl                             \
 	common/libsqlite
 
-SRC_GIT = git://git.webos-internals.org/x11/xserver.git
+SRC_GIT = git://git.webos-internals.org/x11/xsdl.git
 
 # Expect xlibs to be in the xserver package, in the 'xlib' directory.
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
