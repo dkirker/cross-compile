@@ -1,0 +1,37 @@
+<!-- osd items allow to position display and control items directly on top of the map: -->
+
+<!-- http://wiki.navit-project.org/index.php/OSD_Layouts -->
+
+<!-- WITH speed-warner and WITH speed-display -->
+<osd enabled="yes" type="image" x="0" y="32" w="106" h="106" src="$NAVIT_SHAREDIR/xpm/PreNav/head_w_speed_bg.png" /> 
+<osd enabled="yes" type="text" label="${vehicle.position_speed}" x="0" y="32" w="82" h="30" background_color="#00000000" align="8" font_size="300"/>
+<osd enabled="yes" type="speed_warner" x="2" y="65" w="47" h="47" background_color="#00000000" font_size="300" speed_exceed_limit_offset="10" speed_exceed_limit_percent="10" announce_on="0" label="images:$NAVIT_SHAREDIR/xpm/PreNav/speed_red.png:$NAVIT_SHAREDIR/xpm/PreNav/speed_green.png:$NAVIT_SHAREDIR/xpm/PreNav/speed_grey.png:" />
+<!-- -->
+<!-- WITH speed-warner and WITHOUT speed-display
+<osd enabled="yes" type="image" x="0" y="0" w="480" h="124" src="$NAVIT_SHAREDIR/xpm/PreNav/head_w_bg.png" /> 
+<osd enabled="yes" type="speed_warner" w="47" h="47" x="2" y="22" background_color="#00000000" font_size="350" speed_exceed_limit_offset="10" speed_exceed_limit_percent="10" announce_on="1" label="images:$NAVIT_SHAREDIR/xpm/PreNav/speed_red.png:$NAVIT_SHAREDIR/xpm/PreNav/speed_green.png:$NAVIT_SHAREDIR/xpm/PreNav/speed_grey.png:" />
+-->
+<!-- WITHOUT speed-warner and WITHOUT speed-display
+<osd enabled="yes" type="image" x="0" y="0" w="480" h="124" src="$NAVIT_SHAREDIR/xpm/PreNav/head_bg.png" /> 
+-->
+
+<!-- background images -->
+<osd enabled="yes" type="image" x="0" y="-150" w="114" h="102" src="$NAVIT_SHAREDIR/xpm/PreNav/bottom_bg.png" /> 
+<osd enabled="yes" type="image" x="114" y="-108" w="20" h="20" src="$NAVIT_SHAREDIR/xpm/PreNav/ecke_ul.png" /> 
+<osd enabled="yes" type="image" x="-20" y="-108" w="20" h="20" src="$NAVIT_SHAREDIR/xpm/PreNav/ecke_ur.png" /> 
+
+<!-- menu right/top-right -->
+<osd enabled="yes" type="gps_status" x="-50" y="00" w="50" h="32" background_color="#000000ff"/> 
+<osd enabled="yes" type="text" x="0" y="0" w="800" h="32" font_size="320" label="Distance: ${navigation.item.destination_length[named]} - Arrival: ${navigation.item.destination_time[arrival]}, ${navigation.item.destination_time[remaining]}" background_color="#000000FF" align="4"/> 
+<osd enabled="yes" type="button" x="-64" y="32" w="64" h="64" command="zoom_out()" src="$NAVIT_SHAREDIR/xpm/PreNav/zoom_out_64_64.png"/>
+<osd enabled="yes" type="toggle_announcer" x="-64" y="96" w="64" h="64" icon_src="$NAVIT_SHAREDIR/xpm/PreNav/%s_64_64.png" background_color="#00000088"/>
+<osd enabled="yes" type="button" command="zoom_to_route()" x="-64" y="160" w="64" h="64" src="$NAVIT_SHAREDIR/xpm/PreNav/zoom_route_64_64.png"/>
+<osd enabled="yes" type="button" x="-64" y="224"  w="64" h="84" command="zoom_in()" src="$NAVIT_SHAREDIR/xpm/PreNav/zoom_in_64_84.png"/>
+
+<!-- bottom-left elements -->
+<osd enabled="yes" type="text" label="${navigation.item.street_name} ${navigation.item.street_name_systematic}" x="110" y="-88" w="690" h="40" align="4" font_size="400" background_color="#000000FF"/>
+<osd enabled="yes" type="text" label="${navigation.item[1].street_name} ${navigation.item[1].street_name_systematic}" x="110" y="-48" w="690" h="48" align="4" font_size="480" background_color="#000000FF"/>
+<osd enabled="yes" type="text" label="${navigation.item[1].length[named]}" x="0" y="-48" w="110" h="48" align="15" background_color="#000000FF" font_size="480"/>
+<osd enabled="yes" type="navigation_next_turn" x="20" y="-117" w="64" h="64" align="0" icon_src="$NAVIT_SHAREDIR/xpm/%s_bk_64_64.png" background_color="#FFFFFFFF" />
+<osd enabled="yes" type="speed_cam" w="320" h="28" x="-345" y="-116" announce_on="1" background_color="#000000cc" font_size="400" label="${camera_type} | ${distance} | ${speed_limit}km/h" />
+
