@@ -3,6 +3,7 @@ VERSION = 0.7
 DEPENDS = common/locale common/libdotconf media/libsndfile media/pulseaudio apps/espeak
 APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.${NAME}
 APP_PREFIX= /var/usr
+BINARY_GIT := git@git.webos-internals.org:/services/speechd.git
 SRC_TGZ = http://www.freebsoft.org/pub/projects/speechd/speech-dispatcher-${VERSION}.tar.gz
 ESPEAK = ../espeak
 
@@ -59,31 +60,45 @@ build/%.built: build/.unpacked build/.patched
 	rm -r build/$*/${APP_PREFIX}/include
 	cp files/speech-dispatcher files/spd-say build/$*/${APP_DIR}
 	cp files/speechd.conf build/$*/${APP_DIR}/etc/speech-dispatcher/
+	rm -f build/$*/${APP_DIR}/etc/speech-dispatcher/modules/*
 	cp files/espeak-generic.conf build/$*/${APP_DIR}/etc/speech-dispatcher/modules/
 	touch $@
 
 build/.package:
 	rm -f $@
 	make stage ARCH=armv7
-	make stage ARCH=armv6
+	#make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp    build/armv7/${APP_DIR}/spd-say build/package/all
 	cp    build/armv7/${APP_DIR}/speech-dispatcher build/package/all
 	cp -R build/armv7/${APP_DIR}/etc build/package/all
 	cp -R build/armv7/${APP_DIR}/share build/package/all
+	cp -R files/control build/package
+	cp -R files/upstart build/package
+	cp -R files/icon.png build/package
 	mkdir -p build/package/armv7
 	cp -R build/armv7/${APP_DIR}/bin build/package/armv7
 	cp -R build/armv7/${APP_DIR}/lib build/package/armv7
-	mkdir -p build/package/armv6
-	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
-	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
+	#mkdir -p build/package/armv6
+	#cp -R build/armv6/${APP_DIR}/bin build/package/armv6
+	#cp -R build/armv6/${APP_DIR}/lib build/package/armv6
 	# pull in the espeak-stuff
 	cp -R ${ESPEAK}/build/armv7/${APP_DIR}/share build/package/all
 	cp -R ${ESPEAK}/build/armv7/${APP_DIR}/bin build/package/armv7
 	cp -R ${ESPEAK}/build/armv7/${APP_DIR}/lib build/package/armv7
-	cp -R ${ESPEAK}/build/armv6/${APP_DIR}/bin build/package/armv6
-	cp -R ${ESPEAK}/build/armv6/${APP_DIR}/lib build/package/armv6
+	#cp -R ${ESPEAK}/build/armv6/${APP_DIR}/bin build/package/armv6
+	#cp -R ${ESPEAK}/build/armv6/${APP_DIR}/lib build/package/armv6
 	touch $@
+
+package-commit:
+	if [ -d git ]; then \
+		(cd git && git checkout . && git pull); \
+	else \
+		git clone "${BINARY_GIT}" git; \
+	fi
+	( cd git && rm -rf * )
+	cp -a build/package/* git/
+	( cd git && git add . && git commit -am "(Automatic commit v${VERSION})" )
 
 clobber::
 	rm -rf build
