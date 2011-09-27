@@ -50,7 +50,7 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 		--enable-88-color \
 		--enable-256-color \
 		--disable-luit \
-		--disable-wide-chars \
+		--enable-wide-chars \
 	)	
 	( cd build/$* ; ${SB2} $(MAKE))
 	( cd build/$* ; ${SB2} $(MAKE) install)
