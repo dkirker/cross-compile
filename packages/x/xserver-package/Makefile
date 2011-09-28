@@ -6,7 +6,8 @@ DEPENDS = \
 	x/xorg-server \
 	x/xkeyboardconfig \
 	x/xkbcomp \
-	x/xkbset
+	x/xkbset \
+	x/xwininfo
 
 SRC_GIT = git://git.webos-internals.org/x11/xserver.git
 SRC_GIT_COMMIT = git@git.webos-internals.org:x11/xserver.git
@@ -46,6 +47,7 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	( cp ../xorg-server/build/$*/hw/kdrive/sdl/Xsdl build/$*/bin/ )
 	( cp ../xkbcomp/build/$*/xkbcomp build/$*/bin/ )
 	( cp ../xkbset/build/$*/xkbset build/$*/bin/ )
+	( cp ../xwininfo/build/$*/xwininfo build/$*/bin/ )
 	( mkdir -p build/$*/share/X11/xkb/keymap )
 	( cd ../xkeyboardconfig/build/$*/ && make install prefix=$(CURDIR)/build/$*/ exec_prefix=$(CURDIR)/build/$* )
 	( cp ../xkeyboardconfig/build/$*/keymap/palm-pre build/$*/share/X11/xkb/keymap/ )
