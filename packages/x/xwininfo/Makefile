@@ -28,12 +28,16 @@ include ../../../support/cross-compile.mk
 
 build: build/${ARCH}.built-${VERSION}
 
+# Expect xlibs to be in the xserver package, in the 'xlib' directory.
+APP_DIR = /media/cryptofs/apps/usr/palm/applications/org.webosinternals.xserver
+XLIBS = $(APP_DIR)/xlib
+
 build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
 	( cd build/$* ; ${SB2} \
-	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=.:/usr/local/lib\" \
+	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib\" \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \
 	)
