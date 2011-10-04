@@ -17,8 +17,8 @@
 #=============
 
 #This generates a list of every package category we want
-#(excluding nonworking)
-package_cats = $(shell cd packages; ls |grep -v "^nonworking$$")
+#(excluding nonworking and pulseaudio)
+package_cats = $(shell cd packages; ls |grep -v "^nonworking$$" | grep -v "^pulseaudio$$")
 
 #This is a list of every package we want, builds on the above
 package_dirs := \

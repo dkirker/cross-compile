@@ -1,0 +1,12 @@
+This is a staging directory for newer pulseaudio found in webOS 2.2.x/3.0.2.
+This WONT most likely produce a working pulseaudio, but at least the modules
+that are build should work in pre3 and touchpad (did not test all modules).
+
+Edit pulseaudio/Makefile and comment the pulseaudio-modifications patch line
+out if you want to build pulseaudio without the changes required for the 
+PulseAudio Settings app.
+
+NOTE: this installs older version of libltdl and newer version of libsndfile
+so please re-run make stage in common/libtool and media/libsndfile directories
+after staging pulseaudio if you want to get your build environment back the 
+way it was (if you had them staged before staging pulseaudio)!
