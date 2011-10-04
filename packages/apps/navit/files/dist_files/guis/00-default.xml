@@ -9,7 +9,7 @@
 			<img cond='position_coord_geo' src='gui_vehicle' onclick='position(position_coord_geo,_("Vehicle Position"),8|32|64|128|256)'><script>write(position_coord_geo)</script></img>
 			<img src='gui_quit' onclick='quit()'><text>Quit</text></img>
 			<a href='#Settings'><img src='gui_arrow_right'><text>Settings</text></img></a>
-			<img cond='navit.route.route_status&amp;52' src='gui_stop' onclick='abort_navigation(); menu("#Main Menu",1)'><text>Stop
+			<img cond='navit.route.route_status&amp;0' src='gui_stop' onclick='abort_navigation(); menu("#Main Menu",1)'><text>Stop
 Navigation</text></img>
 		</a>
 		<a name='Settings'><text>Settings</text>
