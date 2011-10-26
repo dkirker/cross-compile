@@ -1,28 +1,6 @@
-diff -Nru orig/src/modules/module-palm-policy-default.h src//src/modules/module-palm-policy-default.h
---- orig/src/modules/module-palm-policy-default.h	2011-10-03 11:46:30.000000000 +0000
-+++ src//src/modules/module-palm-policy-default.h	2011-10-03 19:40:43.000000000 +0000
-@@ -83,6 +83,7 @@
- enum EPhysicalSink {
-     ePhysicalSink_pcm_output = 0,
-     ePhysicalSink_a2dp,             /* virtual sink set up as a monitor source for a2dp */
-+    ePhysicalSink_wifi,             /* tunneling sink for network audio client */
-     ePhysicalSink_Count,    /* MUST be the last individual element. Elements below are aliases for one of the above. */
- 
-     // define logical outputs
-diff -Nru orig/src/modules/module-palm-policy-tables-default.h src//src/modules/module-palm-policy-tables-default.h
---- orig/src/modules/module-palm-policy-tables-default.h	2011-10-03 11:46:30.000000000 +0000
-+++ src//src/modules/module-palm-policy-tables-default.h	2011-10-03 19:40:43.000000000 +0000
-@@ -183,6 +183,7 @@
- static struct _systemdependantphysicalsinkmap  systemdependantphysicalsinkmap[] = {
-     {"pcm_output",      (uint32_t)ePhysicalSink_pcm_output},
-     {"a2dp",            (uint32_t)ePhysicalSink_a2dp},
-+    {"wifi",            (uint32_t)ePhysicalSink_wifi},
-     {NULL, 0}
- } ;
- 
-diff -Nru orig/src/modules/module-palm-policy.c src//src/modules/module-palm-policy.c
---- orig/src/modules/module-palm-policy.c	2011-10-03 11:46:30.000000000 +0000
-+++ src//src/modules/module-palm-policy.c	2011-10-03 19:40:43.000000000 +0000
+diff -Nru pulseaudio-0.9.22.orig//src/modules/module-palm-policy.c pulseaudio-0.9.22/src/modules/module-palm-policy.c
+--- pulseaudio-0.9.22.orig//src/modules/module-palm-policy.c	2011-10-26 16:09:25.000000000 +0300
++++ pulseaudio-0.9.22/src/modules/module-palm-policy.c	2011-10-26 16:09:41.000000000 +0300
 @@ -122,11 +122,16 @@
  
      int sockfd;        /* descriptor for socket */
@@ -49,25 +27,27 @@ diff -Nru orig/src/modules/module-palm-policy.c src//src/modules/module-palm-pol
  static pa_hook_result_t route_sink_input_new_hook_callback(pa_core *c, pa_sink_input_new_data *data, struct userdata *u);
  
  static pa_hook_result_t route_source_output_new_hook_callback(pa_core *c, pa_source_output_new_data *data, struct userdata *u);
-@@ -476,16 +483,48 @@
+@@ -476,18 +483,50 @@
          switch (cmd)
          {
  
+-        case 'd':
+-            /* redirect -  D <virtualsink> <physicalsink> */
 +        case 'o':
 +            /* redirect override set -  O <virtualsink> <physicalsink> */
-+
-+            if (4 == sscanf(msgbuf, "%c %d %d %d", &cmd, &parm1, &parm2, &parm3))
-+            {
-+                /* walk list of sink-inputs on this stream and set
-+                 * their output sink */
+ 
+             if (4 == sscanf(msgbuf, "%c %d %d %d", &cmd, &parm1, &parm2, &parm3))
+             {
+                 /* walk list of sink-inputs on this stream and set
+                  * their output sink */
 +                if (parm1 < eVirtualSink_Count)
 +                  u->lockedsinks[parm1] = TRUE;
 +
-+                virtual_sink_input_set_physical_sink(parm1, parm2, u);
-+                pa_log_info("parse_message: stream redirect command received, virtual sink is %d, requested physical sink to redirect to is %d", parm1, parm2);
-+            }
-+            break;
-+
+                 virtual_sink_input_set_physical_sink(parm1, parm2, u);
+                 pa_log_info("parse_message: stream redirect command received, virtual sink is %d, requested physical sink to redirect to is %d", parm1, parm2);
+             }
+             break;
+ 
 +        case 'c':
 +            /* redirect override clr -  C <virtualsink> <physicalsink> */
 +
@@ -83,25 +63,24 @@ diff -Nru orig/src/modules/module-palm-policy.c src//src/modules/module-palm-pol
 +            }
 +            break;
 +
-         case 'd':
-             /* redirect -  D <virtualsink> <physicalsink> */
- 
-             if (4 == sscanf(msgbuf, "%c %d %d %d", &cmd, &parm1, &parm2, &parm3))
-             {
-                 /* walk list of sink-inputs on this stream and set
-                  * their output sink */
--                virtual_sink_input_set_physical_sink(parm1, parm2, u);
--                pa_log_info("parse_message: stream redirect command received, virtual sink is %d, requested physical sink to redirect to is %d", parm1, parm2);
--            }
++        case 'd':
++            /* redirect -  D <virtualsink> <physicalsink> */
++
++            if (4 == sscanf(msgbuf, "%c %d %d %d", &cmd, &parm1, &parm2, &parm3))
++            {
++                /* walk list of sink-inputs on this stream and set
++                 * their output sink */
 +                if (parm1 < eVirtualSink_Count && !u->lockedsinks[parm1]) {
 +                  virtual_sink_input_set_physical_sink(parm1, parm2, u);
 +                  pa_log_info("parse_message: stream redirect command received, virtual sink is %d, requested physical sink to redirect to is %d", parm1, parm2);
 +                }
 +            }
-             break;
- 
++            break;
++
          case 'e':
-@@ -647,6 +684,19 @@
+             /* redirect -  E <virtualsink> <physicalsink> */
+ 
+@@ -647,6 +686,19 @@
                  }
              }
          }
@@ -121,7 +100,7 @@ diff -Nru orig/src/modules/module-palm-policy.c src//src/modules/module-palm-pol
          else
          {
              pa_log_info("handle_io_event_socket could not create new connection on socket, connection exists %s", __LINE__);
-@@ -718,6 +768,65 @@
+@@ -718,6 +770,65 @@
          pa_log_info("handle_io_event_connection PA_IO_EVENT_ERROR received");
  }
  
@@ -187,7 +166,7 @@ diff -Nru orig/src/modules/module-palm-policy.c src//src/modules/module-palm-pol
  static void subscribe_callback(pa_core *c, pa_subscription_event_type_t t, uint32_t idx, void *userdata)
  {
      struct userdata *u =  userdata;
-@@ -892,6 +1001,8 @@
+@@ -892,6 +1003,8 @@
  
          // Clear audiod sink opened count
          u->audiod_sink_input_opened[i] = 0;
@@ -196,7 +175,7 @@ diff -Nru orig/src/modules/module-palm-policy.c src//src/modules/module-palm-pol
      }
      u->n_sink_input_opened = 0;
  
-@@ -914,6 +1025,7 @@
+@@ -914,6 +1027,7 @@
  
      u->sockfd = -1;
      u->newsockfd = -1; /* set to -1 to indicate no connection */
@@ -204,7 +183,7 @@ diff -Nru orig/src/modules/module-palm-policy.c src//src/modules/module-palm-pol
  
      /* create a socket for ipc with audiod the policy manager */
      path_len = strlen(PALMAUDIO_SOCK_NAME);
-@@ -951,8 +1063,10 @@
+@@ -951,8 +1065,10 @@
      }
  
      u->connectionactive = FALSE;
@@ -215,3 +194,27 @@ diff -Nru orig/src/modules/module-palm-policy.c src//src/modules/module-palm-pol
  
      /* register an IO event handler for the socket, deal
       * with new connections in this handler */
+diff -Nru pulseaudio-0.9.22.orig//src/modules/module-palm-policy-default.h pulseaudio-0.9.22/src/modules/module-palm-policy-default.h
+--- pulseaudio-0.9.22.orig//src/modules/module-palm-policy-default.h	2011-10-26 16:09:25.000000000 +0300
++++ pulseaudio-0.9.22/src/modules/module-palm-policy-default.h	2011-10-26 16:11:31.000000000 +0300
+@@ -83,6 +83,8 @@
+ enum EPhysicalSink {
+     ePhysicalSink_pcm_output = 0,
+     ePhysicalSink_a2dp,             /* virtual sink set up as a monitor source for a2dp */
++    ePhysicalSink_usb,              /* physical sink to be used for usb audio client */
++    ePhysicalSink_wifi,             /* tunneling sink for network audio client */
+     ePhysicalSink_Count,    /* MUST be the last individual element. Elements below are aliases for one of the above. */
+ 
+     // define logical outputs
+diff -Nru pulseaudio-0.9.22.orig//src/modules/module-palm-policy-tables-default.h pulseaudio-0.9.22/src/modules/module-palm-policy-tables-default.h
+--- pulseaudio-0.9.22.orig//src/modules/module-palm-policy-tables-default.h	2011-10-26 16:09:25.000000000 +0300
++++ pulseaudio-0.9.22/src/modules/module-palm-policy-tables-default.h	2011-10-26 16:12:08.000000000 +0300
+@@ -183,6 +183,8 @@
+ static struct _systemdependantphysicalsinkmap  systemdependantphysicalsinkmap[] = {
+     {"pcm_output",      (uint32_t)ePhysicalSink_pcm_output},
+     {"a2dp",            (uint32_t)ePhysicalSink_a2dp},
++    {"usb",            (uint32_t)ePhysicalSink_usb},
++    {"wifi",            (uint32_t)ePhysicalSink_wifi},
+     {NULL, 0}
+ } ;
+ 
