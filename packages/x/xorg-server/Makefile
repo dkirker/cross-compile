@@ -1,5 +1,5 @@
 NAME = xorg-server
-VERSION := 0.9.7alpha
+VERSION := 0.9.7
 
 DEPENDS = \
 	common/openssl         \
