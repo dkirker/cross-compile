@@ -1,5 +1,5 @@
 NAME = xorg-server
-VERSION := 0.9.6alpha
+VERSION := 0.9.7alpha
 
 DEPENDS = \
 	common/openssl         \
@@ -67,7 +67,7 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	( mkdir -p build/$* )
 	( cd build/$* ; ${SB2} \
 	LDFLAGS=\"-L/usr/local/lib -Wl,-rpath=${XLIBS}:.:/usr/local/lib -Wl,--allow-shlib-undefined\" \
-	../src/configure \
+	../src/autogen.sh \
 		--prefix=${APP_DIR} \
 		--enable-kdrive \
 		--enable-xsdl \
