@@ -4,7 +4,7 @@ SRC_SVN_REV := http://navit.svn.sourceforge.net/svnroot/navit/trunk
 APP_DIR := /media/cryptofs/apps/usr/palm/applications/org.webosinternals.navit
 BINARY_GIT := git@git.webos-internals.org:/applications/navit.git
 NAVIT_VERSION := `sed -nre "/AC_INIT\(navit,/ s/.* ([0-9\.]+).*\)/\1/ p" build/src/configure.in`
-VERSION := 4854
+VERSION := 4936
 
 include ../../../support/download.mk
 
@@ -97,7 +97,7 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION} build/.patched-${VERSION} b
 build/.package-${VERSION}:
 	rm -f $@
 	make stage ARCH=armv7
-#	make stage ARCH=armv6
+	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp    build/armv7/${APP_DIR}/appinfo.json.in build/package/all
 	cp    build/armv7/${APP_DIR}/ls2-*.json build/package/all
@@ -109,9 +109,9 @@ build/.package-${VERSION}:
 	mkdir -p build/package/armv7
 	cp -R build/armv7/${APP_DIR}/bin build/package/armv7
 	cp -R build/armv7/${APP_DIR}/lib build/package/armv7
-#	mkdir -p build/package/armv6
-#	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
-#	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
+	mkdir -p build/package/armv6
+	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
+	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
 	cp -R files/control build/package/
 	>$@
 
