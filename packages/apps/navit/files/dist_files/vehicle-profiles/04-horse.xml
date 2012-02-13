@@ -1,10 +1,10 @@
-<vehicleprofile name="horse" flags="0x20000000" flags_forward_mask="0x20000000" flags_reverse_mask="0x20000000" maxspeed_handling="1" route_mode="0">
+<vehicleprofile name="horse" flags="0x20000000" flags_forward_mask="0x20000000" flags_reverse_mask="0x20000000" maxspeed_handling="1" route_mode="0" static_speed="3" static_distance="10">
 	<roadprofile item_types="bridleway" speed="10" route_weight="10">
 		<announcement level="0" distance_metric="25"/>
 		<announcement level="1" distance_metric="100"/>
 		<announcement level="2" distance_metric="200"/>
 	</roadprofile>
-	<roadprofile item_types="footway,path" speed="5" route_weight="5">
+	<roadprofile item_types="footway,path,steps" speed="5" route_weight="5">
 		<announcement level="0" distance_metric="25"/>
 		<announcement level="1" distance_metric="100"/>
 		<announcement level="2" distance_metric="200"/>
@@ -34,7 +34,7 @@
 		<announcement level="1" distance_metric="100"/>
 		<announcement level="2" distance_metric="200"/>
 	</roadprofile>
-	<roadprofile item_types="street_3_city,street_4_city,street_service" speed="5" route_weight="4">
+	<roadprofile item_types="street_3_city,street_4_city,street_service,street_parking_lane" speed="5" route_weight="4">
 		<announcement level="0" distance_metric="25"/>
 		<announcement level="1" distance_metric="100"/>
 		<announcement level="2" distance_metric="200"/>
@@ -52,4 +52,3 @@
 	<roadprofile item_types="roundabout" speed="5" route_weight="2"/>
 	<roadprofile item_types="ferry" speed="40" route_weight="40"/>
 </vehicleprofile>
-
