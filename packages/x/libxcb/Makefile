@@ -32,6 +32,7 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	rm -f $@
 	mkdir -p build/$*
 	cp -R build/src/* build/$*
+	( cd build/$* ; ${SB2} autoreconf -i )
 	( cd build/$* ; ${SB2} \
 	./configure \
 		--prefix=${INSTALL_PREFIX} \

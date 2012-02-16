@@ -32,7 +32,7 @@ build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	( cd build/$* ; ${SB2} \
 	./autogen.sh \
 		--prefix=${INSTALL_PREFIX} --sysconfdir=/usr/local/share \
-		--host=i386 --build=arm --with-arch=arm \
+		--host=i386 --build=arm --with-arch=arm --disable-docs \
 	)	
 	#XXX the libtool which ships with fontconfig generates wierd errors
 	# Using the one from scratchbox works fine right now
