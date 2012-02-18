@@ -1,7 +1,7 @@
 NAME = xev
 VERSION = 1.1.0
 
-DEPENDS = x/libxcb x/xau
+DEPENDS = x/libxcb x/xau x/libx11
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
