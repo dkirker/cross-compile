@@ -49,15 +49,15 @@ build/%.built: build/.unpacked
 build/.package:
 	rm -f $@
 	make stage ARCH=armv7
-	#make stage ARCH=armv6
+	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp -R build/armv7/${APP_DIR}/share build/package/all
 	mkdir -p build/package/armv7
 	cp -R build/armv7/${APP_DIR}/bin build/package/armv7
 	cp -R build/armv7/${APP_DIR}/lib build/package/armv7
-	#mkdir -p build/package/armv6
-	#cp -R build/armv6/${APP_DIR}/bin build/package/armv6
-	#cp -R build/armv6/${APP_DIR}/lib build/package/armv6
+	mkdir -p build/package/armv6
+	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
+	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
 	touch $@
 
 clean:

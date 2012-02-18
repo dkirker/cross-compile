@@ -67,7 +67,7 @@ build/%.built: build/.unpacked build/.patched
 build/.package:
 	rm -f $@
 	make stage ARCH=armv7
-	#make stage ARCH=armv6
+	make stage ARCH=armv6
 	mkdir -p build/package/all
 	cp    build/armv7/${APP_DIR}/spd-say build/package/all
 	cp    build/armv7/${APP_DIR}/speech-dispatcher build/package/all
@@ -79,15 +79,15 @@ build/.package:
 	mkdir -p build/package/armv7
 	cp -R build/armv7/${APP_DIR}/bin build/package/armv7
 	cp -R build/armv7/${APP_DIR}/lib build/package/armv7
-	#mkdir -p build/package/armv6
-	#cp -R build/armv6/${APP_DIR}/bin build/package/armv6
-	#cp -R build/armv6/${APP_DIR}/lib build/package/armv6
+	mkdir -p build/package/armv6
+	cp -R build/armv6/${APP_DIR}/bin build/package/armv6
+	cp -R build/armv6/${APP_DIR}/lib build/package/armv6
 	# pull in the espeak-stuff
 	cp -R ${ESPEAK}/build/armv7/${APP_DIR}/share build/package/all
 	cp -R ${ESPEAK}/build/armv7/${APP_DIR}/bin build/package/armv7
 	cp -R ${ESPEAK}/build/armv7/${APP_DIR}/lib build/package/armv7
-	#cp -R ${ESPEAK}/build/armv6/${APP_DIR}/bin build/package/armv6
-	#cp -R ${ESPEAK}/build/armv6/${APP_DIR}/lib build/package/armv6
+	cp -R ${ESPEAK}/build/armv6/${APP_DIR}/bin build/package/armv6
+	cp -R ${ESPEAK}/build/armv6/${APP_DIR}/lib build/package/armv6
 	touch $@
 
 package-commit:
