@@ -42,6 +42,7 @@ build/%.aclocal: build/.unpacked
 #	cp -R build/src/* build/$*
 	(cd build/src; tar cf - .) | (cd build/$*; tar xf -)
 #	( cd build/$* ; ${SB2} ./autogen.sh )
+	( cd build/$* ; ${SB2} autoreconf -i )
 	touch $@
 
 .SECONDARY: build/${ARCH}.configured
