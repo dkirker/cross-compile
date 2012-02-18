@@ -28,6 +28,7 @@ build/%.built: build/.unpacked
 	cp -R build/src/* build/$*
 	( cd build/$* ; ${SB2} $(MAKE) )
 	 # Automatic staging doesn't work for agg
+	mkdir -p ${STAGING_DIR}/usr/lib/
 	cp -pP build/$*/src/libagg.a ${STAGING_DIR}/usr/lib/
 	mkdir -p ${STAGING_DIR}/usr/include/agg2
 	cp -prP build/$*/include/* ${STAGING_DIR}/usr/include/agg2
