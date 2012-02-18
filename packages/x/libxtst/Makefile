@@ -2,7 +2,10 @@ NAME = libXtst
 VERSION = 1.2.0
 
 #XXX: DEPS
-DEPENDS = x/xorg-server
+DEPENDS = 	x/xorg-server \
+		x/libXext \
+		x/recordproto \
+		x/libXi
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
