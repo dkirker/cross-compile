@@ -33,7 +33,7 @@ build: build/${ARCH}.built-${VERSION}
 build/%.built-${VERSION}: build/.unpacked-${VERSION}
 	rm -f $@
 	mkdir -p build/$*
-	cp -R build/src/* build/$*
+	cp -aR build/src/* build/$*
 	( cd build/$* ; ${SB2} \
 	LDFLAGS="\"-L/usr/local/lib -Wl,-rpath-link,/usr/local/lib -Wl,-rpath,/usr/local/lib\" PATH=/usr/local/bin:${PATH}" \
 	./configure \
