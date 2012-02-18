@@ -4,7 +4,9 @@ VERSION = 1.4.3
 DEPENDS = common/zlib \
 		  x/xtrans \
 		  x/libfontenc \
-			common/freetype
+		  common/freetype \
+		  x/xproto \
+ 		  x/fontsproto
 
 SRC_BZ2 = http://www.x.org/releases/X11R7.6/src/everything/${NAME}-${VERSION}.tar.bz2
 
