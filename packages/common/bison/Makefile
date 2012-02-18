@@ -24,8 +24,7 @@ stage-local:: build/${ARCH}.built
 
 build/%.built: build/.unpacked
 	rm -f $@
-	mkdir -p build/$*
-	cp -R build/src/* build/$*
+	cp -R build/src build/$*
 	( cd build/$* ; ${SB2} ./configure )
 	( cd build/$* ; ${SB2} $(MAKE) && ${SB2} make install )
 	touch $@
