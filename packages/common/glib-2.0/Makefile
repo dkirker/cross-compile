@@ -3,17 +3,22 @@ VERSION = 2.16.6
 DEPENDS = 
 
 SRC_BZ2 = http://palm.cdnetworks.net/opensource/1.4.1.1/glib-${VERSION}.tar.bz2
-PATCH = http://palm.cdnetworks.net/opensource/1.4.1.1/glib-${VERSION}-patches.tgz
+PATCH_TGZ = http://palm.cdnetworks.net/opensource/1.4.1.1/glib-${VERSION}-patches.tgz
 
-.PHONY: unpack
+include ../../../support/download.mk
+
+.PHONY: unpack patch
 unpack: build/.unpacked
+patch: build/.patched
 
-build/.unpacked: 
+build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.bz2
 	rm -rf build
 	mkdir -p build
-	curl ${SRC_BZ2} | tar -C build -jxf -
+	tar -C build -j -x -f $<
 	mv build/glib-${VERSION} build/src
-	curl ${PATCH} | tar xvOzf - | patch -d build/src -p1
+	${MAKE} SRC_FILE=${PATCH_TGZ} \
+		LOCAL_FILE=${NAME}-${VERSION}-patches.tgz download
+	tar -zxOf ${DL_DIR}/${NAME}-${VERSION}-patches.tgz | patch -d build/src -p1
 	touch $@
 
 include ../../../support/staging.mk
@@ -58,5 +63,3 @@ build/%.built: build/.unpacked
 
 clobber::
 	rm -rf build
-
-download::
