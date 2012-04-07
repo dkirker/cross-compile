@@ -1,0 +1,35 @@
+From efc27578e7b8160bf81ea63d2603a5b17dce43c6 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
+Date: Fri, 11 Feb 2011 18:41:34 +0100
+Subject: [PATCH 7/7] enable -Werror for graphicsd/sdl and vehicle/webos
+
+---
+ navit/navit/graphics/sdl/Makefile.am  |    1 +
+ navit/navit/vehicle/webos/Makefile.am |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/navit/navit/graphics/sdl/Makefile.am b/navit/navit/graphics/sdl/Makefile.am
+index 1c9b405..029e8c6 100644
+--- a/navit/navit/graphics/sdl/Makefile.am
++++ b/navit/navit/graphics/sdl/Makefile.am
+@@ -1,5 +1,6 @@
+ include $(top_srcdir)/Makefile.inc
+ AM_CPPFLAGS = @NAVIT_CFLAGS@ @SDL_CFLAGS@ @FREETYPE2_CFLAGS@ @LIBPDL_CFLAGS@ -I$(top_srcdir)/navit -DMODULE=graphics_sdl
++AM_CFLAGS = -Werror
+ modulegraphics_LTLIBRARIES = libgraphics_sdl.la
+ libgraphics_sdl_la_SOURCES = graphics_sdl.c raster.c raster.h
+ libgraphics_sdl_la_LDFLAGS = @SDL_LIBS@ @SDL_IMAGE_LIBS@ @FREETYPE2_LIBS@ @LIBPDL_LIBS@ -module -avoid-version
+diff --git a/navit/navit/vehicle/webos/Makefile.am b/navit/navit/vehicle/webos/Makefile.am
+index 15f8767..ed04026 100644
+--- a/navit/navit/vehicle/webos/Makefile.am
++++ b/navit/navit/vehicle/webos/Makefile.am
+@@ -1,5 +1,5 @@
+ include $(top_srcdir)/Makefile.inc
+-AM_CPPFLAGS = @NAVIT_CFLAGS@ @SDL_CFLAGS@ @LIBPDL_CFLAGS@ -I$(top_srcdir)/navit -DMODULE=vehicle_webos
++AM_CPPFLAGS = @NAVIT_CFLAGS@ @SDL_CFLAGS@ @LIBPDL_CFLAGS@ -I$(top_srcdir)/navit -DMODULE=vehicle_webos -Werror
+ modulevehicle_LTLIBRARIES = libvehicle_webos.la
+ libvehicle_webos_la_SOURCES = vehicle_webos.c bluetooth.c cJSON.c
+ libvehicle_webos_la_LDFLAGS = @SDL_LIBS@ @LIBPDL_LIBS@ -module -avoid-version
+-- 
+1.7.9.5
+

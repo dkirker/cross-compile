@@ -5,7 +5,7 @@
 <!-- WITH speed-warner and WITH speed-display -->
 <osd enabled="yes" type="image" x="0" y="40" w="178" h="161" src="$NAVIT_SHAREDIR/xpm/PreNav/head_mantaray_bg.png" /> 
 <osd enabled="yes" type="text" label="${vehicle.position_speed}" x="0" y="36" w="125" h="40" background_color="#00000000" align="8" font_size="450"/>
-<osd enabled="yes" type="speed_warner" x="2" y="79" w="96" h="96" background_color="#00000000" font_size="550" speed_exceed_limit_offset="10" speed_exceed_limit_percent="10" announce_on="0" label="images:$NAVIT_SHAREDIR/xpm/PreNav/speed_red_96_96.png:$NAVIT_SHAREDIR/xpm/PreNav/speed_green_96_96.png:$NAVIT_SHAREDIR/xpm/PreNav/speed_grey_96_96.png:" />
+<osd enabled="yes" type="speed_warner" x="2" y="79" w="96" h="96" background_color="#00000000" font_size="550" speed_exceed_limit_offset="10" speed_exceed_limit_percent="10" announce_on="1" label="images:$NAVIT_SHAREDIR/xpm/PreNav/speed_red_96_96.png:$NAVIT_SHAREDIR/xpm/PreNav/speed_green_96_96.png:$NAVIT_SHAREDIR/xpm/PreNav/speed_grey_96_96.png:" />
 <!-- -->
 <!-- WITH speed-warner and WITHOUT speed-display
 <osd enabled="yes" type="image" x="0" y="0" w="480" h="124" src="$NAVIT_SHAREDIR/xpm/PreNav/head_w_bg.png" /> 
@@ -34,14 +34,14 @@
 	set_int_var(&quot;follow3d&quot;,follow_cursor),follow_cursor=0,
 	set_int_var(&quot;autozoom3d&quot;,autozoom_active),autozoom_active=0,
 	set_int_var(&quot;zoom3d&quot;,zoom),zoom=get_int_var(&quot;zoom2d&quot;)?get_int_var(&quot;zoom2d&quot;):12"
-	x="-64" y="170" w="64" h="64" accesskey="." src="$NAVIT_SHAREDIR/xpm/PreNav/button_3d_64_64.png"/>
+	x="-64" y="170" w="64" h="64" accesskey="." src="$NAVIT_SHAREDIR/xpm/PreNav/button_2d_64_64.png"/>
 <osd enabled="yes" type="button" osd_configuration="2" command="osd_configuration=1,
 	pitch=get_int_var(&quot;pitch3d&quot;),
 	orientation=get_int_var(&quot;orientation3d&quot;),
 	follow_cursor=get_int_var(&quot;follow3d&quot;),
 	set_int_var(&quot;zoom2d&quot;,zoom),zoom=get_int_var(&quot;zoom3d&quot;),
 	autozoom_active=get_int_var(&quot;autozoom3d&quot;)"
-	x="-64" y="170" w="64" h="64" accesskey="." src="$NAVIT_SHAREDIR/xpm/PreNav/button_2d_64_64.png"/>
+	x="-64" y="170" w="64" h="64" accesskey="." src="$NAVIT_SHAREDIR/xpm/PreNav/button_3d_64_64.png"/>
 
 <osd enabled="yes" type="button" osd_configuration="1" command="osd_configuration=2,
 	set_int_var(&quot;pitch3d&quot;,pitch),pitch=0,

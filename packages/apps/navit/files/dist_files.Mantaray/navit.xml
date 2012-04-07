@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	For configuration options used in this file, please read
+	http://wiki.navit-project.org/index.php/Configuring_NavIt
+	Do not edit /usr/share/navit/navit.xml : changes would be lost
+	on upgrade. Rather copy it to ~/.navit/. Please read wiki
+-->
+<!DOCTYPE config
+  SYSTEM "navit.dtd">
+<config xmlns:xi="http://www.w3.org/2001/XInclude">
+	<plugins>
+		<plugin path="$NAVIT_LIBDIR/*/lib*.so" ondemand="yes"/>
+		<plugin path="$NAVIT_LIBDIR/autoload/lib*.so"/>
+		<plugin path="$NAVIT_LIBDIR/*/libbinding_dbus.so" active="no"/>
+		<plugin path="$NAVIT_LIBDIR/*/libgraphics_null.so" active="no"/>
+		<plugin path="$NAVIT_LIBDIR/*/libplugin_pedestrian.so" active="no"/>
+	</plugins>
+
+	<debug name="navit:do_draw" level="0"/>
+	<!-- This is here so one can copy&paste the contents of popup menus -->
+	<debug name="navit:popup_printf_cb" level="0"/>
+	<debug name="vehicle_webos" level="0"/>
+	<debug name="graphics_sdl" level="0"/>
+	<debug name="navit:xdisplay_draw_elements" level="0"/>
+	<debug name="navit:graphics_remove_selection" level="0"/>
+	<!-- segv: 1 - show backtrace with gdb and exit, 2 - stay in gdb -->
+	<debug name="segv" level="1"/>
+	<!-- timestamps 0/1 - prefix log messages with a timestamp -->
+	<debug name="timestamps" level="0"/>
+	<!-- This line defines which location on the map navit will show after startup.
+		It makes sense to set it to your home coordinates.
+		Center coordinates format:
+		[D][D]DMM.ss[S][S]... N/S [D][D]DMM.ss[S][S]... E/W
+		[-][D]D.d[d]... [-][D][D]D.d[d]...
+		[-]0xX [-]0xX -->
+
+	<navit center="0x10b6f5 0x6c435d" zoom="64" tracking="1" pitch="12"
+		orientation="-1" recent_dest="10" autozoom_active="1" osd_configuration="1">
+		<!-- Use one of gtk_drawing_area, qt_qpainter or sdl. -->
+		<graphics type="sdl"/>
+		<!-- for a debug log -->
+		<log enabled="no" type="textfile_debug" data="debug_%Y%m%d-%i.txt" flush_size="1000" flush_time="30"/>
+
+		<vehicle name="GPS" lag="15" profilename="car" enabled="yes" follow="1" active="1" source="webos://"/>
+                <!--( 17:18      Rikky ) hape: there is the parameter "lag" for vehicle, which projects                  
+                                         the car position the specified time ahead. however it does not                  
+                                         work very well, because it only uses gps data for the projection.               
+                                         lag="20" would project the car position 2seconds ahead -->   
+
+		<!--<vehicle name="Demo" profilename="car" enabled="yes" active="yes" source="demo://"/>-->
+
+		<!-- For the cumulative displacement filter to be enabled, set cdf_histsize="x" here, with x being an integer somewhere around 4 -->
+		<tracking cdf_histsize="3" tunnel_extrapolation="12" />
+
+		<route destination_distance="50"/>
+
+		<navigation>
+			<announce type="street_0,street_1_city" level0="25" level1="100" level2="200" unit="m"/>
+			<announce type="street_2_city,street_3_city,street_4_city,ramp" level0="50" level1="200" level2="500" unit="m"/>
+			<announce type="highway_city,street_1_land,street_2_land,street_3_land,street_4_land" level0="100" level1="400" level2="1000" unit="m"/>
+			<announce type="street_n_lanes,highway_land" level0="300" level1="1000" level2="2000" unit="m"/>
+		</navigation>
+
+		<!-- Navit provides speech output in text format.
+			If you have a speech synthesizer like festival lite installed, you can get turn by turn directions out of navit. Please set the "cps"-value to how many characters your tts engine approximately speaks per second.
+			The default is text output to the shell -->
+<!--		<speech type="cmdline" data="echo '%s'" cps="15"/>-->
+<!--		<speech type="cmdline" data="/media/cryptofs/apps/usr/palm/applications/org.webosinternals.espeak/espeak '%s'" cps="15"/> -->
+		<!-- <speech type="cmdline" data="flite -t '%s'"/> -->
+		<speech type="speech_dispatcher" data="100" cps="15" />
+
+		<xi:include href="$NAVIT_USER_DATADIR/maps/*.xml"/>
+		<xi:include href="$NAVIT_USER_DATADIR/guis/*.xml"/>
+		<xi:include href="$NAVIT_USER_DATADIR/osds/*.xml"/>
+		<xi:include href="$NAVIT_USER_DATADIR/layouts/*.xml"/>
+		<xi:include href="$NAVIT_USER_DATADIR/vehicle-profiles/*.xml"/>
+	</navit>
+</config>

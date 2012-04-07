@@ -1,0 +1,25 @@
+From df67d9f7859e23dd3c3a8048c1b1af6e887ce078 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
+Date: Sat, 31 Mar 2012 22:22:29 +0200
+Subject: [PATCH 4/7] Patch:graphics/sdl:Make debugging less noisy
+
+---
+ navit/navit/graphics/sdl/graphics_sdl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/navit/navit/graphics/sdl/graphics_sdl.c b/navit/navit/graphics/sdl/graphics_sdl.c
+index e1907e3..f896ea7 100644
+--- a/navit/navit/graphics/sdl/graphics_sdl.c
++++ b/navit/navit/graphics/sdl/graphics_sdl.c
+@@ -1815,7 +1815,7 @@ static gboolean graphics_sdl_idle(void *data)
+ 	}
+ 
+ #ifdef USE_WEBOS
+-	dbg(2,"SDL_Event %d\n", ev.type);
++	dbg(5,"SDL_Event %d\n", ev.type);
+ #endif
+ 	switch(ev.type)
+ 	{
+-- 
+1.7.9.5
+

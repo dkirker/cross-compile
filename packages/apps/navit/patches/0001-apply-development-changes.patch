@@ -1,13 +1,13 @@
-From 0b6b2f6a9f06356d26964c4e479b2be904b2f819 Mon Sep 17 00:00:00 2001
+From 9f5291f0bc772b7d34d90245ff744fb4dbf63a9c Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Malte=20Schr=C3=B6der?= <maltesch@gmx.de>
 Date: Mon, 13 Jun 2011 12:54:34 +0200
-Subject: [PATCH 1/3] apply-development-changes
+Subject: [PATCH 1/7] apply-development-changes
 
 ---
  .../speech_dispatcher/speech_speech_dispatcher.c   |   29 ++++++++++++++++++++
- navit/navit/xpm/navit_svg2png                      |   12 +++++++-
- navit/po/de.po.in                                  |   18 +++++++++++-
- 3 files changed, 56 insertions(+), 3 deletions(-)
+ navit/navit/xpm/navit_svg2png                      |   12 ++++++--
+ navit/po/de.po.in                                  |   19 +++++++++++++
+ 3 files changed, 58 insertions(+), 2 deletions(-)
 
 diff --git a/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c b/navit/navit/speech/speech_dispatcher/speech_speech_dispatcher.c
 index 0522818..bef6e9c 100644
@@ -102,23 +102,24 @@ index 16ecfb7..ba76d7a 100755
  fi
  exit 0
 diff --git a/navit/po/de.po.in b/navit/po/de.po.in
-index 02d4003..af96238 100644
+index 6d2aa0f..45bd5ef 100644
 --- a/navit/po/de.po.in
 +++ b/navit/po/de.po.in
-@@ -1412,7 +1412,9 @@ msgid "Show/hide route description"
- msgstr "Routenbeschreibung anzeigen/schließen"
+@@ -1422,6 +1422,11 @@ msgstr "Routenbeschreibung anzeigen/schließen"
+ msgid "_Autozoom"
+ msgstr "_automatischer Zoom"
  
- msgid "Autozoom"
--msgstr "automatischer Zoom"
++msgid "Autozoom"
 +msgstr ""
 +"automatischer\n"
 +"Zoom"
- 
++
  msgid "Enable/disable automatic zoom level changing"
  msgstr "Automatischen Zoom einschalten/ausschalten"
-@@ -1670,6 +1672,20 @@ msgstr ""
- "Navigation\n"
- "beenden"
+ 
+@@ -1721,6 +1726,20 @@ msgstr "Anzeige"
+ msgid "Fullscreen"
+ msgstr "Vollbild"
  
 +msgid ""
 +"Map follows\n"
@@ -138,5 +139,5 @@ index 02d4003..af96238 100644
  msgstr "Fenstermodus"
  
 -- 
-1.7.5.4
+1.7.9.5
 
