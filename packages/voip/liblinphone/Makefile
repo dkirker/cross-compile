@@ -1,9 +1,9 @@
 NAME = linphone
-VERSION = 3.3.2
+VERSION = 3.5.2
 DEPENDS = voip/libosip2 voip/libeXosip2 media/gsm media/libspeex media/pulseaudio common/ncurses common/readline
 
-SRC_TGZ = http://download.savannah.gnu.org/releases/linphone/3.3.x/sources/linphone-3.3.2.tar.gz
-PATCH   = linphone-3.3.2-fix.patch
+SRC_TGZ = http://download.savannah.gnu.org/releases/linphone/3.5.x/sources/linphone-3.5.2.tar.gz
+PATCH   = linphone-3.5.2-fix.patch
 
 CFLAGS_OPT= -O2
 
@@ -19,6 +19,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	tar -C build -z -x -f $<
 	mv build/${NAME}-${VERSION} build/src
 	[ -n "${PATCH}" ] && patch -d build/src -p 1 < ${PATCH}
+	mkdir -pv build/src/mediastreamer2/m4
 	(cd build/src; etags `find . -type f -print`)
 	touch $@
 

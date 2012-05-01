@@ -1,8 +1,8 @@
 NAME = libosip2
-VERSION = 3.3.0
+VERSION = 3.6.0
 DEPENDS = 
 
-SRC_TGZ = http://ftp.gnu.org/gnu/osip/libosip2-3.3.0.tar.gz
+SRC_TGZ = http://ftp.gnu.org/gnu/osip/libosip2-3.6.0.tar.gz
 
 include ../../../support/download.mk
 

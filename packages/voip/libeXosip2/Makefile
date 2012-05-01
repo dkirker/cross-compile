@@ -1,8 +1,8 @@
 NAME = libeXosip2
-VERSION = 3.3.0
+VERSION = 3.6.0
 DEPENDS = common/openssl voip/libosip2
 
-SRC_TGZ = http://mirror.lihnidos.org/GNU/savannah/exosip/libeXosip2-3.3.0.tar.gz
+SRC_TGZ = http://mirror.lihnidos.org/GNU/savannah/exosip/libeXosip2-3.6.0.tar.gz
 
 include ../../../support/download.mk
 
@@ -13,7 +13,7 @@ build/.unpacked: ${DL_DIR}/${NAME}-${VERSION}.tar.gz
 	rm -rf build
 	mkdir -p build
 	tar -C build -z -x -f $<
-	mv build/libeXosip2-3.3.0 build/src
+	mv build/libeXosip2-3.6.0 build/src
 	touch $@
 
 include ../../../support/staging.mk
